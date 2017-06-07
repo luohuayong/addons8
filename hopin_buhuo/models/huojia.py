@@ -30,31 +30,32 @@ class huojia_item(models.Model):
         huojia_item = self.env['buhuo.huojia_item']
         warehouse = self.env['stock.warehouse']
 
-class xiaoshou(models.Model):
-    _name = 'buhuo.xiaoshou'
-    date = fields.Date(string=u"日期",readonly=True)
-    warehouse_id = fields.Many2one('stock.warehouse', string=u"货架ID",readonly=True)
-    warehouse_code = fields.Char(related='warehouse_id.code', string=u"货架编号",readonly=True)
-    warehouse_address = fields.Many2one(related='warehouse_id.partner_id', string=u"货架地址",readonly=True)
-    xiaoliang = fields.Integer(string=u"销量",readonly=True)
-    jine = fields.Float(digits=(6, 2),string=u"金额",readonly=True)
-    item_ids = fields.One2many('buhuo.xiaoshou_item','xiaoshou_id',string=u"销售项")
+# class xiaoshou(models.Model):
+#     _name = 'buhuo.xiaoshou'
+#     date = fields.Date(string=u"日期",readonly=True)
+#     warehouse_id = fields.Many2one('stock.warehouse', string=u"货架ID",readonly=True)
+#     warehouse_code = fields.Char(related='warehouse_id.code', string=u"货架编号", readonly=True)
+#     warehouse_address = fields.Many2one(related='warehouse_id.partner_id', string=u"货架地址", readonly=True)
+#     xiaoliang = fields.Integer(string=u"销量",readonly=True)
+#     jine = fields.Float(digits=(6, 2), string=u"金额",readonly=True)
+#     item_ids = fields.One2many('buhuo.xiaoshou_item', 'xiaoshou_id', string=u"销售项")
 
 
 class xiaoshou_item(models.Model):
     _name = 'buhuo.xiaoshou_item'
-    date = fields.Date(related='xiaoshou_id.date',string=u"日期",readonly=True)
-    warehouse_code = fields.Char(related='xiaoshou_id.warehouse_code', string=u"货架编号",readonly=True)
-    warehouse_address = fields.Many2one(related='xiaoshou_id.warehouse_address', string=u"货架地址",readonly=True)
+    date = fields.Date(string=u"日期", readonly=True)
 
-    product_id = fields.Many2one('product.product', string=u"商品ID",readonly=True)
-    product_code = fields.Char(related='product_id.product_tmpl_id.t_guid', string=u"商品编码",readonly=True)
-    product_name = fields.Char(related='product_id.name_template', string=u"商品名称",readonly=True)
-    xiaoliang = fields.Integer(string=u"销量",readonly=True)
-    # danjia = fields.Integer(string=u"单价",compute='_danjia',store=True)
-    # danjia = fields.Float(digits=(6, 2),string=u"单价",readonly=True)
-    jine = fields.Float(digits=(6, 2),string=u"金额",readonly=True)
-    xiaoshou_id = fields.Many2one('buhuo.xiaoshou',string=u"销售编号")
+    warehouse_id = fields.Many2one('stock.warehouse', string=u"货架ID", readonly=True)
+    warehouse_code = fields.Char(related='warehouse_id.code', string=u"货架编号", readonly=True)
+    warehouse_address = fields.Many2one(related='warehouse_id.partner_id', string=u"货架地址", readonly=True)
+
+    product_id = fields.Many2one('product.product', string=u"商品ID", readonly=True)
+    product_code = fields.Char(related='product_id.product_tmpl_id.t_guid', string=u"商品编码", readonly=True)
+    product_name = fields.Char(related='product_id.name_template', string=u"商品名称", readonly=True)
+
+    xiaoliang = fields.Integer(string=u"销量", readonly=True)
+    jine = fields.Float(digits=(6, 2), string=u"金额", readonly=True)
+    # xiaoshou_id = fields.Many2one('buhuo.xiaoshou',string=u"销售编号")
 
 
 class huojia_jisuan(models.TransientModel):
@@ -141,9 +142,9 @@ class huojia_jisuan(models.TransientModel):
 
     @api.multi
     def xiaoshou_jisuan(self):
-        # 日期-货架分组统计
+        # 日期-货架-商品分组统计
         sql = """
-            SELECT date_order,warehouse_id,SUM(product_uom_qty) AS qty,SUM(line_total) AS total
+            SELECT date_order,warehouse_id,product_id,SUM(product_uom_qty) AS qty,SUM(line_total) AS total
             FROM
             (SELECT id,code
             FROM stock_warehouse
@@ -158,51 +159,53 @@ class huojia_jisuan(models.TransientModel):
             FROM sale_order_line) ol 
             ON o.id = ol.order_id
             WHERE date_order IS NOT NULL AND product_uom_qty IS NOT NULL AND line_total IS NOT NULL
-            GROUP BY date_order,warehouse_id
+            GROUP BY date_order,warehouse_id,product_id
         """
         self.env.cr.execute(sql)
         xiaoshou_set = self.env.cr.fetchall()
         # xiaoshou_data_old = self.env['buhuo.xiaoshou'].search([])
-        for i,xiaoshou_record in enumerate(xiaoshou_set):
-            xiaoshou_record_temp = self.env['buhuo.xiaoshou'].\
-                search([['date','=',xiaoshou_record[0]],['warehouse_id','=',xiaoshou_record[1]]])
+        for i, xiaoshou_record in enumerate(xiaoshou_set):
+            xiaoshou_record_temp = self.env['buhuo.xiaoshou_item'].\
+                search([['date', '=', xiaoshou_record[0]],
+                        ['warehouse_id', '=', xiaoshou_record[1]],
+                        ['product_id', '=', xiaoshou_record[2]]])
             if len(xiaoshou_record_temp) == 0:
-                global xiaoshou_record_temp
-                xiaoshou_record_temp = self.env['buhuo.xiaoshou'].create({
+                self.env['buhuo.xiaoshou_item'].create({
                     'date': xiaoshou_record[0],
                     'warehouse_id': xiaoshou_record[1],
-                    'xiaoliang': xiaoshou_record[2],
-                    'jine': xiaoshou_record[3],
+                    'product_id': xiaoshou_record[2],
+                    'xiaoliang': xiaoshou_record[3],
+                    'jine': xiaoshou_record[4],
                 })
 
-                # 商品销售分组统计
-                sql = """
-                    SELECT product_id,SUM(product_uom_qty) AS qty,
-                    SUM(line_total)/SUM(product_uom_qty) AS price,
-                    SUM(line_total) AS total
-                    FROM
-                    (SELECT id
-                    FROM sale_order
-                    WHERE to_char(date_order,'yyyy-mm-dd') = '2016-10-25'
-                    AND warehouse_id = 321) o 
-                    LEFT JOIN
-                    (SELECT order_id,product_id,product_uom_qty,(product_uom_qty * price_unit) AS line_total
-                    FROM sale_order_line) ol 
-                    ON o.id = ol.order_id
-                    GROUP BY product_id
-                """
-                self.env.cr.execute(sql,([xiaoshou_record[0],xiaoshou_record[1]]))
-                xiaoshou_item_set = self.env.cr.fetchall()
-                # xiaoshou_item_old = self.env['buhuo.xiaoshou_item'].search([])
-                # xiaoshou_old = self.env['buhuo.xiaoshou'].search([])
-                for xiaoshou_item_record in xiaoshou_item_set:
-                    self.env['buhuo.xiaoshou_item'].create({
-                        'product_id': xiaoshou_item_record[0],
-                        'xiaoliang': xiaoshou_item_record[1],
-                        'danjia': xiaoshou_item_record[2],
-                        'jine': xiaoshou_item_record[3],
-                        'xiaoshou_id': xiaoshou_record_temp.id,
-                    })
+                # # 商品销售分组统计
+                # sql = """
+                #     SELECT product_id,SUM(product_uom_qty) AS qty,
+                #     SUM(line_total)/SUM(product_uom_qty) AS price,
+                #     SUM(line_total) AS total
+                #     FROM
+                #     (SELECT id
+                #     FROM sale_order
+                #     WHERE to_char(date_order,'yyyy-mm-dd') = '2016-10-25'
+                #     AND warehouse_id = 321) o
+                #     LEFT JOIN
+                #     (SELECT order_id,product_id,product_uom_qty,(product_uom_qty * price_unit) AS line_total
+                #     FROM sale_order_line) ol
+                #     ON o.id = ol.order_id
+                #     GROUP BY product_id
+                # """
+                # self.env.cr.execute(sql,([xiaoshou_record[0],xiaoshou_record[1]]))
+                # xiaoshou_item_set = self.env.cr.fetchall()
+                # # xiaoshou_item_old = self.env['buhuo.xiaoshou_item'].search([])
+                # # xiaoshou_old = self.env['buhuo.xiaoshou'].search([])
+                # for xiaoshou_item_record in xiaoshou_item_set:
+                #     self.env['buhuo.xiaoshou_item'].create({
+                #         'product_id': xiaoshou_item_record[0],
+                #         'xiaoliang': xiaoshou_item_record[1],
+                #         'danjia': xiaoshou_item_record[2],
+                #         'jine': xiaoshou_item_record[3],
+                #         'xiaoshou_id': xiaoshou_record_temp.id,
+                #     })
             # xiaoshou_temp = self.env['buhuo.xiaoshou'].\
             #     search([['date','=',item[0]],
             #             ['warehouse_id','=',item[1]]])

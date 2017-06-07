@@ -6,7 +6,7 @@
           <field name="name">货架销售查询</field>
           <field name="model">buhuo.xiaoshou_item</field>
           <field name="arch" type="xml">
-            <tree>
+            <tree default_order='xiaoliang desc'>
               <field name="date" string="日期"/>
               <field name="warehouse_code" string="货架编号"/>
               <field name="warehouse_address" string="货架地址"/>
@@ -19,18 +19,21 @@
         </record>
 
         <!-- 搜索视图 -->
-        <record model="ir.ui.view" id="buhuo_zhouqi_search_view">
-            <field name="name">补货周期查询</field>
-            <field name="model">stock.warehouse</field>
+        <record model="ir.ui.view" id="buhuo_xiaoshou_item_search_view">
+            <field name="name">货架销售查询</field>
+            <field name="model">buhuo.xiaoshou_item</field>
             <field name="arch" type="xml">
                 <search>
-                    <field name="code"/>
                     <!--<filter name="huojia" string="货架"-->
                             <!--domain="[('code', 'like', 'Q%')]"/>-->
+                    <field name="warehouse_code" string="货架编号"></field>
+                    <field name="product_code" string="商品编码"></field>
+                    <field name="product_name" string="商品名称"></field>
                     <group string="分组">
-                        <filter name="zhouqi" string="补货周期分组"
-                            domain="[('code', 'like', 'Q%')]"
-                            context="{'group_by': 'buhuo_zhouqi'}"/>
+                        <filter name="xiaoshou_item_huojia_filter" string="货架"
+                            context="{'group_by':'warehouse_id','order_by':'jine desc'}"/>
+                        <filter name="xiaoshou_item_shangpin_filter" string="商品"
+                            context="{'group_by':'product_id','order_by':'xiaoliang desc'}"/>
                     </group>
                 </search>
             </field>
