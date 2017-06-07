@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+
+        <record id="view_account_bank_statement_wizard_form_1" model="ir.ui.view">
+            <field name="name">导入收款流水</field>
+            <field name="model">account.bank.statement.wizard</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="bank_id" readonly="1"/>
+                        </group>
+                        <field name="bank_statement_binary"/>
+                        <field name="excel_lines" attrs="{'invisible':[('excel_lines','=',[])]}">
+                            <tree editable="bottom" create="0">
+                                <field name="date"/>
+                                <field name="name"/>
+                                <field name="ref"/>
+                                <field name="partner_id"/>
+                                <field name="amount"/>
+                            </tree>
+                        </field>
+                    </sheet>
+                    <footer>
+                        <button name="button_confirm" type="object" string="验证" class="oe_highlight"/>
+                        <button name="button_import" type="object" string="导入" class="oe_right oe_highlight" attrs="{'invisible':[('excel_lines','=',[])]}"/>
+                        <button string="取消" class="btn btn-primary" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_account_statement_from_invoice_lines_inherit" model="ir.ui.view">
+            <field name="name">account.statement.from.invoice.lines.form</field>
+            <field name="model">account.statement.from.invoice.lines</field>
+            <field name="inherit_id" ref="account.view_account_statement_from_invoice_lines"/>
+            <field name="arch" type="xml">
+                <field name="line_ids" position="before">
+                    <group>
+                        <field name="bank_id" on_change="onchange_bank_id(bank_id)"/>
+                        <!-- <field name="bank_id" /> -->
+                    </group>
+                </field>
+                <field name="line_ids" position="attributes">
+                    <attribute name="context">{
+                        'currency':True,
+                        'search_default_refund_search':1,
+                        'search_default_unreconciled':1,
+                        }</attribute>
+                </field>
+            </field>
+        </record>
+
+        <record id="action_view_account_bank_statement_wizard" model="ir.actions.act_window">
+            <field name="name">导入收款流水</field>
+            <field name="res_model">account.bank.statement.wizard</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_account_bank_statement_wizard_form_1"/>
+            <field name="target">new</field>
+        </record>
+
+    </data>
+</openerp>

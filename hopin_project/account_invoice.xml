@@ -1,0 +1,15 @@
+<openerp>
+    <data>
+        <record id="hopin_account_invoice_view" model="ir.ui.view">
+            <field name="name">hopin_account_invoice</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.invoice_tree"></field>
+            <field name="arch" type="xml">
+                 <field name="origin" position="before">
+                    <field name="payref"/>
+                 </field>
+            </field>
+        </record>
+
+    </data>
+</openerp>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+        <record id="ebiz_shop_product_kstk" model="product.product">
+            <field name="name">客诉退款</field>
+            <field name="type">service</field>
+            <field name="uom_id" ref="product.product_uom_unit"/>
+            <field name="uom_type" ref="product.product_uom_categ_unit"/>
+            <field name="uom_po_id" ref="product.product_uom_unit"/>
+            <field name="default_code">kstk</field>
+            <field name="categ_id">1</field>
+
+        </record>
+
+    </data>
+</openerp>

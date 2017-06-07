@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+        <record id="ebiz_shop_product_yf" model="product.product">
+            <field name="name">邮费</field>
+            <field name="type">service</field>
+            <field name="uom_id" ref="product.product_uom_unit"/>
+            <field name="uom_type" ref="product.product_uom_categ_unit"/>
+            <field name="uom_po_id" ref="product.product_uom_unit"/>
+            <field name="default_code">yf</field>
+            <field name="categ_id">1</field>
+        </record>
+
+        <record id="ebiz_shop_product_yhjk" model="product.product">
+            <field name="name">优惠减款</field>
+            <field name="type">service</field>
+            <field name="uom_id" ref="product.product_uom_unit"/>
+            <field name="uom_type" ref="product.product_uom_categ_unit"/>
+            <field name="uom_po_id" ref="product.product_uom_unit"/>
+            <field name="default_code">yhjm</field>
+            <field name="categ_id">1</field>
+        </record>
+
+    </data>
+
+    <data noupdate="1">
+        <!--增量库存同步 -->
+        <record id="ebiz_sync_stock_var_ir_cron" model="ir.cron">
+            <field name="name">增量库存同步</field>
+            <field name="interval_type">minutes</field>
+            <field name="interval_number">4</field>
+            <field name="numbercall">-1</field>
+            <field name="model">ebiz.stock</field>
+            <field name="function">auto_sync_var</field>
+            <field name="args">(None,)</field>
+            <field name="active" eval="False" />
+        </record>
+
+        <!--全量库存同步 -->
+        <record id="ebiz_sync_stock_qty_ir_cron" model="ir.cron">
+            <field name="name">全量库存同步</field>
+            <field name="interval_type">hours</field>
+            <field name="interval_number">24</field>
+            <field name="numbercall">-1</field>
+            <field name="model">stock.picking</field>
+            <field name="function">auto_sync_qty</field>
+            <field name="args">()</field>
+            <field name="active" eval="False" />
+        </record>
+
+        <record id="product_code_sequence_type" model="ir.sequence.type">
+            <field name="name">Product Code</field>
+            <field name="code">product.product</field>
+        </record>
+        <record id="product_code_seq" model="ir.sequence">
+            <field name="name">Product Code</field>
+            <field name="code">product.product</field>
+            <field name="prefix"></field>
+            <field eval="100000" name="number_next"/>
+            <field eval="1" name="number_increment"/>
+        </record>
+
+    </data>
+
+</openerp>

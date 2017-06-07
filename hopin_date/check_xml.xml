@@ -1,0 +1,91 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record id="hopin_view_sale_order_check_temp" model="ir.ui.view">
+            <field name="name">订单审核</field>
+            <field name="model">check.order.temp</field>
+            <field name="arch" type="xml">
+                <form string="订单审核">
+                    <group name="data">
+                        <group >
+                            <field name="d1" />
+                        </group>
+                        <group >
+                            <field name="d2" />
+                         </group>
+                        <group >
+                            <field name="d3" />
+                        </group>
+                        <group >
+                            <field name="d4" />
+                         </group>
+                        <group >
+                            <field name="d5" />
+                        </group>
+                        <group >
+                            <field name="d6" />
+                         </group>
+                        <group >
+                            <field name="d7" />
+                        </group>
+                        <group >
+                            <field name="d8" />
+                         </group>
+                        <group >
+                            <field name="d9" />
+                        </group>
+                        <group >
+                            <field name="d10" />
+                         </group>
+                        <group >
+                            <field name="d11" />
+                        </group>
+                        <group >
+                            <field name="d12" />
+                         </group>
+                        <group >
+                            <field name="d13" />
+                        </group>
+                        <group >
+                            <field name="d14" />
+                         </group>
+                        <group >
+                            <field name="d15" />
+                        </group>
+                        <group >
+                            <field name="d16" />
+                         </group>
+                        <group >
+                            <field name="d17" />
+                        </group>
+                        <group >
+                            <field name="d18" />
+                         </group>
+                        <group >
+                            <field name="d19" />
+                        </group>
+                        <group >
+                            <field name="d20" />
+                         </group>
+                    </group>
+                    <button name="processing" string="订单审核" type="object" icon="gtk-convert"/>
+                    <button special="cancel" string="取消" icon="gtk-cancel"/>
+                    <button name="processcancel" string="订单取消" type="object" icon="gtk-cancel"/>
+                    <button name="supplier_tax" string="税率设置1717" type="object" icon="gtk-convert"/>
+                    <button name="supplier_tax1" string="税率设置1713" type="object" icon="gtk-convert"/>
+                    <button name="supplier_tax2" string="税率设置(小规模)" type="object" icon="gtk-convert"/>
+                    <button name="supplier_tax3" string="税率设置(剩下的)" type="object" icon="gtk-convert"/>
+                    <button name="init_purchaseprice" string="初始化采购价" type="object" icon="gtk-convert"/>
+                </form>
+            </field>
+        </record>
+
+        <act_window name="订单审核"
+                    id="sale_order_check_temp"
+                    res_model="check.order.temp"
+                    view_mode="form"
+                    target="new"
+                    view_id="hopin_view_sale_order_check_temp"/>
+        <menuitem id="menu_sale_order_check_temp"  parent="mail.mail_feeds"  sequence="10"  action="sale_order_check_temp"></menuitem>
+    </data>
+</openerp>

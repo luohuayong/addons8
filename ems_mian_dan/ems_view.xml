@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<openerp>
+	<data>
+		<record id="bysun_view_ebiz_shop_inheirt_ems" model="ir.ui.view">
+            <field name="name">EMS电商店铺</field>
+            <field name="model">ebiz.shop</field>
+            <field name="inherit_id" ref="bysun_stock_product.oscg_base_ebiz_shop_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//form/group[2]" position="after">
+                	<group string="EMS接口参数">
+	                    <field name="ems_url"/>
+	                    <field name="ems_eccompanyid"/>
+	                    <field name="ems_partnered"/>
+	                    <field name="ems_logisticProviderID"/>
+	                    <field name="ems_orderType"/>
+	                    <field name="ems_tradeNo"/>
+	                    <field name="ems_servicetype"/>
+	                </group>
+	            </xpath>
+            </field>
+        </record>
+
+        <record id="bysun_esm_carrier_tracking_ref_form" model="ir.ui.view">
+            <field name="name">EMS快递单号</field>
+            <field name="model">ems.carrier.tracking.ref</field>
+            <field name="arch" type="xml">
+            	<form>
+            		<sheet>
+		            	<group string="EMS快递单号">
+		                    <field name="number"/>
+		                    <field name="sale_id"/>
+		                    <field name="state"/>
+		                </group>
+		            </sheet>
+		        </form>
+            </field>
+        </record>
+
+        <record id="bysun_esm_carrier_tracking_ref_tree" model="ir.ui.view">
+            <field name="name">EMS快递单号</field>
+            <field name="model">ems.carrier.tracking.ref</field>
+            <field name="arch" type="xml">
+            	<tree>
+                    <field name="number"/>
+                    <field name="sale_id"/>
+                    <field name="state"/>
+		        </tree>
+            </field>
+        </record>
+
+        <record id="action_bysun_esm_carrier_tracking_ref" model="ir.actions.act_window">
+            <field name="name">EMS快递单号</field>
+            <field name="res_model">ems.carrier.tracking.ref</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="bysun_esm_carrier_tracking_ref_tree"/>
+        </record>
+
+        <act_window name="批量创建快递单号" id="quickly_create_tracking_no" src_model="ems.carrier.tracking.ref" res_model="ems.carrier.tracking.ref.wizard" view_mode="form" target="new" key2="client_action_multi"/>
+
+        <menuitem id="menu_bysun_esm_carrier_tracking_ref" parent="bysun_stock_product.menu_oscg_base_web_shop" action="action_bysun_esm_carrier_tracking_ref" name="EMS快递单号" sequence="5"/>
+
+	</data>
+</openerp>

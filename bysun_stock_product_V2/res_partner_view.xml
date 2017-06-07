@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+
+        <!--<record id="bysun_V2_supplier_form_view" model="ir.ui.view">-->
+            <!--<field name="name">bysun.supplier.form</field>-->
+            <!--<field name="model">res.partner</field>-->
+            <!--<field name="inherit_id" ref="bysun_stock_product.bysun_supplier_form_view"/>-->
+            <!--<field name="arch" type="xml">-->
+                <!--<field name="supplier_mode" position="replace">-->
+            		<!--<field name="supplier_mode" on_change="on_change_supplier_mode(supplier_mode, stock_warehouse_id)" attrs="{'invisible':[('supplier','=',False)],'required':[('supplier','=',True)]}"/>-->
+                <!--</field>-->
+                <!--<field name="stock_warehouse_id" position="replace">-->
+                    <!--<field name="stock_warehouse_id" on_change="on_change_supplier_mode(supplier_mode, stock_warehouse_id)" attrs="{'invisible':[('supplier','=',False)],'required':[('supplier','=',True)]}" />-->
+                <!--</field>-->
+            <!--</field>-->
+        <!--</record>-->
+    </data>
+</openerp>

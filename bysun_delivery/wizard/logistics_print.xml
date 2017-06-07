@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+<data>
+     <record id="view_print_delivery_order_form_inherit" model ="ir.ui.view">
+        <field name="name">快递打单</field>
+        <field name="model">delivery.order.print</field>
+        <field name="inherit_id" ref="bysun_picking.view_print_delivery_order_form"/>
+        <field name="arch" type="xml">
+        	<xpath expr="/form/group" position="inside">
+        		<group colspan="2" col="2">
+<!-- 	                <field name="order_count"/>
+	                <field name="start_carrier_seq" required="1"/>
+	                <field name="end_carrier_seq"/>
+	                <button name="print_kuaidi" string="打印快递单" type="object" icon="gtk-ok"/> -->
+	                <button name="print_logistics_interface_order" string="圆通电子面单" type="object" icon="gtk-ok"/>
+	            </group>
+	        </xpath>
+	    </field>
+	</record>
+</data>
+</openerp>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record id="view_ebiz_supplier_sync_wizard_form" model="ir.ui.view">
+            <field name="name">供应商同步</field>
+            <field name="model">ebiz.supplier.sync.wizard</field>
+            <field name="arch" type="xml">
+                <form string="供应商同步">
+                    <separator string='点击按钮"供应商同步"同步供应商到电商网站！' colspan="4"/>
+                    <label string="供应商同步" colspan="4"/>
+                    <separator string="" colspan="4" />
+                    <button name="ebiz_supplier_sync_wizard" string="供应商同步" type="object" icon="gtk-convert"/>
+                    <button special="cancel" string="取消" icon="gtk-cancel"/>
+                </form>
+            </field>
+        </record>
+
+        <act_window name="供应商同步"
+                    id="action_ebiz_supplier_sync_wizard"
+                    src_model="res.partner"
+                    res_model="ebiz.supplier.sync.wizard"
+                    view_mode="form"
+                    target="new"
+                    key2="client_action_multi"
+                    view_id="view_ebiz_supplier_sync_wizard_form"/>
+
+    </data>
+</openerp>

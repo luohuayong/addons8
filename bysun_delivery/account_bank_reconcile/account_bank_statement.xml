@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+
+        <record id="view_account_bank_statement_wizard_form" model="ir.ui.view">
+            <field name="name">银行对账单继承</field>
+            <field name="model">account.bank.statement</field>
+            <field name="inherit_id" ref="account.view_bank_statement_form"></field>
+            <field name="arch" type="xml">
+                <field name="journal_id" position="before">
+                        <field name="bank_statement_type" required="1"/>
+                </field>
+            	<xpath expr="//header/button[last()]" position="after">
+                    <button name="auto_reconcile_bank_statement" states="draft" class="btn btn-primary" type="object" string="自动调节" attrs="{'invisible':['|',('bank_statement_type','=','refund')]}"/>
+            		<button name="%(account_bank_reconcile.action_view_account_bank_statement_wizard)d" states="draft" type="action" string="导入收款流水" context="{'default_bank_id':id}" attrs="{'invisible':['|',('bank_statement_type','=','refund')]}"/>
+            	</xpath>
+            </field>
+        </record>
+
+        <record id="view_account_move_line_filter_inherit" model="ir.ui.view">
+            <field name="name">默认搜索退款分类账</field>
+            <field name="model">account.move.line</field>
+            <field name="inherit_id" ref="account.view_account_move_line_filter"/>
+            <field name="arch" type="xml">
+                <field name="date" position="after">
+                    <filter name="refund_search" string="销售退款分类账" domain="[('journal_id.type','=','sale_refund')]" help="默认搜索退款分类账"/>
+<!--                     <filter name="alipay" string="支付宝" domain="[('invoice.payref','ilike','2%')]" help="默认搜索支付宝分类账"/>
+                    <filter name="wxpay" string="微信支付" domain="[('invoice.payref','ilike','4%')]" help="默认搜索微信分类账"/> -->
+                </field>
+            </field>
+        </record>
+
+        <record id="account.t4" model="workflow.transition">
+            <field name="act_from" ref="account.act_draft"/>
+            <field name="act_to" ref="account.act_open"/>
+            <field name="condition">return_invoice_check()</field>
+            <field name="signal">invoice_open</field>
+        </record>
+    </data>
+</openerp>

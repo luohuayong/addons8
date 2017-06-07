@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record id="view_sale_income_total_wizard_form" model="ir.ui.view">
+            <field name="name">销售收入统计报表</field>
+            <field name="model">sale.income.total</field>
+            <field name="arch" type="xml">
+                <form string="销售收入统计报表">
+                    <group name="data">
+                        <group >
+                            <field name="startdate" />
+                        </group>
+                        <group >
+                            <field name="enddate" />
+                         </group>
+                    </group>
+                    <button name="button_export" string="导出订单收入" type="object" icon="gtk-convert"/>
+                    <button name="button_export_refund" string="导出退款明细" type="object" icon="gtk-convert"/>
+                    <button special="cancel" string="取消" icon="gtk-cancel"/>
+                </form>
+            </field>
+        </record>
+
+        <act_window name="销售收入统计报表"
+                    id="sale_income_total_wizard"
+                    res_model="sale.income.total"
+                    view_mode="form"
+                    target="new"
+                    view_id="view_sale_income_total_wizard_form"/>
+        <menuitem id="menu_sale_income_total_wizard"  parent="account.menu_finance_reporting"  sequence="10"  action="sale_income_total_wizard"></menuitem>
+    </data>
+</openerp>

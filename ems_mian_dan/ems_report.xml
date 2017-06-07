@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data noupdate="1">
+
+        <record id="ems_logistics_paperformat" model="report.paperformat">
+            <field name="name">EMS电子面单纸张</field>
+            <field name="default" eval="True" />
+            <field name="format">custom</field>
+            <field name="page_height">180</field>
+            <field name="page_width">100</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">0</field>
+            <field name="margin_bottom">0</field>
+            <field name="margin_left">0</field>
+            <field name="margin_right">0</field>
+            <field name="header_line" eval="False" />
+            <field name="header_spacing">0</field>
+            <field name="dpi">80</field>
+        </record>
+
+        <record id="stock_picking_ems_carrier" model="delivery.carrier">
+            <field name="name">EMS</field>
+            <field name="normal_price">20</field>
+            <field name="partner_id" ref="base.main_partner"/>
+            <field name="product_id" ref="bysun_stock_product.ebiz_shop_product_yf"/>
+            <field name="use_detailed_pricelist" eval="False"/>
+        </record>
+
+    </data>
+    <data>
+
+        <report 
+            id="oscg_ems_logistics_report"
+            string="EMS电子面单"
+            model="stock.picking"
+            menu="False" 
+            report_type="qweb-pdf"
+            name="ems_mian_dan.ems_logistics" 
+            file="ems_mian_dan.ems_logistics"
+        />
+
+        <record id="oscg_ems_logistics_report" model="ir.actions.report.xml">
+            <field name="paperformat_id" ref="ems_logistics_paperformat"/>
+        </record>
+
+    </data>
+</openerp>

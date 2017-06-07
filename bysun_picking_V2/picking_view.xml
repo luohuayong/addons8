@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+
+        <record id="bysun_picking.action_picking_tree_pick_print" model="ir.actions.act_window">
+            <field name="name">打单拣货</field>
+            <field name="res_model">stock.picking</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('sale_id.is_selftake','in',(False,None)),('picking_type_id','=',5),('state','not in',('done','cancel', 'draft')),('pending','=', False),('wave_id','!=',False),('carrier_id','!=',False)]</field>
+            <field name="context">{'default_picking_type_id': 5}</field>
+            <field name="search_view_id" ref="stock.view_picking_internal_search"/>
+        </record>
+
+        <record id="action_picking_tree_pick_print_selftake" model="ir.actions.act_window">
+            <field name="name">自提单拣货</field>
+            <field name="res_model">stock.picking</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('sale_id.is_selftake','=',True),('picking_type_id','=',5),('state','not in',('done','cancel', 'draft')),('pending','=', False),('wave_id','!=',False),('carrier_id','!=',False)]</field>
+            <field name="context">{'default_picking_type_id': 5}</field>
+            <field name="search_view_id" ref="stock.view_picking_internal_search"/>
+        </record>
+
+        <record model="ir.actions.act_window.view" id="action_view_picking_tree_pick_print_selftake">
+            <field name="sequence" eval="1"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="bysun_picking.vpicktree_dadanjianhuo"/>
+            <field name="act_window_id" ref="action_picking_tree_pick_print_selftake"/>
+        </record>
+
+        <record id="bysun_view_picking_weight_form_inherit" model="ir.ui.view">
+            <field name="name">stock.picking.form</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.view_picking_form"/>
+            <field eval="12" name="priority"/>
+            <field name="arch" type="xml">
+                <field name="priority" position="after">
+                    <field name="infact_weight" readonly="1"/>
+                </field>
+            </field>
+        </record>
+
+        <menuitem action="action_picking_tree_pick_print_selftake" name="打单拣货(自提)"
+            parent="bysun_picking.menu_ebiz_picking_out"  id="menu_dadanjianhuo_selftake" sequence="5"/>
+
+    </data>
+</openerp>

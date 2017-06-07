@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record id="view_replace_payment_wizard_form" model="ir.ui.view">
+            <field name="name">ebiz.account.replace_payment.form</field>
+            <field name="model">ebiz.account.replace_payment.wizard</field>
+            <field name="type">form</field>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                <h1><label string="确认客户签收?"/></h1>
+                <form string="客户签收">
+                    <group string="货到付款支付方式" invisible="context.get('hide_payment_lines', False)">
+                        <field name="payment_lines" nolabel="1">
+                            <tree string="支付方式" editable="bottom">
+                                <field name="journal_id"/>
+                                <field name="amount"/>
+                                <field name="ref"/>
+                                <field name="pay_time"/>
+                            </tree>
+                        </field>
+                    </group>
+                    <footer>
+                        <button name="cusotmer_sign" type="object" string="确定" class="oe_highlight"/>
+                        或
+                        <button string="取消" class="oe_link" special="cancel" />
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+
+        <act_window id="action_replace_payment_wizard"
+                    name="替换货到付款支付方式"
+                    res_model="ebiz.account.replace_payment.wizard"
+                    view_mode="form"
+                    target="new"
+                    view_id="view_replace_payment_wizard_form"/>
+
+    </data>
+</openerp>

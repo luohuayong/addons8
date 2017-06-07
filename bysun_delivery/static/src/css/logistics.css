@@ -1,0 +1,171 @@
+.new_style {
+margin:0;   
+padding:0;  
+list-style:none;
+font-family:"黑体";
+font-size:5mm;
+font-weight:bold;
+}
+.div0 {
+position: absolute;
+left: 0;
+top: 0;
+z-index: 1;
+width:260mm;
+font-size:5mm;
+height:145mm;
+}
+.div1{
+width:30mm;
+/*设定TRBL*/
+position:absolute;
+left:40mm;
+top:38mm;
+font-size:5mm;
+z-index: 1;
+font-family:"黑体";
+font-weight:bold;
+}
+.div2{
+width:30mm;
+/*设定TRBL*/
+position:absolute;
+left:95mm;
+top:38mm;
+font-size:5mm;
+z-index: 1;
+font-family:"黑体";
+font-weight:bold;
+}
+.div3{
+width:50mm;
+/*设定TRBL*/
+position:absolute;
+left:40mm;
+top:46mm;
+z-index: 1;
+font-size:5mm;
+font-family:"黑体";
+font-weight:bold;
+}
+.div4{
+width:30mm;
+/*设定TRBL*/
+position:absolute;
+left:35mm;
+top:52mm;
+z-index: 1;
+font-size:5mm;
+font-family:"黑体";
+font-weight:bold;
+}
+.div5{
+width:30mm;
+/*设定TRBL*/
+position:absolute;
+left:60mm;
+top:52mm;
+font-size:5mm;
+z-index: 1;
+font-family:"黑体";
+font-weight:bold;
+}
+.div6{
+width:30mm;
+/*设定TRBL*/
+position:absolute;
+left:70mm;
+font-size:5mm;
+top:52mm;
+z-index: 1;
+font-family:"黑体";
+font-weight:bold;
+}
+.div7{
+width:80mm;
+/*设定TRBL*/
+position:absolute;
+left:50mm;
+top:58mm;
+z-index: 1;
+font-size:5mm;
+font-family:"黑体";
+font-weight:bold;
+}
+.div8{
+width:50mm;
+/*设定TRBL*/
+position:absolute;
+left:45mm;
+font-size:5mm;
+top:78mm;
+z-index: 1;
+font-family:"黑体";
+font-weight:bold;
+}
+.div9{
+width:50mm;
+/*设定TRBL*/
+position:absolute;
+left:80mm;
+font-size:5mm;
+top:88mm;
+z-index: 1;
+font-family:"黑体";
+font-weight:bold;
+}
+.div10{
+width:30mm;
+/*设定TRBL*/
+font-size:5mm;
+position:absolute;
+left:40mm;
+top:93mm;
+z-index: 1;
+font-family:"黑体";
+font-weight:bold;
+}
+.div11{
+width:30mm;
+/*设定TRBL*/
+font-size:5mm;
+position:absolute;
+left:60mm;
+top:93mm;
+z-index: 1;
+font-family:"黑体";
+font-weight:bold;
+}
+.div12{
+width:80mm;
+/*设定TRBL*/
+position:absolute;
+left:80mm;
+top:93mm;
+z-index: 1;
+font-size:5mm;
+font-family:"黑体";
+font-weight:bold;
+}
+.div13{
+width:90mm;
+/*设定TRBL*/
+position:absolute;
+left:45mm;
+top:98mm;
+font-size:5mm;
+z-index: 1;
+font-family:"黑体";
+font-weight:bold;
+}           
+.div14{
+width:40mm;
+/*设定TRBL*/
+position:absolute;
+left:145mm;
+top:120mm;
+font-size:5mm;
+z-index: 1;
+font-family:"黑体";
+font-weight:bold;
+}

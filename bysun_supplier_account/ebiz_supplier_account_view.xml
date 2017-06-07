@@ -1,0 +1,183 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data >
+
+        <!--供应商结算项-->
+        <record model="ir.ui.view" id="ebiz_supplier_account_line_tree_view">
+            <field name="name">ebiz.supplier.account.line.tree</field>
+            <field name="model">ebiz.supplier.account.line</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="供应商结算项" >
+                    <field name="partner_id" /> 
+                    <field name="supplier_mode"/>
+                    <field name="product_id"/>
+                    <field name="sale_id"/>
+                    <field name="picking_id"/>
+                    <field name="amount"/>
+                    <field name="uom_id"/>
+                    <field name="unit_price"/>
+                    <field name="subtotal" sum="Total Tax Included"/>
+                    <field name="standard_price"/>
+                    <field name="purchase_total" sum="Total Tax Included"/>
+                    <field name="commission" sum="Total Tax Included"/>
+                    <field name="type"/>
+                    <field name="qty_send"/>
+                    <field name="state"/>
+                    <field name="statement_no"/>
+                    <field name="active" invisible="1"/>     
+                </tree>
+            </field>
+        </record>
+
+        <record id="ebiz_supplier_account_line_form_view" model="ir.ui.view">
+            <field name="name">ebiz.supplier.account.line.form</field>
+            <field name="model">ebiz.supplier.account.line</field>
+            <field name="arch" type="xml">
+                <form string="供应商结算项" create="0" edit="0">
+                    <header> 
+                        <field name="state" widget="statusbar" statusbar_visible="draft,checked,settled,cancelled" />
+                    </header>                    
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="partner_id" readonly="1"/>
+                                <field name="supplier_mode" readonly="1"/>
+                                <field name="type" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                <field name="subtotal" readonly="1"/>
+                                <field name="commission" attrs="{'invisible': [('type', '!=', 'commission')]} " readonly="1"/>
+                                <field name="origin" attrs="{'invisible': [('origin', '=', False)]}" readonly="1"/>
+                                <field name="invoice_id" attrs="{'invisible': [('invoice_id', '=', False)]}" readonly="1"/>
+                                <field name="statement_no"/>
+                            </group>
+                            <group>
+                                <field name="product_id" readonly="1"/>
+                                <field name="sale_id" attrs="{'invisible': [('sale_id', '=', False)]}" readonly="1"/>
+                                <field name="uom_id" readonly="1"/>
+                                <field name="unit_price"/>
+                                <field name="amount" />
+                                <field name="picking_id" attrs="{'invisible': [('picking_id', '=', False)]}" readonly="1"/>
+                                <field name="move_id" attrs="{'invisible': [('move_id', '=', False)]}" readonly="1"/>
+                                <field name="active" invisible="1"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="其他信息">
+                                <group string="备注">
+                                    <field name="notes" nolabel="1" placeholder="在这里填写和供应商沟通的信息。"/>
+                                </group>
+                            </page>
+                        </notebook>                      
+                    </sheet>
+
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <!--供应商费用单-->
+        <record model="ir.ui.view" id="ebiz_supplier_expence_line_tree_view">
+            <field name="name">ebiz.supplier.account.line.tree</field>
+            <field name="model">ebiz.supplier.account.line</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="供应商费用单" >
+                    <field name="partner_id" /> 
+                    <field name="supplier_mode"/>
+                    <field name="product_id" domain="[('type','=','service'),('name','ilike','供应商')]"/>
+                    <field name="sale_id" invisible="1"/>
+                    <field name="picking_id" invisible="1"/>
+                    <field name="amount"/>
+                    <field name="uom_id"/>
+                    <field name="unit_price" invisible="1"/>
+                    <field name="standard_price"/>
+                    <field name="subtotal" invisible="1" sum="Total Tax Included"/>
+                    <field name="purchase_total" sum="Total Tax Included"/>
+                    <field name="commission" sum="Total Tax Included"/>
+                    <field name="type"/>
+                    <field name="qty_send" string='创建时间'/>
+                    <field name="state"/>
+                    <field name="statement_no"/>
+                    <field name="active" invisible="1"/>     
+                </tree>
+            </field>
+        </record>
+
+        <record id="ebiz_supplier_expence_line_form_view" model="ir.ui.view">
+            <field name="name">ebiz.supplier.account.line.form</field>
+            <field name="model">ebiz.supplier.account.line</field>
+            <field name="arch" type="xml">
+                <form string="供应商费用单">
+                    <header> 
+                        <field name="state" widget="statusbar" statusbar_visible="draft,checked,settled,cancelled" />
+                    </header>                    
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="partner_id" on_change="onchange_partner_id(partner_id)" attrs="{'readonly': [('state', '!=', 'draft')]}" domain="[('supplier','not in',(False,None))]"/>
+                                <field name="supplier_mode" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                <field name="type" readonly="1"/>
+                                <field name="purchase_total" attrs="{'readonly': '1'}"/>
+                                <field name="commission" attrs="{'invisible': [('type', '!=', 'commission')]} " readonly="1"/>
+                                <field name="origin" attrs="{'invisible': [('origin', '=', False)]}" readonly="1"/>
+                                <field name="invoice_id" attrs="{'invisible': [('invoice_id', '=', False)]}" readonly="1"/>
+                            </group>
+                            <group>
+                                <field name="product_id" on_change="onchange_product_id(product_id)" attrs="{'readonly': [('state', '!=', 'draft')]}" domain="[('type','=','service'),('name','ilike','供应商')]"/>
+                                <field name="sale_id" attrs="{'invisible': [('sale_id', '=', False)]}" readonly="1"/>
+                                <field name="uom_id" attrs="{'readonly': [('state', '!=', 'draft')]}" invisible="1"/>
+                                <field name="standard_price" attrs="{'readonly': [('state', '!=', 'draft')]}" string="金额"/>
+                                <field name="amount" attrs="{'readonly': [('state', '!=', 'draft')]}" invisible="1"/>
+                                <field name="picking_id" attrs="{'invisible': [('picking_id', '=', False)]}" readonly="1"/>
+                                <field name="move_id" attrs="{'invisible': [('move_id', '=', False)]}" readonly="1"/>
+                                <field name="qty_send" string="日期" required="1" attrs="{'readonly': [('state', '!=', 'draft')]}"/>
+                                <field name="active" invisible="1"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="其他信息">
+                                <group string="备注">
+                                    <field name="notes" nolabel="1" placeholder="在这里填写和供应商沟通的信息。"/>
+                                </group>
+                            </page>
+                        </notebook>                      
+                    </sheet>
+
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="ebiz_supplier_account_line_search" model="ir.ui.view">
+            <field name="name">Search</field>
+            <field name="model">ebiz.supplier.account.line</field>
+            <field name="arch" type="xml">
+                <search string="搜索">
+                    <!-- <field name="name" string="名称" filter_domain="[('name','ilike',self)]"/> -->
+                    <field name="partner_id" string="供应商"/>
+                    <field name="product_id" string="产品"/>
+                    <field name="supplier_mode" string="供应商类型"/>
+                    <field name="type" string="类型"/>
+                    <field name="state" string="状态"/>
+                    <field name="statement_no" string="对账单编号"/>
+                    <field name="qty_send" string="出库时间"/>
+                    <!-- <field name="settled_date" string="结算日期" /> -->
+                    <filter string="未对账" domain="[('state','=','draft')]" name="supplier_account_filter"/>
+                    <group expand="0" string="Group By..." colspan="16">
+                        <filter string="供应商" domain="[]" context="{'group_by':'partner_id'}"/>
+                        <filter string="状态" domain="[]" context="{'group_by':'state'}"/>
+                        <filter string="类型" domain="[]" context="{'group_by':'type'}"/>
+                        <filter string="销售订单" domain="[]" context="{'group_by':'sale_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+    </data>
+</openerp>

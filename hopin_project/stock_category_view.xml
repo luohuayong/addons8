@@ -1,0 +1,38 @@
+<openerp>
+    <data>
+         <!--tree 视图-->
+        <record id="stock_category_tree" model="ir.ui.view">
+            <field name="name">stock category tree</field>
+            <field name="model">bysunstock.category</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name" />
+                </tree>
+            </field>
+        </record>
+
+        <!--表单视图-->
+        <record id="stock_category_form" model="ir.ui.view">
+            <field name="name">stock category form</field>
+            <field name="model">bysunstock.category</field>
+            <field name="arch" type="xml">
+                 <form>
+                    <sheet>
+                        <group name="group_top" string="大仓分类">
+                            <field name="name" required="1"/>
+                        </group>
+                    </sheet>
+                      <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+
+        <act_window id="bysun_stock_category" name="大仓分类" res_model="bysunstock.category" view_mode="tree,form" target="current" />
+
+        <menuitem id="menu_bysun_stock_category"  parent="stock.menu_stock_configuration" action="bysun_stock_category"></menuitem>
+    </data>
+</openerp>

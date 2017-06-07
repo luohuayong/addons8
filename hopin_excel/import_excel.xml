@@ -1,0 +1,33 @@
+<?xml version="1.0"?>
+<openerp>
+    <data>
+
+
+        <record id="hopin_import_excle" model="ir.ui.view">
+            <field name="name">import_excle</field>
+            <field name="model">import.excel</field>
+            <field name="arch" type="xml">
+                <form string="exceltest">
+                    <group name="data">
+                        <field name="excelfile" />
+                    </group>
+                    <footer>
+                        <button name="on_file_load" string="导入" type="object" class="oe_highlight"/>
+                        or
+                        <button string="放弃" class="oe_link" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+
+        <act_window name="快递信息导入"
+                    id="import_excle"
+                    res_model="import.excel"
+                    view_mode="form"
+                    target="new"
+                    view_id="hopin_import_excle"/>
+
+        <menuitem id="menu_excel2"  parent="portal.portal_orders" action="import_excle"></menuitem>
+    </data>
+</openerp>

@@ -1,0 +1,223 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+
+        <record id="bysun_product_template_tree_view" model="ir.ui.view">
+            <field name="name">bysun.product.template.product.tree</field>
+            <field name="inherit_id" ref="product.product_template_tree_view"/>
+            <field name="model">product.template</field>
+            <field name="arch" type="xml">
+                <field name="state" position="after">
+                    <field name="t_guid"/>
+                    <field name="sync_date"/>
+                </field>
+            </field>
+        </record>
+
+        <record id="bysun_product_product_tree_view" model="ir.ui.view">
+            <field name="name">bysun.product.product.tree</field>
+            <field name="inherit_id" ref="product.product_product_tree_view"/>
+            <field name="model">product.product</field>
+            <field name="arch" type="xml">
+                <field name="state" position="after">
+                    <field name="guid"/>
+                </field>
+            </field>
+        </record>
+
+        <record id="bysun_product_template_only_form_view" model="ir.ui.view">
+            <field name="name">bysun.product.template.product.form</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_only_form_view"/>
+            <field name="arch" type="xml">
+                <page name="variants" position="before">
+                    <page string="商品信息">
+                        <group>
+                        <group>
+                            <field name="temp_zone" required="1"/>
+                            <field name="package" required="1"/>
+                            <field name="packing_sizes"/>
+                        </group>
+                        <group>
+                            <field name="place_of_origin" required="1"/>
+                            <field name="content_net" required="1"/>
+                            <field name="t_guid" readonly="1"/>
+                            <!-- <field name="weight_net" required="1"/> -->
+                        </group>
+                        </group>
+                        <group>
+                        <group>
+                            <field name="brand_id" required="1"/>
+                            <field name="product_psn"/>
+                            <field name="special_flag1" widget="selection"/>
+                        </group>
+                        <group>
+                            <field name="component_specification"/>
+                            <field name="component_unit"/>
+                            <field name="component_number"/>
+                        </group>
+                        </group>
+                        <group>
+                        <group>
+                            <field name="domestic_import" required="1"/>
+                            <field name="organtic_food" required="1"/>
+                            <field name="variety"/>
+                        </group>
+                        <group>
+                            <field name="product_standard_no"/>
+                            <field name="production_license_no"/>
+                            <field name="sync_date" readonly="1"/>
+                        </group>
+                        </group>
+                    </page>
+                </page>
+                <page name="variants" position="replace">
+                    <page name="variants" string="商品SKU">
+                        <div class="oe_right">
+                            <button class="oe_inline oe_stat_button" string="SKU额外价格"  name="%(product.variants_template_action)d" type="action" icon="fa-strikethrough"/>
+                            <button class="oe_inline oe_stat_button" name="%(product.product_variant_action)d" type="action" icon="fa-sitemap">
+                                <field string="SKU列表" name="product_variant_count" widget="statinfo" />
+                            </button>
+                        </div>
+                        <field name="attribute_line_ids" widget="one2many_list" attrs="{'readonly':[('sync_date','!=',False)]}">
+                            <tree string="Variants" editable="bottom">
+                                <field name="attribute_id" options="{'no_create_edit':True,'no_quick_create':True}" on_change="onchange_attribute_id()"/>
+                                <field name="value_ids" widget="many2many_tags" options="{'no_create_edit': True,'no_quick_create':True}" domain="[('attribute_id', '=', attribute_id)]" context="{'default_attribute_id': attribute_id}"/>
+                            </tree>
+                        </field>
+                    </page>
+                </page>
+                <field name="categ_id" position="replace">
+                    <field name="categ_id" domain="[('parent_id', '!=', False)]"/>
+                </field>
+
+            </field>
+        </record>
+
+        <record id="bysun_product_product_only_form_view" model="ir.ui.view">
+            <field name="name">bysun.product.product.product.form</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="product.product_normal_form_view"/>
+            <field name="arch" type="xml">
+                <field name="lst_price" position="after">
+                    <field name="market_price"/>
+                    <field name="guid" readonly="1"/>
+                </field>
+            </field>
+        </record>
+        <!-- 产品界面定制 -->
+        <record id="bysun_view_product_form_expiry" model="ir.ui.view">
+            <field name="name">bysun_view_product_form_expiry_inherit</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product_expiry.view_product_form_expiry"/>
+            <field name="arch" type="xml">
+                <field name="life_time" position="attributes">
+                    <attribute name="string">产品保质期(天)</attribute>
+                </field>
+            </field>
+        </record>
+
+        <record id="bysun_product_template_form_view_inherit" model="ir.ui.view">
+            <field name="name">bysun_product_template_form_view_inherit</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_form_view"/>
+            <field name="arch" type="xml">
+                <field name="weight_net" position="attributes">
+                    <attribute name="string">净重(g)</attribute>
+                    <attribute name="required">1</attribute>
+                </field>
+                <label for="warranty" position="attributes">
+                    <attribute name="string">售后日期</attribute>
+                </label>
+                <field name="uom_id" position="before">
+                    <field name="uom_type" required="1" on_change="onchange_uom_type(uom_type)"/>
+                </field>
+                <field name="uom_id" position="attributes">
+                    <attribute name="domain">[('category_id','=',uom_type)]</attribute>
+                </field>
+                <field name="uom_po_id" position="attributes">
+                    <attribute name="domain">[('category_id','=',uom_type)]</attribute>
+                </field>
+                <!--<field name="seller_ids" position="replace">
+                    <field name="seller_ids" invisible="1"/>
+                    <field name="seller_id" required="1" domain="[('supplier','=', '1')]"/>
+                </field>-->
+            </field>
+        </record>
+
+        <record id="action_bysun_product_brand" model="ir.actions.act_window">
+            <field name="name">Product Brand</field>
+            <field name="res_model">product.brand</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <record id="action_bysun_product_flag" model="ir.actions.act_window">
+            <field name="name">Product flag</field>
+            <field name="res_model">product.flag</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <record id="purchase.product_normal_action_puchased" model="ir.actions.act_window">
+            <field name="name">Products</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">product.template</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form,kanban</field>
+            <field name="context">{"search_default_filter_to_purchase":1, "default_cost_method":'real'}</field>
+            <field name="search_view_id" eval="False"/> <!-- Force empty -->
+            <field name="view_id" eval="False"/> <!-- Force empty -->
+            <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                Click to define a new product.
+              </p><p>
+                You must define a product for everything you purchase, whether
+                it's a physical product, a consumable or services you buy to
+                subcontractants.
+              </p><p>
+                The product form contains detailed information to improve the
+                purchase process: prices, procurement logistics, accounting data,
+                available suppliers, etc.
+              </p>
+            </field>
+        </record>
+
+        <!-- 产品搜索视图添加guid搜索 -->
+        <record id="bysun_product_template_search_view_inherit" model="ir.ui.view">
+            <field name="name">bysun_product_template_search_view_inherit</field>
+            <field name="model">product.template</field>
+            <field name="inherit_id" ref="product.product_template_search_view"/>
+            <field name="arch" type="xml">
+                <field name="name" position="replace">
+                    <field name="name" string="Product" filter_domain="['|','|',('t_guid','ilike',self),('default_code','ilike',self),('name','ilike',self)]"/>
+                </field>
+            </field>
+        </record>
+
+        <record id="bysun_product_product_search_view_inherit" model="ir.ui.view">
+            <field name="name">bysun_product_product_search_view_inherit</field>
+            <field name="model">product.product</field>
+            <field name="inherit_id" ref="product.product_search_form_view"/>
+            <field name="arch" type="xml">
+                <field name="attribute_value_ids" position="before">
+                    <field name="guid" string="SKU唯一识别码" filter_domain="[('guid','ilike',self)]"/>
+                </field>
+            </field>
+        </record>
+
+        <record id="product.product_template_action" model="ir.actions.act_window">
+            <field name="name">Products</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">product.template</field>
+            <field name="view_mode">tree,form,kanban</field>
+            <field name="view_type">form</field>
+            <field name="view_id" eval="False"/>
+            <field name="context">{"search_default_filter_to_sell":1, "default_cost_method":'real'}</field>
+        </record>
+
+        <menuitem name="产品品牌" action="action_bysun_product_brand" id="bysun_product_brand_menu" parent="base.menu_product"/>
+        <menuitem name="特殊标记" action="action_bysun_product_flag" id="bysun_product_flag_menu" parent="base.menu_product"/>
+        <menuitem id="product.menu_products" action="product.product_normal_action_sell" parent="base.menu_product" groups="base.group_no_one" sequence="10" name="商品SKU"/>
+    </data>
+</openerp>

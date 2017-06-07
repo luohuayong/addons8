@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+        <record id="bysun_supplier_form_view" model="ir.ui.view">
+            <field name="name">bysun.supplier.form</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"/>
+            <field name="arch" type="xml">
+            	<field name="website" position="after">
+            		<field name="default_recipients" attrs="{'invisible':[('supplier','=',False)],'required':[('supplier','=',True)]}"/>
+            		<field name="default_return_goods_address" attrs="{'invisible':[('supplier','=',False)],'required':[('supplier','=',True)]}"/>
+                    <field name="default_recipients_phone" attrs="{'invisible':[('supplier','=',False)],'required':[('supplier','=',True)]}"/>
+            		<field name="supplier_mode" attrs="{'invisible':[('supplier','=',False)],'required':[('supplier','=',True)]}"/>
+                    <field name="stock_warehouse_id"  attrs="{'invisible':[('supplier','=',False)],'required':[('supplier','=',True)]}" />
+                    <field name="stock_location" attrs="{'invisible':[('customer','=',True)]}"/>
+            	</field>
+                <field name="street" position="attributes">
+                    <attribute name="required">1</attribute>
+                </field>
+                <field name="street2" position="attributes">
+                    <attribute name="required">1</attribute>
+                    <attribute name="placeholder">区/县</attribute>
+                </field>
+            </field>
+        </record>
+
+        <record id="bysun_view_partner_property_form_inherit" model="ir.ui.view">
+            <field name="name">bysun.supplier.form</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="account.view_partner_property_form"/>
+            <field name="arch" type="xml">
+                <field name="property_payment_term" position="attributes">
+                    <attribute name="required">1</attribute>
+                </field>
+            </field>
+        </record>
+
+        <record id="base.action_partner_supplier_form" model="ir.actions.act_window">
+            <field name="name">Suppliers</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">res.partner</field>
+            <field name="view_type">form</field>
+            <field name="domain">[]</field>
+            <field name="view_mode">kanban,tree,form</field>
+            <field name="context">{'search_default_supplier': 1,'default_customer': 0,'default_supplier': 1,'default_is_company':1}</field>
+            <field name="filter" eval="True"/>
+            <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                Click to add a contact in your address book.
+              </p><p>
+                Odoo helps you easily track all activities related to
+                a supplier: discussions, history of purchases,
+                documents, etc.
+              </p>
+            </field>
+        </record>
+    </data>
+</openerp>

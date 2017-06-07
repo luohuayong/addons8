@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <report
+            id="action_report_stock_inventory_no_qty"
+            model="stock.inventory"
+            string="盘点单打印"
+            menu="True"
+            report_type="qweb-pdf"
+            name="stock_account_cn_improve.report_stock_inventory_no_qty"
+            file="stock_inventory_report _no_qty"
+        />
+
+        <template id="stock_account_cn_improve.report_stock_inventory_no_qty">
+            <t t-call="report.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="report.external_layout">
+                        <div class="page">
+                             
+                            <h2>
+                            Stock Inventory 
+                            </h2>
+                            <table class="table table-condensed">
+                            <thead>
+                                <tr>
+                                    <th><strong>Inventory</strong></th>
+                                    <th><strong>Date</strong></th>
+                                    <th><strong>盘点备注</strong></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <span t-field="o.name"/>
+                                    </td>
+                                    <td>
+                                        <span t-field="o.date"/>
+                                    </td>
+                                    <td>
+                                        <span t-field="o.notes"/>
+                                    </td>
+                                </tr>
+                            </tbody>
+                            </table>
+                            <table class="table table-condensed">
+                                <thead>
+                                    <tr>
+                                        <th><strong>Location</strong></th>
+                                        <th><strong>Product</strong></th>
+                                        <th><strong>货架号</strong></th>
+                                        <th><strong>Production Lot</strong></th>
+                                        <th><strong>Package</strong></th>
+                                        <th class="text-right"><strong>盘点前数量</strong></th>
+                                        <th class="text-right"><strong>盘点后数量</strong></th>
+                                    </tr>
+                                </thead>
+                                <tr t-foreach="o.line_ids" t-as="line">
+                                    <td><span t-field="line.location_id"/></td>
+                                    <td><span t-field="line.product_id"/></td>
+                                    <td><span t-field="line.loc_rack"/></td>
+                                    <td><span t-field="line.prod_lot_id"/></td>
+                                    <td><span t-field="line.package_id"/></td>
+                                    <td class="text-right"><span t-field="line.theoretical_qty"/> <span t-field="line.product_uom_id" groups="product.group_uom"/></td>
+                                    <!-- <td class="text-right"><span t-field="line.product_qty"/> <span t-field="line.product_uom_id" groups="product.group_uom"/></td> -->
+                                </tr>
+                                <tr>
+                                    <td></td>
+                                </tr>
+                            </table>
+                            <t t-if="o.filter == 'product' and o.product_id">
+                              <div class="row">
+                                <div class="col-xs-4 pull-right">
+                                     <table class="table table-condensed">
+                                        <tr class="border-black">
+                                            <td><strong>Total Quantity</strong></td>
+                                            <td class="text-right">
+                                                <span t-field="o.total_qty"/> <span t-field="o.product_id.uom_id"/>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </div>
+                              </div>
+                            </t>
+                        </div>
+                    </t>
+                 </t>
+             </t>
+        </template>
+        
+    </data>
+</openerp>

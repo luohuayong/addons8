@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+        <record id="view_picking_to_wave_inherit" model="ir.ui.view">
+            <field name="name">添加到波次</field>
+            <field name="model">stock.picking.to.wave</field>
+            <field name="inherit_id" ref="bysun_picking.view_picking_to_wave_inherit"/>
+            <field name="arch" type="xml">
+                <field name="wave_id" position="attributes">
+                    <attribute name="string">波次分配</attribute>
+                </field>
+                <field name="carrier" position="attributes">
+                    <attribute name="string">配送公司</attribute>
+                </field>
+            </field>
+        </record>
+
+    </data>
+</openerp>

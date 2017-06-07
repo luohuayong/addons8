@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+		<!-- 销售订单添加挂机按钮 -->
+    	<record id="button_pending_sale_order_inherit" model="ir.ui.view">
+            <field name="name">sale.order.form</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"></field>
+            <field name="arch" type="xml">
+            	<button name="action_cancel" position="after">
+            		<button name="action_suspend" type="object" string="订单挂起/解挂" attrs="{'invisible':[('state','in',('draft,cancel,done'))]}"/>
+            	</button>
+                <field name="partner_id" position="after">
+                    <field name="pending" readonly="1"/>
+                </field>
+            </field>
+        </record>
+
+    </data>
+</openerp>

@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <report 
+            id="oscg_customer_order_report"
+            string="客户单"
+            model="stock.picking"
+            menu="False" 
+            report_type="qweb-pdf"
+            name="bysun_picking.oscg_customer_order" 
+            file="bysun_picking.oscg_customer_order" 
+        />
+
+        <report 
+            id="oscg_zongjiandan_report"
+            string="总拣单"
+            model="stock.picking"
+            menu="False" 
+            report_type="qweb-pdf"
+            name="bysun_picking.zongjiandan" 
+            file="bysun_picking.zongjiandan" 
+        />
+
+    </data>
+</openerp>

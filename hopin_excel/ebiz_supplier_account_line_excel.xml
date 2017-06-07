@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record id="view_ebiz_supplier_account_line_wizard_form" model="ir.ui.view">
+            <field name="name">供应商结算单汇总表</field>
+            <field name="model">ebiz.supplier.account.line.excel</field>
+            <field name="arch" type="xml">
+                <form string="供应商结算单汇总表">
+                    <group name="data">
+                        <group >
+                            <field name="startdate" />
+                        </group>
+                        <group >
+                            <field name="enddate" />
+                         </group>
+                    </group>
+                    <button name="button_export" string="导出供应商结算单汇总表" type="object" icon="gtk-convert"/>
+                    <button special="cancel" string="取消" icon="gtk-cancel"/>
+                </form>
+            </field>
+        </record>
+
+        <act_window name="供应商结算单汇总表"
+                    id="ebiz_supplier_account_line_excel_wizard"
+                    res_model="ebiz.supplier.account.line.excel"
+                    view_mode="form"
+                    target="new"
+                    view_id="view_ebiz_supplier_account_line_wizard_form"/>
+        <menuitem id="menu_ebiz_supplier_account_line_wizard"  parent="account.menu_finance_reporting"  sequence="10"  action="ebiz_supplier_account_line_excel_wizard"></menuitem>
+    </data>
+</openerp>

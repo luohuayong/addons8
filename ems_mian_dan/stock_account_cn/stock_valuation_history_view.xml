@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record id="view_stock_history_report_inherit" model="ir.ui.view">
+            <field name="name">Stock Value At Date Inherit</field>
+            <field name="model">stock.history</field>
+            <field name="inherit_id" ref="stock_account.view_stock_history_report_tree"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='source']" position="after">
+                    <field name="picking_type" />
+                    <field name="invoice_state" />
+                </xpath>
+            </field>
+        </record>
+
+
+        <record id="view_entry_picktree" model="ir.ui.view">
+            <field name="name">入出库单核算列表</field>
+            <field name="model">stock.picking</field>
+            <field name="arch" type="xml">
+                <tree  string="Picking list">
+                    <field name="name"/>
+                    <field name="partner_id"/>
+                    <field name="picking_type_id" />
+                    <field name="origin"/>
+                    <field name="date"/>
+                     <field name="invoice_state"/>
+                     <field name="state"  invisible="1"/>
+                     <field name="group_id" invisible="1"/>
+                     <field name="account_move_id"  invisible="1"/>
+                </tree>
+            </field>
+        </record>
+        
+        <record id="view_picking_entry_search" model="ir.ui.view">
+            <field name="name">存货核算用入出库单搜索</field>
+            <field name="model">stock.picking</field>
+            <field name="arch" type="xml">
+                <search string="Picking Lists">
+                    <field name="name" string="单号" filter_domain="['|',('name','ilike', self),('origin','ilike',self)]"/>
+                    <field name="partner_id" string="业务伙伴" filter_domain="[('partner_id','child_of',self)]"/>
+                    <field name="product_id" string="产品" />
+                    <field name="picking_type_id" string="库单类型"  />
+                    <field name="group_id" string="库单组" />
+                    <filter icon="terp-check" name="no_entry" string="未核算" domain="[('account_move_id', '=', False )]" />
+                    <separator/>
+                        <filter icon="terp-check" name="in" string="直采入库单" domain="[('picking_type_id.code','=','incoming'),('partner_id.supplier_mode','=','Direct_Procurement')]"/>
+                        <filter icon="terp-check" name="out" string="出库单" domain="[('picking_type_id.code','=','outgoing')]"/>
+                    <separator/>
+                    <filter icon="terp-check" name="tbinvoiced" string="待开票" domain="[('invoice_state','=','2binvoiced')]" />
+                    <group expand="0" string="库存分组">
+                        <filter string="库单类型" domain="[]" context="{'group_by':'picking_type_id'}"/>
+                        <filter string="创建日期" icon="terp-go-month" domain="[]"  context="{'group_by':'date'}"/>
+                        <filter string="源单据" domain="[]" context="{'group_by':'origin'}"/>
+                        <filter string="库单组" domain="[]" context="{'group_by':'group_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="action_stock_account_finance" model="ir.actions.act_window">
+            <field name="name">入库/出库核算</field>
+            <field name="res_model">stock.picking</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('state', '=', 'done' )]</field>
+            <field name="context">{
+                    'search_default_in': 1,
+                    'search_default_no_entry': 1,
+            }</field>
+            <field name="search_view_id" ref="view_picking_entry_search" />
+        </record>
+
+        <record id="action_stock_account_finance_treeview" model="ir.actions.act_window.view">
+            <field name="view_mode">tree</field>
+            <field name="act_window_id" ref="action_stock_account_finance"/>
+            <field name="view_id" ref="view_entry_picktree"/>
+        </record>
+
+        <menuitem id="stock_account_finance_menu" parent="account.menu_finance" name="存货核算" sequence= "3" />
+        <menuitem id="stock_account_entry_menu" parent="stock_account_finance_menu" name="入库/出库核算" action="action_stock_account_finance"/>
+        <menuitem id="stock_account_value_menu" parent="stock_account_finance_menu" name="存货价值分析" action="stock_account.action_history_tree"/>
+
+    </data>
+</openerp>
+

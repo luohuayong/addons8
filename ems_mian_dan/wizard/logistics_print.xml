@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+<data>
+     <record id="view_print_ems_delivery_order_form_inherit" model ="ir.ui.view">
+        <field name="name">快递打单</field>
+        <field name="model">delivery.order.print</field>
+        <field name="inherit_id" ref="bysun_picking.view_print_delivery_order_form"/>
+        <field name="arch" type="xml">
+        	<xpath expr="/form/group" position="inside">
+        		<group string="EMS">
+	                <button name="print_ems_logistics_interface_order" string="EMS电子面单" type="object" icon="gtk-ok"/>
+	            </group>
+	        </xpath>
+	    </field>
+	</record>
+
+    <record id="view_ems_quickly_create_tracking_ref" model ="ir.ui.view">
+        <field name="name">快速创建快递单号</field>
+        <field name="model">ems.carrier.tracking.ref.wizard</field>
+        <field name="arch" type="xml">
+            <form>
+                <sheet>
+                    <group string="起始和结束单号">
+                        <field name="start_no" required="1"/>
+                        <field name="end_no" required="1"/>
+                    </group>
+                </sheet>
+                <footer>
+                    <button name="quickly_create_ems_no" string="创建快递单号" type="object" icon="gtk-ok"/>
+                    <button string="取消" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+</data>
+</openerp>

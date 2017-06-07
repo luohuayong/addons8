@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+		<!-- 销售订单添加挂机按钮 -->
+    	<record id="logistic_V2_sale_order_inherit" model="ir.ui.view">
+            <field name="name">sale.order.form</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="bysun_stock_product.logistic_sale_order_inherit"></field>
+            <field name="arch" type="xml">
+                <field name="logistic_line" position="replace">
+                    <field name="logistic_line">
+                        <tree editable="bottom">
+                            <field name="name"/>
+                            <field name="create_date"/>
+                            <field name="user_id"/>
+                            <field name="carrier_id"/>
+                            <field name="carrier_no"/>
+                            <field name="memo"/>
+                            <field name="state"/>
+                            <button name="action_sync_logistic" type="object" string="同步到商城" attrs="{'invisible':[('state','in',('no','send'))]}"/>
+                        </tree>
+                    </field>
+                </field>
+            </field>
+        </record>
+
+    </data>
+</openerp>

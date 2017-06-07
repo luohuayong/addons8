@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+
+        <record id="bysun_sale_order_tree_pendding" model="ir.ui.view">
+            <field name="name">挂起</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_tree"/>
+            <field name="arch" type="xml">
+                <field name="user_id" position="after">
+                    <field name="pending"/>
+                </field>
+            </field>
+        </record>
+
+        <record id="bysun_sale_quotation_tree_pendding" model="ir.ui.view">
+            <field name="name">挂起</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_quotation_tree"/>
+            <field name="arch" type="xml">
+                <field name="user_id" position="after">
+                    <field name="pending"/>
+                </field>
+            </field>
+        </record>
+
+    </data>
+</openerp>

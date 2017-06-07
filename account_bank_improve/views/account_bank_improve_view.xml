@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <!-- views_from -->
+        <record id="account_bank_statement_line_form" model="ir.ui.view">
+            <field name="name">account.bank.statement.line.form</field>
+            <field name="model">account.bank.statement.line</field>
+                <field name="arch" type="xml">
+                        <form string="未对账明细行" >
+                            <sheet>
+                                <group>
+                            <group>
+                                      <field name="statement_id" />
+                                <field name="partner_id" />
+                                      <field name="name" />
+                                      <field name="ref" />
+                            </group>
+                            <group>
+                                      <field name="date" />
+                                <field name="amount" />
+                                <field name="note" />
+                            </group>
+                                </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>-->
+    
+        <!-- views_tree -->
+        <record id="view_account_bank_statement_line_tree" model="ir.ui.view">
+            <field name="name">account.bank.statement.line.tree</field>
+            <field name="model">account.bank.statement.line</field>
+            <field name="arch" type="xml">
+                <tree string="未对账明细行" >
+                    <field name="statement_id" />
+                    <field name="date" />
+                    <field name="name" />
+                    <field name="ref" />
+                    <field name="partner_id" />
+                    <field name="amount" />
+                    <field name="note" />
+                    <field name="journal_entry_id" domain="['journal_entry_id', '=', False]" invisible="1"/>
+                </tree>
+            </field>
+        </record>
+        
+        <record id="view_account_bank_statement_line_filter" model="ir.ui.view">
+            <field name="name">account.bank.statement.line.select</field>
+            <field name="model">account.bank.statement.line</field>
+            <field name="arch" type="xml">
+                <search string="未对账明细行">
+                    <group expand="0" string="分组">
+                        <filter string="按结算单分类" context="{'group_by': 'statement_id'}" />
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <!-- actions -->
+        <record id="action_account_bank_statement_line_tree" model="ir.actions.act_window">
+            <field name="name">未对账明细行</field>
+            <field name="res_model">account.bank.statement.line</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_account_bank_statement_line_tree"/>
+            <field name="search_view_id" ref="view_account_bank_statement_line_filter"/>
+        </record>
+
+        <!-- menuitem -->
+        <menuitem id="menu_action_account_bank_statement_line_tree" action="action_account_bank_statement_line_tree" parent="account.menu_finance_bank_and_cash" sequence="8"/>
+
+    </data>
+</openerp>

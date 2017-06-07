@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+        
+        <record model="ir.actions.act_window.view" id="action_picking_tree_all_view">
+            <field name="sequence" eval="1"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="stock.vpicktree"/>
+            <field name="act_window_id" ref="stock.action_picking_tree_all"/>
+        </record>
+        <record model="ir.actions.act_window.view" id="action_picking_tree_view">
+            <field name="sequence" eval="1"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="stock.vpicktree"/>
+            <field name="act_window_id" ref="stock.action_picking_tree"/>
+        </record>
+        <record model="ir.actions.act_window.view" id="action_picking_tree_ready_view">
+            <field name="sequence" eval="1"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="stock.vpicktree"/>
+            <field name="act_window_id" ref="stock.action_picking_tree_ready"/>
+        </record>
+
+        
+        <menuitem id="menu_ebiz_picking_out" name="销售出库" parent="stock.menu_stock_root" sequence="1"/>
+        <!-- 波次分拣 tree -->
+        <record id="vpicktree_bocifenjian" model="ir.ui.view">
+            <field name="name">stock.picking.tree</field>
+            <field name="model">stock.picking</field>
+            <field name="priority">15</field>
+            <field name="arch" type="xml">
+                <tree editable="bottom" create="0" colors="blue:state == 'draft';grey:state == 'cancel';red:state not in ('cancel', 'done') and min_date &lt; current_date" string="Picking list">
+                    <field name="name" readonly="1"  invisible="1"/>
+                    <field name="origin" readonly="1"/>
+                    <field name="min_date" readonly="1"/>
+                    <field name="address" readonly="1"/>
+                    <field name="carrier_id"/>
+                    <field name="wave_id" readonly="1"/>
+                    <field name="group_id" invisible="1"/>
+                    <field name="state" readonly="1"/>
+                    <field name="pending" readonly="1" invisible="1"/>
+                    <field name="priority" invisible="1"/>
+                    <field name="picking_type_id" invisible="1"/>
+                </tree>
+            </field>
+        </record>
+        <record id="action_picking_tree_pick_wave" model="ir.actions.act_window">
+            <field name="name">波次分拣</field>
+            <field name="res_model">stock.picking</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree_picking_wave_quickpick</field>
+            <field name="domain">[('picking_type_id','=',5), ('state','not in',('done','cancel', 'draft')), ('pending', '=', False)]</field>
+            <field name="context">{}</field>
+            <field name="search_view_id" ref="stock.view_picking_internal_search"/>
+        </record>
+        <menuitem action="action_picking_tree_pick_wave"  name="波次分拣"
+            parent="menu_ebiz_picking_out"  id="menu_bocifenjian" sequence="3"/>
+
+        <!-- 打单拣货tree -->
+        <record id="vpicktree_dadanjianhuo" model="ir.ui.view">
+            <field name="name">vpicktree_dadanjianhuo</field>
+            <field name="model">stock.picking</field>
+            <field name="priority">15</field>
+            <field name="arch" type="xml">
+                <tree colors="blue:state == 'draft';grey:state == 'cancel';red:state not in ('cancel', 'done') and min_date &lt; current_date" string="Picking list">
+                    <field name="name"/>
+                    <field name="location_dest_id" invisible="1"/>
+                    <field name="partner_id" invisible="1"/>
+                    <field name="date" invisible="1"/>
+                    <field name="min_date"/>
+                    <field name="origin"/>
+                    <field name="carrier_id"/>
+                    <field name="carrier_tracking_ref" readonly="1" invisible="1"/>
+                    <field name="wave_id" readonly="1"/>
+                    <field name="group_id" invisible="1"/>
+                    <field name="backorder_id" invisible="1"/>
+                    <field name="state"/>
+                    <field name="pending" invisible="1"/>
+                    <field name="priority" invisible="1"/>
+                    <field name="picking_type_id" invisible="1"/>
+                </tree>
+            </field>
+        </record>
+        <record id="action_picking_tree_pick_print" model="ir.actions.act_window">
+            <field name="name">打单拣货</field>
+            <field name="res_model">stock.picking</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('picking_type_id','=',5),('state','not in',('done','cancel', 'draft')),('pending','=', False)]</field>
+            <field name="context">{'default_picking_type_id': 5}</field>
+            <field name="search_view_id" ref="stock.view_picking_internal_search"/>
+        </record>
+        <record model="ir.actions.act_window.view" id="action_view_picking_tree_pick_print">
+            <field name="sequence" eval="1"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="vpicktree_dadanjianhuo"/>
+            <field name="act_window_id" ref="action_picking_tree_pick_print"/>
+        </record>
+        <menuitem action="action_picking_tree_pick_print"  name="打单拣货"
+            parent="menu_ebiz_picking_out"  id="menu_dadanjianhuo" sequence="5"/>
+
+        <record model="ir.actions.act_url" id="action_pack_barcode">
+            <field name="name">条码验货</field>
+            <field name="url">/pack/web/</field>
+            <field name="target">self</field>
+        </record>
+        <menuitem action="action_pack_barcode"  name="验货打包"
+            parent="menu_ebiz_picking_out"  id="menu_pack_barcode" sequence="7"/>
+        <!-- 销售退货 -->
+        <record id="vpicktree_returnpicking" model="ir.ui.view">
+            <field name="name">vpicktree_returnpicking</field>
+            <field name="model">stock.picking</field>
+            <field name="priority">15</field>
+            <field name="arch" type="xml">
+                <tree colors="blue:state == 'draft';grey:state == 'cancel';red:state not in ('cancel', 'done') and min_date &lt; current_date" string="Picking list">
+                    <field name="name"/>
+                    <field name="location_dest_id" invisible="1"/>
+                    <field name="partner_id" invisible="1"/>
+                    <field name="date" invisible="1"/>
+                    <field name="min_date"/>
+                    <field name="origin"/>
+                    <field name="carrier_id"/>
+                    <field name="carrier_tracking_ref" readonly="1" invisible="1"/>
+                    <field name="wave_id" readonly="1"/>
+                    <field name="group_id" invisible="1"/>
+                    <field name="backorder_id" invisible="1"/>
+                    <field name="state"/>
+                    <field name="pending" invisible="1"/>
+                    <field name="priority" invisible="1"/>
+                    <field name="picking_type_id" invisible="1"/>
+                </tree>
+            </field>
+        </record>
+        <record id="action_picking_tree_returnpicking" model="ir.actions.act_window">
+            <field name="name">销售退货</field>
+            <field name="res_model">stock.picking</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('picking_type_id','=',4),('state','not in',('done','cancel', 'draft')),('pending','=', False)]</field>
+            <field name="context">{'default_picking_type_id': 4}</field>
+            <field name="search_view_id" ref="stock.view_picking_internal_search"/>
+        </record>
+        <record model="ir.actions.act_window.view" id="action_view_picking_tree_returnpicking">
+            <field name="sequence" eval="1"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="vpicktree_returnpicking"/>
+            <field name="act_window_id" ref="action_picking_tree_returnpicking"/>
+        </record>
+
+        <menuitem action="action_picking_tree_returnpicking"  name="销售退货"
+            parent="menu_ebiz_picking_out" id="menu_return_picking" sequence="10"/>
+
+        <record id="bysun_view_picking_form" model="ir.ui.view">
+            <field name="name">stock.picking.form</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.view_picking_form"/>
+            <field eval="12" name="priority"/>
+            <field name="arch" type="xml">
+                <field name="partner_id" position="replace">
+                    <field name="partner_id" filter_domain="[('partner_id','child_of',self)]" context="{'show_address': 1}" options='{"always_reload": True}'/>
+                </field>
+
+                <notebook position="after">
+                    <div class="oe_inline">
+                        <label for="buyer_memo"/>
+                        <field name="buyer_memo" colspan="4" readonly="True"/>
+                    </div>
+                    <div class="oe_inline">
+                        <label for="seller_memo"/>
+                        <field name="seller_memo" colspan="4" readonly="True"/>
+                    </div>
+                </notebook>
+            </field>
+        </record>
+
+    </data>
+</openerp>

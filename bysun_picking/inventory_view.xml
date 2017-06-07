@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+
+    	<record id="oscg_stock_inventory_inherit" model="ir.ui.view">
+			<field name="name">盘点继承</field>
+			<field name="model">stock.inventory</field>
+			<field name="inherit_id" ref="stock.view_inventory_form"/>
+			<field name="arch" type="xml">
+				<button name="action_done" position="after">
+					<button name="action_open_wizard" string="条码上传" type="object" attrs="{'invisible':['|',('filter','!=','partial'),('state','!=','confirm')]}"/>
+				</button>
+				<field name="location_id" position="attributes">
+					<attribute name="readonly">1</attribute>
+				</field>
+				<field name="line_ids" position="after">
+					<group>
+						<field name="error_code" string="错误条码"/>
+						<field name="same_code" string="冲突条码"/>
+					</group>
+				</field>
+			</field>
+		</record>
+
+	</data>
+</openerp>

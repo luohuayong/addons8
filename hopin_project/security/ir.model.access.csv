@@ -1,0 +1,3 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_bysunpackages_category,bysunpackages.category,model_bysunpackages_category,base.group_user,1,1,1,1
+access_bysunstock_category,bysunstock.category,model_bysunstock_category,base.group_user,1,1,1,1

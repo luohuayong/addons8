@@ -1,0 +1,38 @@
+<openerp>
+    <data>
+      <!--tree 视图-->
+        <record id="packages_category_tree" model="ir.ui.view">
+            <field name="name">packages category tree</field>
+            <field name="model">bysunpackages.category</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name" />
+                </tree>
+            </field>
+        </record>
+
+        <!--表单视图-->
+        <record id="packages_category_form" model="ir.ui.view">
+            <field name="name">packages category form</field>
+            <field name="model">bysunpackages.category</field>
+            <field name="arch" type="xml">
+                 <form>
+                    <sheet>
+                        <group name="group_top" string="包装种类">
+                            <field name="name" required="1"/>
+                        </group>
+                    </sheet>
+                      <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers" groups="base.group_user"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+
+        <act_window id="bysun_packages_category" name="包装种类" res_model="bysunpackages.category" view_mode="tree,form" target="current" />
+
+        <menuitem id="menu_bysun_packages_category"  parent="base.menu_product" action="bysun_packages_category"></menuitem>
+    </data>
+</openerp>

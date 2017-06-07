@@ -1,0 +1,4 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_sale_order_batch_confirm,sale.order.batch.confirm,model_sale_order_batch_confirm,base.group_user,1,1,1,1
+access_sale_order_export_to_supplier_line,sale.order.export.to.supplier.line,model_sale_order_export_to_supplier_line,base.group_user,1,1,1,1
+access_sale_order_export_to_supplier,sale.order.export.to.supplier,model_sale_order_export_to_supplier,base.group_user,1,1,1,1

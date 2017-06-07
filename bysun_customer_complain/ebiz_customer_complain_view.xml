@@ -1,0 +1,193 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data >
+
+        <!--客诉单-->
+        <record model="ir.ui.view" id="ebiz_customer_complain_tree_view">
+            <field name="name">ebiz.customer.complain.tree</field>
+            <field name="model">ebiz.customer.complain</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree string="客诉单">
+                    <field name="name"/>
+                    <field name="order_id" /> 
+                    <field name="type"/>
+                    <field name="product_id"/>
+                    <field name="return_pay" />
+                    <field name="return_amount" sum="Total Tax Included"/>
+                    <field name="apply_date"/>
+                    <field name="state"/>
+                    <field name="active" invisible="1"/>     
+                </tree>
+            </field>
+        </record>
+
+        <record id="account_voucher_inherit_sale_ref" model="ir.ui.view">
+            <field name="name">付款弹窗</field>
+            <field name="model">account.voucher</field>
+            <field name="inherit_id" ref="account_voucher.view_vendor_receipt_dialog_form"/>
+            <field name="arch" type="xml">
+                <field name="journal_id" position="after">
+                    <field name="sale_order_id" readonly="1"/>
+                    <field name="sale_payment_ref" readonly="1"/>
+                </field>
+            </field>
+        </record>
+
+        <!--<record id="ebiz_customer_complain_kanban_view" model="ir.ui.view">-->
+            <!--<field name="name">ebiz.customer.complain.kanban</field>-->
+            <!--<field name="model">ebiz.customer.complain</field>-->
+            <!--<field name="arch" type="xml">-->
+                <!--<kanban class="oe_background_grey" create="0">-->
+                    <!--<field name="state"/>-->
+                    <!--<field name="count_picking_ready"/>-->
+                    <!--<field name="count_picking_draft"/>-->
+                    <!--<field name="count_picking_waiting"/>-->
+                    <!--<field name="count_picking_late"/>-->
+                    <!--<field name="count_picking_backorders"/>-->
+                    <!--<templates>-->
+                        <!--<t t-name="kanban-box">-->
+                            <!--<div t-attf-class="oe_kanban_color_#{kanban_getcolor(record.color.raw_value)} oe_kanban_card oe_kanban_stock_picking_type">-->
+                                <!--<div class="oe_dropdown_toggle oe_dropdown_kanban" groups="stock.group_stock_manager">-->
+                                    <!--<span class="oe_e">í</span>-->
+                                    <!--<ul class="oe_dropdown_menu">-->
+                                        <!--<t t-if="widget.view.is_action_enabled('edit')"><li><a type="edit">Edit...</a></li></t>-->
+                                        <!--<t t-if="widget.view.is_action_enabled('delete')"><li><a type="delete">Delete</a></li></t>-->
+                                        <!--<t t-if="widget.view.is_action_enabled('edit')"><li><ul class="oe_kanban_colorpicker" data-field="color"/></li></t>-->
+                                    <!--</ul>-->
+                                <!--</div>-->
+                                <!--<div class="oe_kanban_content">-->
+                                    <!--<h4 class="text-center"><strong><field name="complete_name"/></strong></h4>-->
+                                    <!--<div class="oe_right">-->
+                                        <!--<a name="open_barcode_interface" type="object">-->
+                                            <!--<img src="/stock/static/src/img/scan.png"-->
+                                                <!--alt="Click to launch the barcode interface"-->
+                                                <!--class="oe_stock_scan_image" title="Click to launch the barcode interface"/>-->
+                                        <!--</a>-->
+                                    <!--</div>-->
+                                    <!--<div class="oe_items_list oe_kanban_ellipsis">-->
+                                        <!--<div>-->
+                                            <!--<a name="%(action_picking_tree_ready)d" type="action">-->
+                                                <!--<field name="count_picking_ready"/> Ready-->
+                                            <!--</a>-->
+                                            <!--<a name="%(action_picking_tree_done)d" type="action" class="oe_sparkline_bar_link">-->
+                                                <!--<field name="last_done_picking" widget="sparkline_bar" options="{'type': 'tristate', 'colorMap': {'0': 'orange', '-1': 'red', '1': 'green'}}">Last 10 Done Operations</field>-->
+                                            <!--</a>-->
+                                        <!--</div>-->
+                                        <!--<div t-if="record.count_picking_waiting.raw_value &gt; 0">-->
+                                            <!--<a name="%(action_picking_tree_waiting)d" type="action">-->
+                                                <!--<field name="count_picking_waiting"/> Waiting Availability-->
+                                            <!--</a>-->
+                                        <!--</div>-->
+                                        <!--<div>-->
+                                            <!--<a name="%(action_picking_tree)d" type="action">All Operations</a>-->
+                                        <!--</div>-->
+                                    <!--</div>-->
+                                    <!--<div class="oe_picking_type_gauge">-->
+                                        <!--<field name="rate_picking_late" widget="gauge" style="width:150px; height: 110px;" options="{'levelcolors': ['#a9d70b', '#f9c802', '#ff0000'], 'action_jump': '%(action_picking_tree_late)d'}">Late (%%)</field>-->
+                                        <!--<field name="rate_picking_backorders" widget="gauge" style="width:150px; height: 110px;">Backorders (%%)</field>-->
+                                        <!--<div class="oe_gauge_labels">-->
+                                            <!--<div class="oe_gauge_label_column">-->
+                                                <!--<a name="%(action_picking_tree_late)d" type="action">-->
+                                                    <!--<field name="count_picking_late"/> Late-->
+                                                <!--</a>-->
+                                            <!--</div>-->
+                                            <!--<div class="oe_gauge_label_column">-->
+                                                <!--<a name="%(action_picking_tree_backorder)d" type="action">-->
+                                                    <!--<field name="count_picking_backorders"/> Backorders-->
+                                                <!--</a>-->
+                                            <!--</div>-->
+                                        <!--</div>-->
+                                    <!--</div>-->
+
+                                <!--</div>-->
+                            <!--</div>-->
+                        <!--</t>-->
+                    <!--</templates>-->
+                <!--</kanban>-->
+            <!--</field>-->
+        <!--</record>-->
+
+        <record id="ebiz_customer_complain_form_view" model="ir.ui.view">
+            <field name="name">ebiz.customer.complain.form</field>
+            <field name="model">ebiz.customer.complain</field>
+            <field name="arch" type="xml">
+                <form string="客诉单">
+                    <header>
+                        <button name="action_rejected" string="拒绝" type="object" states="draft,quality_failed"/>
+                        <button name="create_return_picking" string="生成退货单" type="object" attrs="{'invisible': ['|', ('return_picking_exists', '=', True), ('type', 'in', ('only_refund','group_purchase'))]}"/>
+                        <button name="view_return_picking" string="查看退货单" type="object" class="oe_highlight" attrs="{'invisible': [('return_picking_exists', '=', False)]}"/>
+                        <button name="create_return_invoice" string="生成退款单" type="object" attrs="{'invisible': ['|', ('refund_exists', '=', True), ('state', 'not in', ('draft', 'over_return_goods'))]}"/>
+                        <button name="view_return_invoice" string="查看退款单" type="object" class="oe_highlight" attrs="{'invisible': [('refund_exists', '=', False)]}"/>
+                        <!-- <button name="create_make_delivery_picking" string="创建补发货单" type="object" attrs="{'invisible': [('type','!=','make_delivery')]}"/> -->
+                        <button name="create_supplier_account" string="生成费用单" type="object" attrs="{'invisible': ['|', ('expense_exists','=', True), ('state','in',('rejected','closed'))]}"/>
+                        <button name="view_supplier_account" string="查看费用单" type="object" class="oe_highlight" attrs="{'invisible': [('expense_exists','=', False)]}"/>
+                        <!--<button name="sync_complain_from_shop" string="测试单据同步" type="object" groups="base.group_user"/>-->
+                        <!--<button name="sync_return_goods_from_shop" string="测试退货信息同步" type="object" groups="base.group_user"/>-->
+                        <field name="state" widget="statusbar" statusbar_visible="draft,rejected,closed" />
+                    </header>
+                    <sheet>
+                        <h1>
+                            <label string="客诉单"/>
+                            <field name="name" class="oe_inline" readonly="True"/>
+                        </h1>
+                        <group>
+                            <group>
+                                <field name="order_id" readonly="True"/>
+                                <field name="type" readonly="True"/>
+                                <field name="express_company" readonly="True"/>
+                                <field name="express_no" readonly="True"/>
+                            </group>
+                            <group>
+                                <field name="apply_date" readonly="True"/>
+                                <field name="product_id" readonly="True"/>
+                                <field name="return_amount" attrs="{'readonly': ['|', ('state', '!=', 'draft'), ('type', '!=', 'return_goods')]}"/>
+                                <field name="return_pay" attrs="{'readonly': [('state', 'in', ('wait_refund','rejected','closed'))]}"/>
+                                <field name="active" invisible="1"/>
+                                <field name="return_picking_exists" invisible="1"/>
+                                <field name="refund_exists" invisible="1"/>
+                                <field name="expense_exists" invisible="1"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="其他信息">
+                                <group string="原因">
+                                    <field name="reason" nolabel="1" readonly="True"/>
+                                </group>
+                                <group string="买家备注">
+                                    <field name="description" nolabel="1" readonly="True"/>
+                                </group>
+                                <group string="卖家备注">
+                                    <field name="note" colspan="4" nolabel="1" placeholder="在这里填写和买家沟通的信息。"/>
+                                </group>
+                            </page>
+                        </notebook>                        
+                    </sheet>
+                    <div class="oe_chatter">
+                        <field name="message_follower_ids" widget="mail_followers"/>
+                        <field name="message_ids" widget="mail_thread"/>
+                    </div>
+                </form>
+            </field>
+        </record>
+
+        <record id="ebiz_customer_complain_search" model="ir.ui.view">
+            <field name="name">Search</field>
+            <field name="model">ebiz.customer.complain</field>
+            <field name="arch" type="xml">
+                <search string="搜索">
+                    <field name="name" string="客诉单编号" filter_domain="[('name','ilike',self)]"/>
+                    <field name="order_id" string="订单编号"/>
+                    <field name="product_id" string="产品名称"/>
+                    <field name="state" string="状态"/>
+                    <filter string="待处理的客诉单" domain="[('state','not in',('cancelled','rejected','closed'))]" name="customer_complain_filter"/>
+                    <group expand="0" string="Group By..." colspan="16">
+                        <filter string="类型" domain="[]" context="{'group_by':'type'}"/>
+                        <filter string="状态" domain="[]" context="{'group_by':'state'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+    </data>
+</openerp>

@@ -1,0 +1,25 @@
+<openerp>
+    <data>
+         <record id="hopin_stock_picking_form_add_phonenumber" model="ir.ui.view">
+            <field name="name">add phonenumber</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="__export__.ir_ui_view_1043"></field>
+            <field name="arch" type="xml">
+                <field name="partner_id" position="before">
+                    <field name="partner_shipping_mobile"/>
+                </field>
+            </field>
+        </record>
+
+        <record id="hopin_stock_picking_form_add_phonenumber2" model="ir.ui.view">
+            <field name="name">add phonenumber</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="__export__.ir_ui_view_1026"></field>
+            <field name="arch" type="xml">
+                <field name="partner_id" position="before">
+                    <field name="partner_shipping_mobile"/>
+                </field>
+            </field>
+        </record>
+    </data>
+</openerp>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data >
+        <record id="hopin_customer_complain_sellermemo" model="ir.ui.view">
+            <field name="name">hopin_customer_complain_sellermemo</field>
+            <field name="model">ebiz.customer.complain</field>
+            <field name="inherit_id" ref="bysun_customer_complain.ebiz_customer_complain_form_view"></field>
+            <field name="arch" type="xml">
+              <group string="卖家备注" position="replace">
+                  <group string="拒绝理由">
+                    <field name="note" colspan="4" nolabel="1" placeholder="在这里填写和买家沟通的信息。"/>
+                </group>
+              </group>
+                <field name="note" position="after">
+                  <group string="卖家备注">
+                    <field name="seller_memo" colspan="4" nolabel="1"/>
+                </group>
+              </field>
+            </field>
+        </record>
+
+    </data>
+</openerp>

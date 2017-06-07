@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <!--导出明细-->
+        <record id="view_ebiz_supplier_account_join_statement_wizard" model="ir.ui.view">
+            <field name="name">ebiz.supplier.account.join.statement.form</field>
+            <field name="model">ebiz.supplier.account.join.statement</field>
+            <field name="arch" type="xml">
+                <form string="加入对账单">
+                    <group>
+                        <field name="statement_no"/>
+                    </group>
+                    <footer>
+                        <button name="join_statement" string="确定" type="object" icon="gtk-convert"/>
+                        <button special="cancel" string="取消" icon="gtk-cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <act_window name="加入对账单"
+            id="action_ebiz_supplier_account_join_statement"
+            src_model="ebiz.supplier.account.line"
+            res_model="ebiz.supplier.account.join.statement"
+            view_type="form" view_mode="form"
+            key2="client_action_multi"
+            groups="base.group_user"
+            target="new"
+            view_id="view_ebiz_supplier_account_join_statement_wizard"/>
+
+        <!--导出明细-->
+        <record id="view_ebiz_supplier_account_export_wizard" model="ir.ui.view">
+            <field name="name">ebiz.supplier.account.export.form</field>
+            <field name="model">ebiz.supplier.account.export</field>
+            <field name="arch" type="xml">
+                <form string="导出对账单">
+                    <separator string='点击按钮"确定",导出对账单！' colspan="4"/>
+                        <label string='是否确认导出结算明细？' colspan="4"/>
+                    <separator string="" colspan="4" />
+                    <footer>
+                        <button name="action_export_lines" string="确定" type="object" icon="gtk-convert"/>
+                        <button special="cancel" string="取消" icon="gtk-cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <act_window name="导出对账单"
+            id="action_ebiz_supplier_account_export"
+            src_model="ebiz.supplier.account.line"
+            res_model="ebiz.supplier.account.export"
+            view_type="form" view_mode="form"
+            key2="client_action_multi"
+            groups="base.group_user"
+            target="new"
+            view_id="view_ebiz_supplier_account_export_wizard"/>
+
+        <!--结算-->
+        <record id="view_ebiz_supplier_account_invoice_wizard" model="ir.ui.view">
+            <field name="name">ebiz.supplier.account.invoice.form</field>
+            <field name="model">ebiz.supplier.account.invoice</field>
+            <field name="arch" type="xml">
+                <form string="Ebiz Supplier Account Invoice">   
+                    <separator string='点击按钮"确定",为该供应商创建结算单！' colspan="4"/>
+                        <label string='是否确认"创建供应商发票"？' colspan="4"/>
+                    <separator string="" colspan="4" />
+                    <footer>
+                        <button name="create_invoice_action" string="确定" type="object" icon="gtk-convert"/>
+                        <button special="cancel" string="取消" icon="gtk-cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <act_window name="供应商结算单"
+            id="action_ebiz_supplier_account_invoice"
+            src_model="ebiz.supplier.account.line"
+            res_model="ebiz.supplier.account.invoice"
+            view_type="form" view_mode="form"
+            key2="client_action_multi"
+            groups="account.group_account_invoice"
+            target="new" 
+            view_id="view_ebiz_supplier_account_invoice_wizard"/>
+
+        <!--对账-->
+        <record id="view_ebiz_supplier_account_checked_wizard" model="ir.ui.view">
+            <field name="name">ebiz.supplier.account.checked.form</field>
+            <field name="model">ebiz.supplier.account.checked</field>
+            <field name="arch" type="xml">
+                <form string="Settled Ebiz Supplier Account">   
+                    <separator string='点击按钮"对账",已勾选的单据状态将全部变成"已对账"！' colspan="4"/>
+                        <label string='是否确认"对账"？' colspan="4"/>
+                    <separator string="" colspan="4" />
+                    <footer>
+                        <button name="save_action" string="对账" type="object" icon="gtk-convert"/>
+                        <button special="cancel" string="取消" icon="gtk-cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <act_window name="对账"
+            id="action_ebiz_supplier_account_checked"
+            src_model="ebiz.supplier.account.line"
+            res_model="ebiz.supplier.account.checked"
+            view_type="form" view_mode="form"
+            key2="client_action_multi"
+            groups="account.group_account_invoice"
+            target="new"
+            view_id="view_ebiz_supplier_account_checked_wizard"/>
+
+        <!--取消-->
+        <record id="view_ebiz_supplier_account_cancelled_wizard" model="ir.ui.view">
+            <field name="name">ebiz.supplier.account.cancelled.form</field>
+            <field name="model">ebiz.supplier.account.cancelled</field>
+            <field name="arch" type="xml">
+                <form string="Cancelled Ebiz Supplier Account">   
+                    <separator string='点击按钮"确定",已勾选的单据状态将全部变成"取消"！' colspan="4"/>
+                        <label string='是否确认"取消"？ ' colspan="4"/>
+                    <separator string="" colspan="4" />
+                    <footer>
+                        <button name="save_action" string="确定" type="object" icon="gtk-convert"/>
+                        <button special="cancel" string="取消" icon="gtk-cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <act_window name="取消"
+            id="action_ebiz_supplier_account_cancelled"
+            src_model="ebiz.supplier.account.line"
+            res_model="ebiz.supplier.account.cancelled"
+            view_type="form" view_mode="form"
+            key2="client_action_multi" 
+            target="new" 
+            view_id="view_ebiz_supplier_account_cancelled_wizard"/>
+
+    </data>
+</openerp>

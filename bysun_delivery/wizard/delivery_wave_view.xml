@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+<data>
+    <record id="view_upload_barcode_form" model ="ir.ui.view">
+        <field name="name">上传条码</field>
+        <field name="model">oscg.upload.barcode</field>
+        <field name="arch" type="xml">
+            <form string="上传条码">
+                <field name="upload_barcode">
+                </field>
+                <footer>
+                    <button name="action_upload" string="确认" type="object" icon="gtk-ok"/>
+                    or
+                    <button string="取消" class="oe_link" special="cancel"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_upload_barcode" model="ir.actions.act_window">
+            <field name="name">上传条码</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">oscg.upload.barcode</field>
+            <field name="view_type">form</field>
+            <field name="view_id" ref="view_upload_barcode_form"></field>
+            <field name="view_mode">tree,form</field>
+            <field name="target">new</field>
+    </record>
+
+</data>
+</openerp>

@@ -1,0 +1,114 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+        <!-- tree视图 补货参数 -->
+        <record id="view_tree_buhuo_canshu" model="ir.ui.view">
+          <field name="name">补货参数</field>
+          <field name="model">stock.warehouse</field>
+          <field name="arch" type="xml">
+            <tree>
+              <field name="code"/>
+              <field name="partner_id"/>
+              <field name="buhuo_zhouqi"/>
+              <field name="buhuo_riqi"/>
+              <field name="buhuo_jiange"/>
+            </tree>
+          </field>
+        </record>
+
+        <!-- 默认过滤，只显示货架 -->
+        <record model="ir.ui.view" id="buhuo_canshu_search_view">
+            <field name="name">补货参数_货架</field>
+            <field name="model">stock.warehouse</field>
+            <field name="arch" type="xml">
+                <search>
+                    <field name="code"/>
+                    <filter name="huojia" string="货架"
+                            domain="[('code', 'like', 'Q%')]"/>
+                </search>
+            </field>
+        </record>
+
+        <!-- form视图 -->
+        <record id="view_form_buhuo_canshu" model="ir.ui.view">
+          <field name="name">补货参数</field>
+          <field name="model">stock.warehouse</field>
+          <field name="arch" type="xml">
+            <form>
+              <sheet>
+                <group name="group_top" string="补货参数">
+                  <field name="code" readonly="1"/>
+                  <field name="partner_id" readonly="1"/>
+                  <field name="buhuo_zhouqi"/>
+                  <field name="buhuo_riqi"/>
+                  <field name="buhuo_jiange" readonly="1"/>
+                </group>
+              </sheet>
+            </form>
+          </field>
+        </record>
+
+        <!-- 视图动作 补货参数 -->
+        <record model="ir.actions.act_window" id="action_buhuo_canshu">
+            <field name="name">补货参数</field>
+            <field name="res_model">stock.warehouse</field>
+            <field name="view_mode">tree,form</field>
+            <field name="context" eval="{'search_default_huojia': 1}"/>
+            <!--<field name="views">[[view_tree_buhuo_canshu,"tree"],[view_form_buhuo_canshu,"form"]]</field>-->
+            <!--<field name="view_id" ref="view_tree_buhuo_canshu"/>-->
+        </record>
+
+        <record model="ir.actions.act_window.view" id="action_buhuo_canshu_tree">
+            <field name="act_window_id" ref="action_buhuo_canshu"/>
+            <field name="sequence" eval="0"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="view_tree_buhuo_canshu"/>
+        </record>
+
+        <record model="ir.actions.act_window.view" id="action_buhuo_canshu_form">
+            <field name="act_window_id" ref="action_buhuo_canshu"/>
+            <field name="sequence" eval="1"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_form_buhuo_canshu"/>
+        </record>
+
+        <!-- 视图动作 补货周期查询 -->
+        <record model="ir.actions.act_window" id="action_buhuo_zhouqi">
+            <field name="name">补货周期查询</field>
+            <field name="res_model">stock.warehouse</field>
+            <field name="view_mode">tree,form</field>
+            <!--<field name="context" eval="{'search_default_huojia': 1}"/>-->
+            <!--<field name="views">[[view_tree_buhuo_canshu,"tree"],[view_form_buhuo_canshu,"form"]]</field>-->
+            <!--<field name="view_id" ref="view_tree_buhuo_canshu"/>-->
+        </record>
+
+        <record model="ir.actions.act_window.view" id="action_buhuo_zhouqi_tree">
+            <field name="act_window_id" ref="action_buhuo_zhouqi"/>
+            <field name="sequence" eval="0"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="view_tree_buhuo_zhouqi"/>
+        </record>
+
+        <record model="ir.actions.act_window.view" id="action_buhuo_zhouqi_form">
+            <field name="act_window_id" ref="action_buhuo_zhouqi"/>
+            <field name="sequence" eval="1"/>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_form_buhuo_canshu"/>
+        </record>
+
+        <!-- 顶级菜单 -->
+        <menuitem name="自动补货" id="menu_buhuo" sequence="90"/>
+
+        <!-- 一级菜单 -->
+        <menuitem name="补货预警" id="menu_buhuo_yujing" parent="menu_buhuo"/>
+
+        <!-- 二级菜单 -->
+        <menuitem name="补货参数" id="menu_buhuo_canshu" parent="menu_buhuo_yujing" action="action_buhuo_canshu"/>
+        <menuitem name="补货周期查询" id="menu_buhuo_zhouqi" parent="menu_buhuo_yujing" action="action_buhuo_canshu"/>
+        <!--<menuitem name="货架库存预警" id="menu_buhuo_yujing" parent="menu_buhuo_yujing" action="action_buhuo_canshu"/>-->
+        <!--<menuitem name="货架销量查询" id="menu_buhuo_xiaoliang" parent="menu_buhuo_yujing" action="action_buhuo_canshu"/>-->
+
+    </data>
+
+
+</openerp>

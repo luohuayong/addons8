@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+
+        <record id="view_account_check_wizard_form" model="ir.ui.view">
+            <field name="name">会计检查</field>
+            <field name="model">account.check.wizard</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <field name="error_items" readonly="1">
+                            <tree>
+                                <field name="error_item"/>
+                                <field name="error_info"/>
+                            </tree>
+                        </field>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_view_account_check_wizard" model="ir.actions.act_window">
+            <field name="name">会计检查</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">account.check.wizard</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_account_check_wizard_form"/>
+            <field name="domain">[]</field>
+            <field name="target">new</field>
+            <field name="context">{}</field>
+        </record>
+
+        <menuitem id="menu_view_account_check" name="会计检查" parent="account.menu_finance"/>
+        <menuitem id="menu_view_account_check_1" name="会计检查" parent="menu_view_account_check" action="action_view_account_check_wizard"/>
+    </data>
+</openerp>

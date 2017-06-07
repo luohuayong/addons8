@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+    	<record id="bysun_view_oscg_stock_picking_wave_form" model="ir.ui.view">
+            <field name="name">拣货波次</field>
+            <field name="model">stock.picking.wave</field>
+            <field name="inherit_id" ref="bysun_delivery.view_oscg_stock_picking_wave_form"/>
+            <field name="arch" type="xml">
+                <field name="picking_ids" position="attributes">
+                    <attribute name="readonly">1</attribute>
+                </field>
+			</field>
+		</record>
+
+        <record id="bysun_stock_search_view_inherit" model="ir.ui.view">
+            <field name="name">stock.picking.search</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.view_picking_internal_search"></field>
+            <field name="arch" type="xml">
+                <field name="product_id" position="after">
+                    <field name="carrier_id"/>
+                    <field name="carrier_tracking_ref"/>
+                </field>
+            </field>
+        </record>
+
+        <record id="bysun_stock_vpicktree_inherit" model="ir.ui.view">
+            <field name="name">stock.picking.tree</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.vpicktree"></field>
+            <field name="arch" type="xml">
+                <field name="backorder_id" position="after">
+                    <field name="carrier_id"/>
+                    <field name="carrier_tracking_ref"/>
+                </field>
+            </field>
+        </record>
+
+        <record id="bysun_sale_order_tree_shipped" model="ir.ui.view">
+            <field name="name">已送货</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_tree"/>
+            <field name="arch" type="xml">
+                <field name="user_id" position="after">
+                    <field name="shipped"/>
+                </field>
+            </field>
+        </record>
+
+        <record id="bysun_sale_quotation_tree_shipped" model="ir.ui.view">
+            <field name="name">已送货</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_quotation_tree"/>
+            <field name="arch" type="xml">
+                <field name="user_id" position="after">
+                    <field name="shipped"/>
+                </field>
+            </field>
+        </record>
+
+
+    </data>
+</openerp>

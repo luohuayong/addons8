@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+<data>
+
+     <template id="ems_logistics">
+            <t t-foreach="docs" t-as="o">
+                <t t-if="o and 'company_id' in o">
+                    <t t-set="oscg_company" t-value="o.company_id"></t>
+                </t>
+                <t t-if="not o or not 'company_id' in o">
+                    <t t-set="oscg_company" t-value="res_company"></t>
+                </t>
+                <div class="page">
+                    <table class="table table-condensed" style="border:1px solid; width:100mm;height:180mm:;table-layout:fixed;">
+                        <tr style="font-size: 11px;height:16mm;">
+                            <td colspan="100" style="height:16mm;vertical-align:middle; text-align:center; border:1px solid;font-size:20px"></td>
+                        <!-- <td colspan="50" style="height:16mm;vertical-align:middle; text-align:center; border:1px solid;font-size:20px">条码</td> -->
+                        </tr>
+                        <tr style="height:1mm;"/>
+                        <tr style="height:21mm;vertical-align:middle; text-align:center; border:1px solid;">
+                            <td colspan="86" style="height:21mm;vertical-align:middle; text-align:center; border:1px solid;font-size:20pt;font-weight:bold;" t-esc="o.sanduan_code">
+                            </td>
+                            <td colspan="14" style="height:21mm;vertical-align:middle; text-align:center; border:1px solid;">
+                            </td>
+                        </tr>
+                        <tr style="height:16mm;vertical-align:middle; text-align:center; border:1px solid;">
+                            <td colspan="100" style="height:16mm;vertical-align:middle; text-align:center; border:1px solid;">
+                                <img t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('Code128', o.carrier_tracking_ref, 600, 100)" style="width:70mm;height:11mm;align:center"/>
+                                <p style="font-size:10pt;align:center;" t-esc="o.carrier_tracking_ref"/>
+                            </td>
+                        </tr>
+                        <tr style="height:17mm;vertical-align:middle; text-align:center; border:1px solid;">
+                            <td colspan="20" style="vertical-align:middle; text-align:center; border:1px solid;font-weight:bold;">收件人:</td>
+                            <td colspan="73" style="font-size:10pt;word-break:break-all;text-align:left; border:1px solid;" t-esc="(o.partner_id.name or '') + ',' + (o.partner_id.mobile or o.partner_id.phone or '') + ',' + (o.partner_id.state_id and o.partner_id.state_id.name or '') + ',' + (o.partner_id.city or '') + ',' + (o.partner_id.street2 or '') + ',' + (o.partner_id.street or '')"></td>
+                            <td colspan="7" rowspan="3" style="vertical-align:middle; text-align:center; border:1px solid;">签收联</td>
+                        </tr>
+                        <tr style="height:17mm;vertical-align:middle; text-align:center; border:1px solid;">
+                            <td colspan="20" style="vertical-align:middle; text-align:center; border:1px solid;">寄件人:
+                            </td>
+                            <td colspan="73" style="font-size:10pt;word-break:break-all;vertical-align:middle; text-align:left; border:1px solid;" t-esc="(oscg_company.name or '') + ',' + (oscg_company.phone or '') + ',' + (oscg_company.state_id and oscg_company.state_id.name or '') + ',' + (oscg_company.city or '') + ',' + (oscg_company.street2 or '') + ',' + (oscg_company.street or '')">
+                            </td>
+                        </tr>
+                        <tr style="height:15mm;vertical-align:middle; text-align:center; border:1px solid;">
+                            <td colspan="43" style="vertical-align:middle; text-align:left; border:1px solid;font-size:10pt;">收件人/代收人:</td>
+                            <td colspan="50" style="vertical-align:middle; text-align:left; border:1px solid;font-size:10pt;">签收时间:</td>
+                        </tr>
+                        <tr style="height:14mm;vertical-align:middle; text-align:center; border:1px solid;">
+                            <td style="height:14mm;vertical-align:middle; text-align:center; border:1px solid;" colspan="30"></td>
+                            <td style="height:14mm;vertical-align:middle; text-align:center; border:1px solid;" colspan="70">
+                            <img t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('Code128', o.carrier_tracking_ref, 600, 100)" style="width:60mm;height:11mm;align:center"/>
+                            <p style="font-size:8pt;align:center;" t-esc="o.carrier_tracking_ref"/></td>
+                        </tr>
+                        <tr style="height:1mm;"/>
+                        <tr style="vertical-align:middle; text-align:center; border:1px solid;">
+                            <td colspan="20" style="height:14mm;vertical-align:middle; text-align:center; border:1px solid;">寄件人:</td>
+                            <td colspan="73" style="font-size:9pt;word-break:break-all;vertical-align:middle; text-align:left; border:1px solid;" t-esc="(oscg_company.name or '') + ',' + (oscg_company.phone or '') + ',' + (oscg_company.state_id and oscg_company.state_id.name or '') + ',' + (oscg_company.city or '') + ',' + (oscg_company.street2 or '') + ',' + (oscg_company.street or '')">
+                            </td>
+                            <td rowspan="2" colspan="7" style="height:14mm;vertical-align:middle; text-align:center; border:1px solid;">收件联</td>
+                        </tr>
+                        <tr style="height:14mm;vertical-align:middle; text-align:center; border:1px solid;">
+                            <td colspan="20" style="height:14mm;vertical-align:middle; text-align:center; border:1px solid;">收件人:</td>
+                            <td colspan="73" style="font-size:9pt;word-break:break-all;text-align:left; border:1px solid;" t-esc="(o.partner_id.name or '') + ',' + (o.partner_id.mobile or o.partner_id.phone or '') + ',' + (o.partner_id.state_id and o.partner_id.state_id.name or '') + ',' + (o.partner_id.city or '') + ',' + (o.partner_id.street2 or '') + ',' + (o.partner_id.street or '')"></td>
+                        </tr>
+                        <tr style="vertical-align:middle; text-align:center; border:1px solid;">
+                            <td colspan="20" style="height:26mm;vertical-align:middle; text-align:center; border:1px solid;">订单详情:</td>
+                            <td colspan="52" style="height:26mm;vertical-align:middle; text-align:center; border:1px solid;"><t t-esc="o.move_lines[0].product_id.name"/><t>等</t><t t-esc="len(o.move_lines)"/><t>种物品</t></td>
+                            <td colspan="28" style="height:26mm;vertical-align:middle; text-align:center; border:1px solid;">二维码</td>
+                        </tr>
+                        <tr style="font-size: 11px;height:6mm;">
+                            <td colspan="100" style="height:4mm;vertical-align:middle; text-align:center; border:1px solid;"></td>
+                        </tr>
+                    </table>
+                </div>
+            </t>
+        </template>
+
+</data>
+</openerp>
+
+                					

@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record id="view_create_picking_entry" model="ir.ui.view">
+            <field name="name">Create Picking Entry</field>
+            <field name="model">stock.picking.entry</field>
+            <field name="arch" type="xml">
+                <form string="Create Picking Entry">
+                    <group>
+                        <field name="account_id" />
+                        <field name="period_id" />
+                        <field name="journal_id" />
+                        <field name="entry_type" invisible = '1'/>
+                    </group>
+                    <footer>
+                        <button name="create_receipt_entry" string="入库凭证" attrs="{'invisible': [('entry_type', '=', 'out')]}" type="object" class="oe_highlight"/>
+                        <button name="create_delivery_entry" string="出库凭证" attrs="{'invisible': [('entry_type', '=', 'in')]}" type="object" class="oe_highlight"/>
+                        or
+                        <button string="关闭" class="oe_link" special="cancel" />
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+
+        <record id="action_create_picking_out_entry" model="ir.actions.act_window">
+            <field name="name">出库核算</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">stock.picking.entry</field>
+            <field name="src_model">stock.picking</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <field name="context">{ 'default_entry_type': 'out', }   </field>
+        </record>
+        <record id="action_create_picking_out_entry_bind" model="ir.values">
+            <field name="name">出库核算绑定</field>
+            <field name="model">stock.picking</field>
+            <field name="key2">client_action_multi</field>
+            <field eval="'ir.actions.act_window,%s' % ref('action_create_picking_out_entry')" name="value_unpickle"/>
+        </record>
+
+        <record id="action_create_picking_in_entry" model="ir.actions.act_window">
+            <field name="name">入库核算</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">stock.picking.entry</field>
+            <field name="src_model">stock.picking</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <field name="context">{ 'default_entry_type': 'in', }   </field>
+        </record>
+        <record id="action_create_picking_in_entry_bind" model="ir.values">
+            <field name="name">入库核算绑定</field>
+            <field name="model">stock.picking</field>
+            <field name="key2">client_action_multi</field>
+            <field eval="'ir.actions.act_window,%s' % ref('action_create_picking_in_entry')" name="value_unpickle"/>
+        </record>
+
+    </data>
+</openerp>
+

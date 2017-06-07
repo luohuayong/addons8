@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+        <record id="view_product_product_tree" model="ir.ui.view">
+            <field name="name">product.product.tree</field>
+            <field name="model">product.product</field>
+            <field name="type">tree</field>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                <tree string="库存月报">
+                    <field name="display_name"/>
+                    <field name="opening_qty"/>
+                    <field name="opening_stock_cost"/>
+                    <field name="duration_incoming_qty"/>
+                    <field name="duration_incoming_cost"/>
+                    <field name="duration_outgoing_qty"/>
+                    <field name="duration_outgoing_cost"/>
+                    <field name="closing_qty"/>
+                    <field name="closing_stock_cost"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_product_product_graph" model="ir.ui.view">
+            <field name="name">product.product.graph</field>
+            <field name="model">product.product</field>
+            <field name="arch" type="xml">
+                <graph string="库存月报" type="pivot">
+                    <field name="categ_id"/>
+                    <field name="name"/>
+                    <field name="opening_qty" type="measure"/>
+                    <field name="opening_stock_cost" type="measure"/>
+                    <field name="duration_incoming_qty" type="measure"/>
+                    <field name="duration_incoming_cost" type="measure"/>
+                    <field name="duration_outgoing_qty" type="measure"/>
+                    <field name="duration_outgoing_cost" type="measure"/>
+                    <field name="closing_qty" type="measure"/>
+                    <field name="closing_stock_cost" type="measure"/>
+                </graph>
+            </field>
+        </record>
+
+        <!--<record id="view_product_search" model="ir.ui.view">-->
+            <!--<field name="name">stock.report.search</field>-->
+            <!--<field name="model">product.product</field>-->
+            <!--<field name="arch" type="xml">-->
+                <!--<search string="库存月报">-->
+                    <!--<field name="name"/>-->
+                    <!--<group expand="1" string="分组">-->
+                        <!--<filter string="产品分类" name="分类" context="{'group_by':'categ_id'}"/>-->
+                    <!--</group>-->
+                <!--</search>-->
+            <!--</field>-->
+        <!--</record>-->
+
+
+        <record model="ir.actions.act_window" id="act_open_product_product_view">
+            <field name="name">库存月报</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">product.product</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">graph,tree</field>
+            <field name="view_id" ref="view_product_product_tree"/>
+        </record>
+
+
+    </data>
+</openerp>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data noupdate="1">
+        <record id="production_seq_type" model="ir.sequence.type">
+            <field name="name">Production Order</field>
+            <field name="code">stock.production</field>
+        </record>
+        <record id="oscg_seq_contract" model="ir.sequence">
+            <field name="name">Production Order</field>
+            <field name="code">stock.production</field>
+            <field name="prefix">JG%(y)s%(month)s%(day)s</field>
+            <field name="padding">4</field>
+            <field name="number_next">1</field>
+            <field name="number_increment">1</field>
+        </record>
+
+<!--         <record id="production_seq_type1" model="ir.sequence.type">
+            <field name="name">Production Order1</field>
+            <field name="code">stock.production1</field>
+        </record>
+        <record id="oscg_seq_contract1" model="ir.sequence">
+            <field name="name">Production Order1</field>
+            <field name="code">stock.production1</field>
+            <field name="prefix">JGA%(y)s%(month)s%(day)s</field>
+            <field name="padding">4</field>
+            <field name="number_next">1</field>
+            <field name="number_increment">1</field>
+        </record> -->
+    </data>
+</openerp>

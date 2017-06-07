@@ -1,0 +1,8 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_ebiz_supplier_account_line,ebiz.supplier.account.line,model_ebiz_supplier_account_line,base.group_user,1,1,1,0
+access_ebiz_supplier_account_create_wizard,ebiz.supplier.account.create.wizard,model_ebiz_supplier_account_create_wizard,base.group_user,1,1,1,0
+access_ebiz_supplier_account_checked,ebiz.supplier.account.checked,model_ebiz_supplier_account_checked,base.group_user,1,1,1,0
+access_ebiz_supplier_account_invoice,ebiz.supplier.account.invoice,model_ebiz_supplier_account_invoice,base.group_user,1,1,1,0
+access_ebiz_supplier_account_cancelled,ebiz.supplier.account.cancelled,model_ebiz_supplier_account_cancelled,base.group_user,1,1,1,0
+access_ebiz_supplier_account_export,ebiz.supplier.account.export,model_ebiz_supplier_account_export,base.group_user,1,1,1,0
+access_ebiz_supplier_account_join_statement,ebiz.supplier.account.join.statement,model_ebiz_supplier_account_join_statement,base.group_user,1,1,1,0

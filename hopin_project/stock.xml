@@ -1,0 +1,28 @@
+<openerp>
+    <data>
+          <record id="hopin_stock_boci_tree" model="ir.ui.view">
+            <field name="name">hopin_stock_boci_tree</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="bysun_picking.vpicktree_bocifenjian"></field>
+            <field name="arch" type="xml">
+              <field name="picking_type_id" position="after">
+                  <field name="seller_memo" />
+              </field>
+            </field>
+        </record>
+
+
+         <record id="hopin_stock_fenjian_tree" model="ir.ui.view">
+            <field name="name">hopin_stock_fenjian_tree</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="__export__.ir_ui_view_986"></field>
+            <field name="arch" type="xml">
+              <field name="picking_type_id" position="after">
+                  <field name="seller_memo" />
+              </field>
+            </field>
+        </record>
+
+
+    </data>
+</openerp>

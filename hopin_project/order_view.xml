@@ -1,0 +1,35 @@
+<openerp>
+    <data>
+        <!--已审核订单列表-->
+        <record id="view_order_tree" model="ir.ui.view">
+            <field name="name">sale.order.tree</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="__export__.ir_ui_view_968"/>
+            <field name="arch" type="xml">
+                 <!--<field name="user_id" position="attributes">-->
+                    <!--<attribute name="invisible">1</attribute>-->
+                <!--</field>-->
+                <field name="state" position="before">
+                    <field name="journal_id"/>
+                    <field name="note" string="买家备注"/>
+                </field>
+            </field>
+        </record>
+
+
+        <!--未审核订单列表-->
+        <record id="view_quotation_tree" model="ir.ui.view">
+            <field name="name">sale.order.tree</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_quotation_tree"/>
+            <field name="arch" type="xml">
+                 <!--<field name="user_id" position="attributes">-->
+                    <!--<attribute name="invisible">1</attribute>-->
+                <!--</field>-->
+                <field name="state" position="before">
+                    <field name="journal_id"/>
+                </field>
+            </field>
+        </record>
+    </data>
+</openerp>

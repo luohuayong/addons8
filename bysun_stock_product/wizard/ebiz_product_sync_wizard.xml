@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record id="view_ebiz_product_sync_wizard_form" model ="ir.ui.view">
+            <field name="name">电商产品同步</field>
+            <field name="model">ebiz.product.sync.wizard</field>
+            <field name="arch" type="xml">
+                <form string="产品同步">
+                    <separator string='点击按钮"产品同步"同步产品到电商网站！' colspan="4"/>
+                    <separator string="" colspan="4" />
+                    <button name="ebiz_product_sync_wizard" string="产品同步" type="object" icon="gtk-convert"/>
+                    <button special="cancel" string="取消" icon="gtk-cancel"/>
+                </form>
+            </field>
+        </record>
+
+
+        <act_window name="产品同步"
+            id="action_ebiz_product_sync_wizard"
+            src_model="product.template"
+            res_model="ebiz.product.sync.wizard"
+            view_mode="form"
+            target="new"
+            key2="client_action_multi"
+            view_id="view_ebiz_product_sync_wizard_form"/>
+    </data>
+</openerp>

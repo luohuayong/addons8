@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+
+    	<record id="oscg_stock_production_lot_inherit" model="ir.ui.view">
+			<field name="name">批次继承</field>
+			<field name="model">stock.production.lot</field>
+			<field name="inherit_id" ref="stock.view_production_lot_form"/>
+			<field name="arch" type="xml">
+				<field name="name" position="attributes">
+					<attribute name="readonly">1</attribute>
+				</field>
+				<field name="use_date" position="before">
+					<field name="production_date" string="生产日期" required="1"/>
+				</field>
+			</field>
+		</record>
+
+	</data>
+</openerp>

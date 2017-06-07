@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record id="view_hopinsale_detail_wizard_form" model="ir.ui.view">
+            <field name="name">商城销售明细表</field>
+            <field name="model">borrow.goods</field>
+            <field name="arch" type="xml">
+                <form string="商城销售明细表">
+                    <group name="data">
+                        <group >
+                            <field name="startdate" />
+                        </group>
+                        <group >
+                            <field name="enddate" />
+                         </group>
+                    </group>
+                    <button name="button_export" string="导出明细表" type="object" icon="gtk-convert"/>
+                    <button special="cancel" string="取消" icon="gtk-cancel"/>
+                </form>
+            </field>
+        </record>
+
+        <act_window name="商城销售明细表"
+                    id="ebiz_hopinsale_detail_wizard"
+                    res_model="hopinsale_detail"
+                    view_mode="form"
+                    target="new"
+                    view_id="view_hopinsale_detail_wizard_form"/>
+        <menuitem id="menu_hopinsale_detail_wizard"  parent="account.menu_finance_reporting"  sequence="11"  action="ebiz_hopinsale_detail_wizard"></menuitem>
+    </data>
+</openerp>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<templates id="wave_quickpick" xml:space="preserve">
+    
+    <t t-name="QuickPickView">
+        <div class="oe_account_quickadd ui-toolbar" style="margin-bottom:0px;">
+             <div class="oe_form_dropdown_section">
+                配送公司/路线 :
+                <select class="oe_sale_select_product">
+                    
+                </select>
+            </div>　
+            <div class="oe_form_dropdown_section date_search_start">
+                开始时间:
+            </div> 　
+            <div class="oe_form_dropdown_section date_search_end">
+                结束时间:
+            </div>　　
+            <button type="button" class="oe_button oe_tree_button_search" >查询</button>
+        </div>
+    </t>
+
+</templates>

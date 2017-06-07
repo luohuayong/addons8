@@ -1,0 +1,74 @@
+<openerp>
+    <data>
+        <!--模拟订单同步-->
+         <!--<record id="ljun_in_test_view" model="ir.ui.view">-->
+            <!--<field name="name">ljun_in_test</field>-->
+            <!--<field name="model">sale.order</field>-->
+            <!--<field name="inherit_id" ref="sale.view_order_form"></field>-->
+            <!--<field name="arch" type="xml">-->
+                 <!--<button name="invoice_cancel" string="Cancel Order" position="after">-->
+                    <!--<button name="sync_order_from_shop" string="模拟导入" type="object" groups="base.group_user"/>-->
+                    <!--&lt;!&ndash;<button name="sync_buyer_sign" string="模拟买家签收" type="object" groups="base.group_user"/>&ndash;&gt;-->
+                <!--</button>-->
+            <!--</field>-->
+        <!--</record>-->
+
+
+        <record id="hopin_stock_sole_view" model="ir.ui.view">
+            <field name="name">hopin_stock_sole</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_quotation_tree"></field>
+            <field name="arch" type="xml">
+                <xpath expr="//tree" position="attributes">
+                    <attribute name="colors">grey:state=='cancel';blue:state in ('waiting_date','manual');green:state in ('invoice_except','shipping_except');red:isenough==False</attribute>
+                </xpath>
+                 <field name="state" position="before">
+                    <field name="isenough" />
+                    <field name="guidlist" />
+                    <field name="note" string="买家备注"/>
+                 </field>
+            </field>
+        </record>
+
+        <record id="hopin_sale_form_check_reason" model="ir.ui.view">
+            <field name="name">hopin_sale_form</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"></field>
+            <field name="arch" type="xml">
+              <field name="note" position="after">
+                  <div class="oe_inline">
+                        <label for="check_reason" />
+                        <field name="check_reason" string="" colspan="4" />
+                    </div>
+              </field>
+            </field>
+        </record>
+
+        <!-- 订单明细增加最大退款金额 -->
+    	<record id="hopin_sale_order_rebateprice" model="ir.ui.view">
+            <field name="name">sale.order.form</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"></field>
+            <field name="arch" type="xml">
+                <field name="price_subtotal" position="before">
+                    <field name="rebateprice">
+                    </field>
+                </field>
+            </field>
+        </record>
+
+        <!-- 付款方式增加火品支付流水号 -->
+    	<record id="hopin_account_pay_orderosn" model="ir.ui.view">
+            <field name="name">sale.order.form</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="bysun_account.view_sale_order_form"></field>
+            <field name="arch" type="xml">
+                <xpath expr="//tree/field[@name='pay_time']" position="after">
+                    <field name="payorderosn">
+                    </field>
+                </xpath>
+            </field>
+        </record>
+
+    </data>
+</openerp>

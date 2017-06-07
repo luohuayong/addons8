@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data noupdate="1">
+
+        <record id="yt_logistics_paperformat" model="report.paperformat">
+            <field name="name">圆通电子面单纸张</field>
+            <field name="default" eval="True" />
+            <field name="format">custom</field>
+            <field name="page_height">180</field>
+            <field name="page_width">100</field>
+            <field name="orientation">Portrait</field>
+            <field name="margin_top">0</field>
+            <field name="margin_bottom">0</field>
+            <field name="margin_left">0</field>
+            <field name="margin_right">0</field>
+            <field name="header_line" eval="False" />
+            <field name="header_spacing">0</field>
+            <field name="dpi">80</field>
+        </record>
+
+    </data>
+    <data>
+
+        <report 
+            id="oscg_delivery_order_report"
+            string="物流配送单"
+            model="stock.picking.wave"
+            menu="False" 
+            report_type="qweb-pdf"
+            name="bysun_delivery.oscg_delivery_order" 
+            file="bysun_delivery.oscg_delivery_order" 
+        />
+
+        <report 
+            id="oscg_yt_logistics_report"
+            string="圆通电子面单"
+            model="stock.picking"
+            menu="False" 
+            report_type="qweb-pdf"
+            name="bysun_delivery.yt_logistics" 
+            file="bysun_delivery.yt_logistics"
+        />
+
+        <record id="oscg_yt_logistics_report" model="ir.actions.report.xml">
+            <field name="paperformat_id" ref="yt_logistics_paperformat"/>
+        </record>
+
+    </data>
+</openerp>

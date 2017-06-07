@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+
+        <record id="stock_production_search" model="ir.ui.view">
+            <field name="name">Search</field>
+            <field name="model">stock.production</field>
+            <field name="arch" type="xml">
+                <search string="搜索">
+                    <group expand="0" string="Group By..." colspan="16">
+                        <field name="name" filter_domain="['|', '|', '|',('name','ilike',self), ('product_id','ilike',self),('create_uid','ilike',self), ('write_uid','ilike',self)]" string="Name"/>
+                        <filter string="状态" domain="[]" context="{'group_by':'state'}"/>
+                        <filter string="制单人" domain="[]" context="{'group_by':'create_uid'}"/>
+                        <filter string="修改人" domain="[]" context="{'group_by':'write_uid'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="stock_production_form" model="ir.ui.view">
+            <field name="name">stock.production.form</field>
+            <field name="model">stock.production</field>
+            <field name="arch" type="xml">
+            <form string="Production Order">
+                <header>
+                    <button name="act_confirm" type="object" string="确认" states="draft"/>
+                    <button name="act_cancel" type="object" string="取消" states="draft"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,confirm,cancel" statusbar_colors='{"draft":"blue","confirm":"blue","cancel":"blue"}'/>
+                </header>
+
+                <sheet>
+                    <h1>
+                        <field name="name" class="oe_inline" readonly="1"/>
+                    </h1>
+                    <group>
+                        <group>
+                            <field name="product_id"  string="成品"  on_change="onchange_product_id(product_id, product_uom_qty, processing_type, warehouse_id)"/>
+                            <field name="product_uom"/>
+                            <field name="stock_lot" string="成品批次" required="1" domain="[('product_id','=',product_id)]" context="{'default_product_id':product_id}"/>
+                            <field name="warehouse_id"/>
+                            <field name="create_uid"/>
+                        </group>
+                        <group>
+                            <field name="product_uom_qty" on_change="onchange_product_id(product_id, product_uom_qty, processing_type, warehouse_id)"/>
+                            <field name="processing_date"/>
+                            <field name="write_uid"/>
+                            <field name="processing_type" invisible="1"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="原料明细">
+                        	<field name="product_lines">
+                        		<tree editable="bottom">
+                        			<field name="product_id" on_change="onchange_line_product_id(product_id,product_uom_qty,parent.processing_type,parent.warehouse_id)"/>
+                        			<field name="product_uom_qty" on_change="onchange_line_product_id(product_id,product_uom_qty,parent.processing_type,parent.warehouse_id)"/>
+                        			<field name="product_uom"/>
+                                    <field name="stock_lot" string="原料批次" domain="[('product_id','=',product_id)]"/>
+                        		</tree>
+                        	</field>
+                        </page>
+                     </notebook>
+                 </sheet>
+             </form>
+         </field>
+     </record>
+
+     <record id="stock_production_tree" model="ir.ui.view">
+            <field name="name">stock.production.tree</field>
+            <field name="model">stock.production</field>
+            <field name="arch" type="xml">
+                <tree string="Stock Production">
+                    <field name="product_id" string="成品"/>
+                    <field name="name"/>
+                    <field name="create_uid"/>
+                    <field name="create_date"/>
+                    <field name="write_uid"/>
+                    <field name="warehouse_id"/>
+                    <field name="processing_type" invisible="1"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+     </record>
+    <record id="action_stock_production_form" model="ir.actions.act_window">
+            <field name="name">多对一加工</field>
+            <field name="res_model">stock.production</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="search_view_id" ref="stock_production_search"/>
+            <field name="domain">[('processing_type','=','many2one')]</field>
+            <field name="context">{'default_processing_type':'many2one'}</field>
+    </record>
+    
+        <record id="action_stock_production_treeview" model="ir.actions.act_window.view">
+            <field eval="5" name="sequence"/>
+            <field name="view_mode">tree</field>
+            <field name="act_window_id" ref="action_stock_production_form"/>
+            <field name="view_id" ref="stock_production_tree"/>
+        </record>
+        <record id="action_stock_production_formview" model="ir.actions.act_window.view">
+            <field eval="10" name="sequence"/>
+            <field name="view_mode">form</field>
+            <field name="act_window_id" ref="action_stock_production_form"/>
+            <field name="view_id" ref="stock_production_form"/>
+        </record>
+
+
+        <record id="stock_production_search1" model="ir.ui.view">
+            <field name="name">Search</field>
+            <field name="model">stock.production</field>
+            <field name="arch" type="xml">
+                <search string="搜索">
+                    <group expand="0" string="Group By..." colspan="16">
+                        <field name="name" filter_domain="['|', '|', '|',('name','ilike',self), ('product_id','ilike',self),('create_uid','ilike',self), ('write_uid','ilike',self)]" string="Name"/>
+                        <filter string="状态" domain="[]" context="{'group_by':'state'}"/>
+                        <filter string="制单人" domain="[]" context="{'group_by':'create_uid'}"/>
+                        <filter string="修改人" domain="[]" context="{'group_by':'write_uid'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record id="stock_production_form1" model="ir.ui.view">
+            <field name="name">stock.production.form1</field>
+            <field name="model">stock.production</field>
+            <field name="arch" type="xml">
+            <form string="Production Order">
+                <header>
+                    <button name="act_confirm" type="object" string="确认" states="draft"/>
+                    <button name="act_cancel" type="object" string="取消" states="draft"/>
+                    <field name="state" widget="statusbar" statusbar_visible="draft,confirm,cancel" statusbar_colors='{"draft":"blue","confirm":"blue","cancel":"blue"}'/>
+                </header>
+                <sheet>
+                    <h1>
+                        <field name="name" class="oe_inline" readonly="1"/>
+                    </h1>
+                    <group>
+                        <group>
+                            <field name="product_id" string="原料" on_change="onchange_product_id(product_id, product_uom_qty, processing_type, warehouse_id)"/>
+                            <field name="product_uom"/>
+                            <field name="warehouse_id"/>
+                            <field name="stock_lot" string="原料批次" domain="[('product_id','=',product_id)]" context="{'default_product_id':product_id}"/>
+                            <field name="create_uid"/>
+                        </group>
+                        <group>
+                            <field name="product_uom_qty" on_change="onchange_product_id(product_id, product_uom_qty, processing_type, warehouse_id)"/>
+                            <field name="processing_date"/>
+                            <field name="write_uid"/>
+                            <field name="processing_type" invisible="1"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="成品明细">
+                            <field name="product_lines">
+                                <tree editable="bottom">
+                                    <field name="product_id" string="成品" on_change="onchange_line_product_id(product_id,product_uom_qty,parent.processing_type,parent.warehouse_id)"/>
+                                    <field name="stock_lot" string="成品批次" required="1" domain="[('product_id','=',product_id)]" context="{'default_product_id':product_id}"/>
+                                    <field name="product_uom_qty"/>
+                                    <field name="product_uom"/>
+                                </tree>
+                            </field>
+                        </page>
+                     </notebook>
+                 </sheet>
+             </form>
+         </field>
+     </record>
+
+     <record id="stock_production_tree1" model="ir.ui.view">
+            <field name="name">stock.production.tree1</field>
+            <field name="model">stock.production</field>
+            <field name="arch" type="xml">
+                <tree string="Stock Production">
+                    <field name="product_id" string="原料"/>
+                    <field name="name"/>
+                    <field name="create_uid"/>
+                    <field name="create_date"/>
+                    <field name="write_uid"/>
+                    <field name="warehouse_id"/>
+                    <field name="processing_type" invisible="1"/>
+                    <field name="state"/>
+                </tree>
+            </field>
+     </record>
+    <record id="action_stock_production_form1" model="ir.actions.act_window">
+            <field name="name">一对多加工</field>
+            <field name="res_model">stock.production</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="search_view_id" ref="stock_production_search1"/>
+            <field name="view_id" ref="stock_production_form1"/>
+            <field name="domain">[('processing_type','=','one2many')]</field>
+            <field name="context">{'default_processing_type':'one2many'}</field>
+    </record>
+
+        <record id="action_stock_production_treeview1" model="ir.actions.act_window.view">
+            <field eval="5" name="sequence"/>
+            <field name="view_mode">tree</field>
+            <field name="act_window_id" ref="action_stock_production_form1"/>
+            <field name="view_id" ref="stock_production_tree1"/>
+        </record>
+        <record id="action_stock_production_formview1" model="ir.actions.act_window.view">
+            <field eval="10" name="sequence"/>
+            <field name="view_mode">form</field>
+            <field name="act_window_id" ref="action_stock_production_form1"/>
+            <field name="view_id" ref="stock_production_form1"/>
+        </record>
+
+
+<menuitem id="stock_production_menu" parent="stock.menu_stock_root" name="仓库加工" sequence= "1"/>
+<menuitem id="manytoone_production_menu" parent="stock_production_menu" name="多对一加工" action="action_stock_production_form"/>
+<menuitem id="onetomany_production_menu" parent="stock_production_menu" name="一对多加工" action="action_stock_production_form1"/>
+</data>
+</openerp>

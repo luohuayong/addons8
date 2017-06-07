@@ -1,0 +1,157 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record id="view_sale_order_batch_confirm" model="ir.ui.view">
+            <field name="name">Batch confirm</field>
+            <field name="model">sale.order.batch.confirm</field>
+            <field name="arch" type="xml">
+                <form string="批量审核">
+                    <separator colspan="4" string="您真的要审核这些报价单吗?" />
+                    <footer>
+                        <button name="batch_confirm" string="审核" type="object" class="oe_highlight"/>
+                        or
+                        <button string="Cancel" class="oe_link" special="cancel" />
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_sale_order_confirm" model="ir.actions.act_window">
+            <field name="name">批量审核</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">sale.order.batch.confirm</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="view_id" ref="view_sale_order_batch_confirm"/>
+            <field name="target">new</field>
+            <field name="multi">True</field>
+        </record>
+
+        <!--<record id="view_supplier_sale_order" model="ir.ui.view">-->
+            <!--<field name="name">supplier sale order</field>-->
+            <!--<field name="model">sale.order.export.to.supplier</field>-->
+            <!--<field name="arch" type="xml">-->
+                <!--<data>-->
+                    <!--<form string="供应商销售订单">-->
+                        <!--<header>-->
+                            <!--<button name="button_export" string="导出" type="object" class="oe_highlight"/>-->
+                        <!--</header>-->
+                        <!--<field name="partner_id"/>-->
+                    <!--</form>-->
+                    <!--<tree>-->
+                        <!--<field name="order_no"/>-->
+                        <!--<field name="product_no"/>-->
+                        <!--<field name="product_uom_qty"/>-->
+                    <!--</tree>-->
+                <!--</data>-->
+            <!--</field>-->
+        <!--</record>-->
+
+        <record id="view_supplier_sale_order_tree" model="ir.ui.view">
+            <field name="name">supplier sale order tree</field>
+            <field name="model">sale.order.export.to.supplier</field>
+            <field name="view_mode">tree,form</field>
+            <field name="arch" type="xml">
+                <tree string="导出列表">
+                    <field name="partner_id"/>
+                    <field name="start_order_date"/>
+                    <field name="end_order_date"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_supplier_sale_order_form" model="ir.ui.view">
+            <field name="name">supplier sale order form</field>
+            <field name="model">sale.order.export.to.supplier</field>
+            <field name="arch" type="xml">
+                <form string="供应商销售订单">
+                    <header>
+                        <button name="button_query" string="查询" type="object" class="oe_highlight"/>
+                        <button name="button_export" string="导出" type="object" class="oe_highlight"/>
+                    </header>
+                    <sheet>
+                        <group>
+                            <group>
+                                <field name="partner_id" domain="[('supplier','=',True),('is_company','=',1),('supplier_mode','in',('Commission','Consign'))]"/>
+                            </group>
+                            <group>
+                                <field name="start_order_date"/>
+                                <field name="end_order_date"/>
+                            </group>
+                        </group>
+                        <notebook>
+                            <page string="订单明细">
+                                <field name="order_lines" attrs="{'readonly': True}">
+                                    <tree string="Sales Order Lines">
+                                        <field name="order_no"/>
+                                        <field name="product_no"/>
+                                        <field name="product_uom_qty"/>
+                                        <field name="partner_shipping_id" invisible="1"/>
+                                        <field name="receiver"/>
+                                        <field name="receiver_area"/>
+                                        <field name="receiver_addr"/>
+                                        <field name="receiver_IDCard"/>
+                                        <field name="mobile" invisible="1"/>
+                                        <field name="phone" invisible="1"/>
+                                        <field name="zip" invisible="1"/>
+                                    </tree>
+                                </field>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="action_supplier_sale_order" model="ir.actions.act_window">
+            <field name="name">供应商销售订单</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">sale.order.export.to.supplier</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_supplier_sale_order_tree"/>
+        </record>
+
+        <menuitem action="action_supplier_sale_order" name="供应商销售订单" id="menu_supplier_sale_order" parent="base.menu_sales" sequence="40" groups="base.group_user"/>
+
+        <!-- 销售单视图继承 -->
+        <record id="view_oscg_saleorder_form" model="ir.ui.view">
+            <field name="name">销售订单</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <button name="invoice_cancel" string="Cancel Order" position="after">
+                    <!--<button name="sync_order_from_shop" string="模拟导入" type="object" groups="base.group_user"/>-->
+                    <!--<button name="sync_buyer_sign" string="模拟买家签收" type="object" groups="base.group_user"/>-->
+                </button>
+                <field name="partner_invoice_id" position="replace">
+                    <field name="partner_invoice_id" context="{'default_type':'invoice'}"/>
+                </field>
+                <field name="partner_shipping_id" position="replace">
+                    <field name="partner_shipping_id" on_change="onchange_delivery_id(company_id, partner_id, partner_shipping_id, fiscal_position)" context="{'default_type':'delivery', 'show_address': 1}" options='{"always_reload": True}'/>
+                </field>
+                <field name="note" position="replace">
+                    <div class="oe_inline">
+                        <label for="note" string="买家备注"/>
+                        <field name="note" string="" colspan="4" readonly="True"/>
+                    </div>
+                    <div class="oe_inline">
+                        <label for="seller_memo"/>
+                        <field name="seller_memo" colspan="4"/>
+                    </div>
+                </field>
+                    <!--<field name="delivery_code"/>-->
+                    <!--<field name="delivery_date"/>-->
+                    <!--<field name="delivery_hour">-->
+                        <!--<button name="select_delivery_hour" string="选择时段" type="object"/>-->
+                    <!--</field>-->
+                    <!--<field name="is_cod"/>-->
+                    <!--<field name="is_distribution"/>-->
+                    <!--<field name="distribution_name"/>-->
+                    <!--<field name="distribution_detail"/>-->
+                <!--</field>-->
+            </field>
+        </record>
+
+    </data>
+</openerp>

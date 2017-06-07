@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data noupdate="1">
+        
+        <!--自动创建供应商结算项-->
+        <record id="ebiz_supplier_account_line_ir_cron" model="ir.cron">
+            <field name="name">创建供应商结算项</field>
+            <field name="interval_type">hours</field>
+            <field name="interval_number">1</field>
+            <field name="numbercall">-1</field>
+            <field name="model">stock.picking</field>
+            <field name="function">search_picking_ids</field>
+            <field name="active" eval="False" />
+        </record>        
+
+        <record id="ebiz_shop_product_supplier_gysbt" model="product.product">
+            <field name="name">供应商补贴</field>
+            <field name="type">service</field>
+            <field name="uom_id" ref="product.product_uom_unit"/>
+            <field name="uom_type" ref="product.product_uom_categ_unit"/>
+            <field name="uom_po_id" ref="product.product_uom_unit"/>
+            <field name="default_code">gysbt</field>
+            <field name="categ_id">1</field>
+        </record>
+
+        <record id="ebiz_shop_product_supplier_gyskk" model="product.product">
+            <field name="name">供应商扣款</field>
+            <field name="type">service</field>
+            <field name="uom_id" ref="product.product_uom_unit"/>
+            <field name="uom_type" ref="product.product_uom_categ_unit"/>
+            <field name="uom_po_id" ref="product.product_uom_unit"/>
+            <field name="default_code">gyskk</field>
+            <field name="categ_id">1</field>
+        </record>
+
+        <record id="ebiz_shop_product_supplier_gysyj" model="product.product">
+            <field name="name">佣金</field>
+            <field name="type">service</field>
+            <field name="uom_id" ref="product.product_uom_unit"/>
+            <field name="uom_type" ref="product.product_uom_categ_unit"/>
+            <field name="uom_po_id" ref="product.product_uom_unit"/>
+            <field name="default_code">gysyj</field>
+            <field name="categ_id">1</field>
+        </record>
+
+    </data>
+</openerp>

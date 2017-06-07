@@ -1,0 +1,84 @@
+<openerp>
+    <data>
+           <record id="hopin_res_partner_fee_tree" model="ir.ui.view">
+            <field name="name">compute_fee_tree</field>
+            <field name="model">res.partner</field>
+            <field name="arch" type="xml">
+               <tree string="Contacts" create="0">
+                    <field name="display_name"/>
+                    <field name="shipfee"/>
+                    <field name="supplier_mode"/>
+                </tree>
+            </field>
+        </record>
+
+
+        <record id="hopin_res_partner_form" model="ir.ui.view">
+            <field name="name">res_partner_form</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="purchase.view_partner_property_form"></field>
+            <field name="arch" type="xml">
+             <field name="property_product_pricelist_purchase" position="after">
+                    <field name="shipfee" required="1"/>
+                </field>
+                <field name="shipfee" position="after">
+                    <field name="buyer" />
+                    <field name="buyerassistant" />
+                </field>
+            </field>
+        </record>
+
+
+        <record id="hopin_res_partner_form_taxtype" model="ir.ui.view">
+            <field name="name">res_partner_taxtype_form</field>
+            <field name="model">res.partner</field>
+            <field name="inherit_id" ref="base.view_partner_form"></field>
+            <field name="arch" type="xml">
+             <field name="title" position="after">
+                    <field name="taxtype"/>
+                </field>
+            </field>
+        </record>
+
+         <!--打开请假单动作-->
+        <act_window id="hopin_res_partner_fee" name="供应商邮费" res_model="res.partner" view_mode="tree" view_id="hopin_res_partner_fee_tree"
+        domain="[('supplier_mode', 'in', ('Consign', 'Commission'))]" context="{'search_default_supplier': 1,'search_default_type_company': 1}"
+        />
+
+
+        <menuitem id="menu_res_partner_fee"  parent="purchase.menu_procurement_management" action="hopin_res_partner_fee"></menuitem>
+
+
+        <record id="view_ebiz_supplier_fee_form" model="ir.ui.view">
+            <field name="name">供应商邮费</field>
+            <field name="model">supplier.fee</field>
+            <field name="arch" type="xml">
+                <form string="供应商邮费">
+                    <separator string='点击按钮"供应商邮费"计算邮费并生成费用单！' colspan="4"/>
+                    <label string="供应商邮费" colspan="4"/>
+                    <group name="data">
+                        <group >
+                            <field name="starttime" />
+                        </group>
+                        <group >
+                            <field name="endtime" />
+                         </group>
+                    </group>
+                    <separator string="" colspan="4" />
+                    <button name="ebiz_supplier_fee_wizard" string="供应商邮费" type="object" icon="gtk-convert"/>
+                    <button special="cancel" string="取消" icon="gtk-cancel"/>
+                </form>
+            </field>
+        </record>
+
+        <act_window name="供应商邮费"
+                    id="action_ebiz_supplier_fee_wizard"
+                    src_model="res.partner"
+                    res_model="supplier.fee"
+                    view_mode="form"
+                    target="new"
+                    key2="client_action_multi"
+                    view_id="view_ebiz_supplier_fee_form"/>
+
+    </data>
+</openerp>

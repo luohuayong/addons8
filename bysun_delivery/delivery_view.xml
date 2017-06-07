@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+
+        <!-- 拣货单from继承 -->
+        <record id="view_oscg_stockpicking_form" model="ir.ui.view">
+            <field name="name">拣货单</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.view_picking_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//header/button[last()]" position="after">
+                    <field name="picking_type_code" invisible="1"/>
+                    <!-- <button string="客户签收" type="object" name="open_customer_sign" class="oe_highlight"
+                    attrs="{'invisible': ['|', '|', ('state','!=', 'done'), ('customer_signed', '=', True), ('picking_type_code', '!=', 'outgoing')]}" /> -->
+                </xpath>
+                <field name="origin" position="after">
+                    <field name="customer_signed" readonly="1" attrs="{'invisible':[('picking_type_code','!=','outgoing')]}"/>
+                    <!-- <button name="action_print_logistics" type="object" string="打印快递单"/> -->
+                </field>
+            </field>
+        </record>
+
+        <record id="view_oscg_stockpicking_carrier_form" model="ir.ui.view">
+            <field name="name">拣货单</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="delivery.view_picking_withcarrier_out_form"/>
+            <field name="arch" type="xml">
+                <field name="carrier_id" position="after">
+                    <field name="sale_id" invisible="1"></field>
+                </field>
+                <field name="carrier_id" position="attributes">
+                    <attribute name="attrs">{'required':[('sale_id','!=',False)]}</attribute>
+                </field>
+                <field name="carrier_tracking_ref" position="attributes">
+                    <attribute name="attrs">{'required':[('sale_id','!=',False)]}</attribute>
+                </field>
+            </field>
+        </record>
+
+    	<record id="view_oscg_stock_picking_wave_form" model="ir.ui.view">
+            <field name="name">拣货波次</field>
+            <field name="model">stock.picking.wave</field>
+            <field name="inherit_id" ref="stock_picking_wave.view_picking_wave_form"/>
+            <field name="arch" type="xml">
+                <button name="confirm_picking" position="attributes">
+                    <attribute name="attrs">{'invisible':['|',('picking_ids','=',[]),('state','!=','draft')]}</attribute>
+                </button>
+				<button name="confirm_picking" position="after">
+					<button name="%(bysun_delivery.action_upload_barcode)d" type="action" string="上传条码" attrs="{'invisible':[('state','!=','draft')]}"/>
+				</button>
+                <field name="user_id" position="after">
+                    <field name="carrier_id" required="1"/>
+                </field>
+                <button name="print_picking" position="after">
+                    <button name="print_delivery_wave" type="object" string="打印物流签收单"/>
+                </button>
+				<field name="picking_ids" position="after">
+					<group>
+						<field name="error_order"/>
+					</group>
+				</field>
+                <button name="action_cancel" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </button>
+                <button name="cancel_picking" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </button>
+                <button name="action_assign" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </button>
+                <button name="force_assign" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </button>
+			</field>
+		</record>
+
+        <record id="view_oscg_stock_picking_wave_tree" model="ir.ui.view">
+            <field name="name">拣货波次</field>
+            <field name="model">stock.picking.wave</field>
+            <field name="inherit_id" ref="stock_picking_wave.view_picking_wave_tree"/>
+            <field name="arch" type="xml">
+                <field name="user_id" position="after">
+                    <field name="carrier_id"/>
+                </field>
+            </field>
+        </record>
+
+        <record id="view_oscg_delivery_schedule_tree" model="ir.ui.view">
+            <field name="name">配送排班</field>
+            <field name="model">delivery.schedule</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="delivery_id"/>
+                    <field name="vehicle"/>
+                    <field name="driver"/>
+                </tree>
+            </field>
+        </record>
+
+        <record id="bysun_view_ebiz_shop_inheirt" model="ir.ui.view">
+            <field name="name">电商店铺</field>
+            <field name="model">ebiz.shop</field>
+            <field name="inherit_id" ref="bysun_stock_product.oscg_base_ebiz_shop_form"/>
+            <field name="arch" type="xml">
+                <field name="host" position="after">
+                    <field name="yt_url"/>
+                    <field name="clientid"/>
+                    <field name="yt_pwd"/>
+                    <field name="order_type"/>
+                    <field name="servicetype"/>
+                </field>
+            </field>
+        </record>
+
+        <record id="view_oscg_delivery_schedule_form" model="ir.ui.view">
+            <field name="name">配送排班</field>
+            <field name="model">delivery.schedule</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                    <group>
+                        <field name="name"/>
+                    </group>
+                    <group>
+                        <field name="delivery_id"/>
+                    </group>
+                    <group>
+                        <field name="vehicle"/>
+                    </group>
+                    <group>
+                        <field name="driver"/>
+                    </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_oscg_delivery_vehicle_tree" model="ir.ui.view">
+            <field name="name">配送车辆</field>
+            <field name="model">delivery.vehicle</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="description"/>
+
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_oscg_delivery_vehicle_form" model="ir.ui.view">
+            <field name="name">配送车辆</field>
+            <field name="model">delivery.vehicle</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                    <group>
+                        <field name="name"/>
+                    </group>
+                    <group>
+                        <field name="description"/>
+                    </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_oscg_delivery_driver_tree" model="ir.ui.view">
+            <field name="name">配送司机</field>
+            <field name="model">delivery.driver</field>
+            <field name="type">tree</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="description"/>
+
+                </tree>
+            </field>
+        </record>
+
+        <record id="view_oscg_delivery_driver_form" model="ir.ui.view">
+            <field name="name">配送司机</field>
+            <field name="model">delivery.driver</field>
+            <field name="type">form</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                    <group>
+                        <field name="name"/>
+                    </group>
+                    <group>
+                        <field name="description"/>
+                    </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record id="view_oscg_deliveyr_carrier_form" model="ir.ui.view">
+            <field name="name">oscg.delivery.carrier.form</field>
+            <field name="model">delivery.carrier</field>
+            <field name="inherit_id" ref="delivery.view_delivery_carrier_form"/>
+            <field eval="30" name="priority"/>
+            <field name="arch" type="xml">
+                <data>
+                    <xpath expr="//field[@name='product_id']" position="after">
+                        <field name="association_method"/>
+                        <field name="report_id"/>
+                        <field name="next_sequence"/>
+                    </xpath>
+                </data> 
+            </field>
+        </record>
+
+        <record id="action_delivery_schedule" model="ir.actions.act_window">
+            <field name="name">配送排班</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">delivery.schedule</field>
+            <field name="view_type">form</field>
+            <field name="view_id" ref="view_oscg_delivery_schedule_tree"/>
+            <field name="context">{}</field>
+            <field name="domain"></field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <record id="action_delivery_driver" model="ir.actions.act_window">
+            <field name="name">配送司机</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">delivery.driver</field>
+            <field name="view_type">form</field>
+            <field name="view_id" ref="view_oscg_delivery_driver_tree"/>
+            <field name="context">{}</field>
+            <field name="domain"></field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <record id="action_delivery_vehicle" model="ir.actions.act_window">
+            <field name="name">配送车辆</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">delivery.vehicle</field>
+            <field name="view_type">form</field>
+            <field name="view_id" ref="view_oscg_delivery_vehicle_tree"/>
+            <field name="context">{}</field>
+            <field name="domain"></field>
+            <field name="view_mode">tree,form</field>
+        </record>
+
+        <record id="action_picking_sign_form" model="ir.actions.act_window">
+            <field name="name">客户签收</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">stock.picking</field>
+            <field name="view_type">form</field>
+            <field name="context">{}</field>
+            <field name="domain"></field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        <record model="ir.actions.act_window.view" id="action_picking_sign_tree_view">
+            <field name="sequence" eval="1"/>
+            <field name="view_mode">tree</field>
+            <field name="view_id" ref="stock.vpicktree"/>
+            <field name="act_window_id" ref="action_picking_sign_form"/>
+        </record>
+
+        <record id="action_picking_method_form" model="ir.actions.act_window">
+            <field name="name">配送路线</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="res_model">delivery.carrier</field>
+            <field name="view_type">form</field>
+            <field name="context">{}</field>
+            <field name="domain"></field>
+            <field name="view_mode">tree,form</field>
+        </record>
+        
+        <!--<menuitem id="menu_ebiz_delivery_out" name="物流配送" parent="stock.menu_stock_root" sequence="2"/>-->
+        
+        <menuitem action="stock_picking_wave.action_picking_wave" name="物流签收"
+            parent="bysun_picking.menu_ebiz_picking_out" id="menu_delivery_wave" sequence="9"/>
+        <!--<menuitem action="action_picking_sign_form" name="客户签收"-->
+            <!--parent="menu_ebiz_delivery_out"  id="menu_delivery_sign" sequence="10"/>-->
+        <!--<menuitem action="action_delivery_schedule" name="配送排班"-->
+            <!--parent="menu_ebiz_delivery_out"  id="menu_delivery_schedule" sequence="15"/>-->
+        <!--<menuitem action="action_picking_method_form" name="物流路线"-->
+            <!--parent="menu_ebiz_delivery_out"  id="menu_delivery_method" sequence="17"/>-->
+        <!--<menuitem action="action_delivery_vehicle" name="配送车辆"-->
+            <!--parent="menu_ebiz_delivery_out"  id="menu_delivery_vehicle" sequence="19"/>-->
+        <!--<menuitem action="action_delivery_driver" name="配送司机"-->
+            <!--parent="menu_ebiz_delivery_out"  id="menu_delivery_driver" sequence="20"/>-->
+
+    </data>
+</openerp>

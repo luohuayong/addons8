@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+
+        <record id="oscg_stock_inventory_inherit_v2" model="ir.ui.view">
+            <field name="name">盘点继承</field>
+            <field name="model">stock.inventory</field>
+            <field name="inherit_id" ref="stock.view_inventory_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field/tree/field[@name='product_id']" position="attributes">
+                    <attribute name="domain">[('type','=','product'),('seller_id.supplier_mode','=',parent.product_type)]</attribute>
+                    <attribute name="options">{'no_create':True}</attribute>
+                </xpath>
+                <xpath expr="//field/tree/field[@name='product_id']" position="after">
+                    <field name="loc_rack" readonly="1"/>
+                    <field name="product_name" invisible="1"/>
+                    <field name="prodlot_name" invisible="1"/>
+                </xpath>
+                <field name="filter" position="after">
+                    <field name="product_type" attrs="{'invisible':[('filter','=','product')]}"/>
+                    <field name="notes"/>
+                </field>
+                <xpath expr="//field/tree" position="attributes">
+                    <attribute name="default_order">loc_rack,product_name,prodlot_name</attribute>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="stock_account_cn.action_stock_account_finance" model="ir.actions.act_window">
+            <field name="name">入库/出库核算</field>
+            <field name="res_model">stock.picking</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain" eval="[('picking_type_id','in',[ref('stock.picking_type_in'),ref('stock.picking_type_out')]),('state', '=', 'done' ),('origin','not ilike','JG')]"></field>
+            <field name="context">{
+                    'search_default_in': 1,
+                    'search_default_no_entry': 1,
+            }</field>
+            <field name="search_view_id" ref="stock_account_cn.view_picking_entry_search" />
+        </record>
+
+        <record id="action_stock_inventory_entry" model="ir.actions.act_window">
+            <field name="name">盘点会计凭证</field>
+            <field name="res_model">stock.inventory</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain" eval="[('location_id','=',ref('stock.stock_location_stock')),('state', '=', 'done' )]"></field>
+        </record>
+
+        <record id="stock_cost_adjust_move_form" model="ir.ui.view">
+            <field name="name">成本调整修正</field>
+            <field name="model">stock.cost.adjust</field>
+            <field name="inherit_id" ref="stock_account_cn.stock_cost_adjust_view"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='move_id']" position="replace">
+                    <field name="move_id" domain="[('product_id','=',product_id),('location_id.usage','&lt;&gt;','internal'),('state','=','done')]" on_change="onchange_origin_cost(move_id)"/>
+                </xpath>
+            </field>
+        </record>
+
+        <menuitem id="menu_inventory_entry_inherit" action="action_stock_inventory_entry" parent="stock_account_cn.stock_account_finance_menu"  name="盘点核算"/>
+    </data>
+</openerp>

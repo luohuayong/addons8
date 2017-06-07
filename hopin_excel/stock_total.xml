@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>c
+        <record id="view_stock_move_total_wizard_form" model="ir.ui.view">
+            <field name="name">销售收入统计报表</field>
+            <field name="model">stock.move.total</field>
+            <field name="arch" type="xml">
+                <form string="进销存汇总表">
+                    <group name="data">
+                        <group >
+                            <field name="startdate" />
+                        </group>
+                        <group >
+                            <field name="enddate" />
+                         </group>
+                    </group>
+                    <button name="button_export" string="导出进销存汇总表" type="object" icon="gtk-convert"/>
+                    <button special="cancel" string="取消" icon="gtk-cancel"/>
+                </form>
+            </field>
+        </record>
+
+        <act_window name="进销存汇总表"
+                    id="stock_move_total_wizard"
+                    res_model="stock.move.total"
+                    view_mode="form"
+                    target="new"
+                    view_id="view_stock_move_total_wizard_form"/>
+        <menuitem id="menu_stock_move_total_wizard_n"  parent="account.menu_finance_reporting"  sequence="10"  action="stock_move_total_wizard"></menuitem>
+    </data>
+</openerp>

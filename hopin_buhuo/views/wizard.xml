@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record id="view_buhuo_jisuan_wizard" model="ir.ui.view">
+            <field name="name">计算库存</field>
+            <field name="model">buhuo.huojia_jisuan</field>
+            <field name="arch" type="xml">
+                <form string="计算库存">
+                    <p>
+                        - 按货架分组计算库存 <br/>
+                        - 按货架、商品分组计算库存 <br/>
+                        - 按货架计算最后一次补货数量 <br/>
+                        - 按货架、商品分组计算最后一次补货数量 <br/>
+                    </p>
+                    <footer>
+                        <button name="kucun_and_buhuo_jisuan" string="开始计算" type="object"  class="oe_highlight"  />
+                        <button name="xiaoshou_jisuan" string="销售统计" type="object"  class="oe_highlight"  />
+                        或者
+                        <button string="Cancel" class="oe_link" special="cancel" />
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+         <act_window name="计算库存"
+            res_model="buhuo.huojia_jisuan"
+            view_mode="form"
+            target="new"
+            key2="client_action_multi"
+            id="action_buhuo_jisuan"/>
+
+        <menuitem name="计算库存" id="menu_buhuo_jisuan" parent="menu_buhuo_yujing" action="action_buhuo_jisuan"/>
+    </data>
+</openerp>

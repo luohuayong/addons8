@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+
+        <record id="stock_landed_cost_improve_form" model="ir.ui.view">
+            <field name="name">到岸价继承</field>
+            <field name="model">stock.landed.cost</field>
+            <field name="inherit_id" ref="stock_landed_costs.view_stock_landed_cost_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='valuation_adjustment_lines']" position="replace">
+                    <field name="valuation_adjustment_lines" nolabel="1">
+                                    <form string="Valuation Adjustments">
+                                        <group>
+                                            <group>
+                                                <field name="product_id"/>
+                                                <field name="quantity"/>
+                                            </group>
+                                            <group>
+                                                <field name="former_cost"/>
+                                                <field name="additional_landed_cost"/>
+                                            </group>
+                                        </group>
+                                    </form>
+                                    <tree string="Valuation Adjustments" editable="bottom" create="0">
+                                        <field name="cost_line_id" readonly="1"/>
+                                        <field name="product_id" readonly="1"/>
+                                        <field name="weight" readonly="1"/>
+                                        <field name="volume" readonly="1"/>
+                                        <field name="quantity" readonly="1"/>
+                                        <field name="former_cost_per_unit" readonly="1" />
+                                        <field name="former_cost" readonly="1" />
+                                        <field name="additional_landed_cost"/>
+                                    </tree>
+                                </field>
+                </xpath>
+            </field>
+        </record>
+
+        <record id="stock_landed_costs.action_stock_landed_cost" model="ir.actions.act_window">
+            <field name="context">{"default_account_journal_id": 1}</field>
+        </record>
+    </data>
+</openerp>

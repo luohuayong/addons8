@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record id="view_create_inventory_entry" model="ir.ui.view">
+            <field name="name">Create Inventory Entry</field>
+            <field name="model">stock.inventory.entry</field>
+            <field name="arch" type="xml">
+                <form string="Create Inventory Entry">
+                    <group>
+                        <field name="period_id" />
+                        <field name="journal_id" />
+                        <field name="account_id" />
+                    </group>
+                    <footer>
+                        <button name="create_inventory_entry" string="存货盘点凭证" type="object" class="oe_highlight"/>
+                        or
+                        <button string="关闭" class="oe_link" special="cancel" />
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <act_window name="会计凭证"
+            res_model="stock.inventory.entry"
+            src_model="stock.inventory"
+            key2="client_action_multi"
+            view_mode="form"
+            view_type="form"
+            target="new"
+            id="action_create_inventory_entry"/>
+
+    </data>
+</openerp>
+

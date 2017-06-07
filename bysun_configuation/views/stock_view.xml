@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+
+        <record id="bysun_configuation_view_picking_form" model="ir.ui.view">
+            <field name="name">stock.picking.form</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.view_picking_form"/>
+            <field eval="12" name="priority"/>
+            <field name="arch" type="xml">
+                <button name="action_confirm" position="attributes">
+                    <attribute name="groups">stock.group_stock_user,base.group_portal,base.group_sale_manager</attribute>
+                </button>
+                <button name="action_assign" position="attributes">
+                    <attribute name="groups">stock.group_stock_user,base.group_portal,base.group_sale_manager</attribute>
+                </button>
+                <button name="force_assign" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </button>
+                <button name="do_enter_transfer_details" position="attributes">
+                    <attribute name="groups">stock.group_stock_user,base.group_portal,base.group_sale_manager</attribute>
+                </button>
+                <button name="do_print_picking" position="attributes">
+                    <attribute name="invisible">1</attribute>
+                </button>
+                <button name="305" position="attributes">
+                    <attribute name="groups">stock.group_stock_user</attribute>
+                </button>
+                <button name="action_cancel" position="attributes">
+                    <attribute name="groups">stock.group_stock_user,base.group_portal,base.group_sale_manager</attribute>
+                </button>
+
+                <field name="partner_id" position="attributes">
+                    <attribue name="options">{'no_create':True}</attribue>
+                </field>
+            </field>
+        </record>
+
+        <record id="action_picking_type_form" model="ir.actions.act_window">
+            <field name="name">All Operations</field>
+            <field name="res_model">stock.picking.type</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">kanban,form</field>
+            <field name="help" type="html">
+              <p class="oe_view_nocontent_create">
+                Click to create a new picking type.
+              </p><p>
+                The picking type system allows you to assign each stock
+                operation a specific type which will alter its views accordingly.
+                On the picking type you could e.g. specify if packing is needed by default,
+                if it should show the customer.
+              </p>
+            </field>
+        </record>
+
+        <record id="bysun_picking.action_picking_tree_pick_print" model="ir.actions.act_window">
+            <field name="name">打单拣货</field>
+            <field name="res_model">stock.picking</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[('picking_type_id','=',5),('state','not in',('done','cancel', 'draft')),('pending','=', False),('wave_id','!=',False),('carrier_id','!=',False)]</field>
+            <field name="context">{'default_picking_type_id': 5}</field>
+            <field name="search_view_id" ref="stock.view_picking_internal_search"/>
+        </record>
+
+    </data>
+</openerp>

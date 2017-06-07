@@ -1,0 +1,9 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+access_sale_order_logistic,sale.order.logistic,model_sale_order_logistic,base.group_user,1,1,1,1
+access_product_flag,product.flag,model_product_flag,base.group_user,1,1,1,1
+access_sale_order_status_sync,sale.order.status.sync,model_sale_order_status_sync,base.group_user,1,1,1,1
+access_ebiz_shop,ebiz.shop,model_ebiz_shop,base.group_user,1,1,1,1
+access_ebiz_stock,ebiz.stock,model_ebiz_stock,base.group_user,1,1,1,1
+access_ebiz_syncerr,ebiz.syncerr,model_ebiz_syncerr,base.group_user,1,1,1,1
+access_ebiz_message,ebiz.message,model_ebiz_message,base.group_user,1,1,1,1
+access_product_brand,product.brand,model_product_brand,base.group_user,1,1,1,1

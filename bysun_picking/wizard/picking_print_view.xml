@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+<data>
+     <record id="view_print_delivery_order_form" model ="ir.ui.view">
+        <field name="name">快递打单</field>
+        <field name="model">delivery.order.print</field>
+        <field name="arch" type="xml">
+            <form string="快递打单">
+              <group colspan="4" col="4">
+	            <group colspan="2" col="1">
+                      <button name="print_zongjian" string="打印汇总拣货单" type="object" icon="gtk-ok" />
+                      <button name="print_kehudan" string="打印客户单" type="object" icon="gtk-ok" />
+	                <button name="close_clear" string="关闭" type="object" icon="gtk-cancel" />
+	            </group>
+	          </group>
+            </form>
+        </field>
+     </record>
+
+        <!--action click跳出-->
+        <act_window name="拣货打单"
+            id="action_process_order_print"
+            res_model="delivery.order.print"
+            src_model="stock.picking"
+            view_mode="form"
+            target="new"
+            key2="client_action_multi" 
+            view_id="view_print_delivery_order_form"/>
+
+</data>
+</openerp>
+

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+
+    	<record id="oscg_stock_inventory_wizard" model="ir.ui.view">
+			<field name="name">盘点条码上传</field>
+			<field name="model">stock.inventory.simple</field>
+			<field name="arch" type="xml">
+				<form string="盘点条码上传">
+					<field name="upload_code"/>
+					<footer>
+						<button name="action_upload" type="object" string="开始上传"/>
+						<button string="取消" class="oe_link" special="cancel"/>
+					</footer>
+				</form>
+			</field>
+		</record>
+
+	</data>
+</openerp>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data noupdate="1">
+        <record id="stock_cost_adjust_seq_type" model="ir.sequence.type">
+            <field name="name">Stock Cost Adjust</field>
+            <field name="code">stock.cost.adjust</field>
+        </record>
+        <record id="oscg_seq_stock_cost_adjust" model="ir.sequence">
+            <field name="name">Name Order</field>
+            <field name="code">stock.cost.adjust</field>
+            <field name="prefix">CA%(y)s%(month)s%(day)s</field>
+            <field name="padding">4</field>
+            <field name="number_next">1</field>
+            <field name="number_increment">1</field>
+        </record>
+    </data>
+</openerp>

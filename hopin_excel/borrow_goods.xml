@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record id="view_borrow_goods_wizard_form" model="ir.ui.view">
+            <field name="name">借料还料汇总表</field>
+            <field name="model">borrow.goods</field>
+            <field name="arch" type="xml">
+                <form string="借料还料汇总表">
+                    <group name="data">
+                        <group >
+                            <field name="startdate" />
+                        </group>
+                        <group >
+                            <field name="enddate" />
+                         </group>
+                    </group>
+                    <button name="button_export" string="导出借料汇总表" type="object" icon="gtk-convert"/>
+                    <button name="button_export4" string="导出还料汇总表" type="object" icon="gtk-convert"/>
+                    <button name="button_export1" string="导出赠送汇总表" type="object" icon="gtk-convert"/>
+                    <button name="button_export2" string="导出消耗汇总表" type="object" icon="gtk-convert"/>
+                    <button name="button_export3" string="导出销售汇总表" type="object" icon="gtk-convert"/>
+                    <button special="cancel" string="取消" icon="gtk-cancel"/>
+                </form>
+            </field>
+        </record>
+
+        <act_window name="借料还料汇总表"
+                    id="ebiz_borrow_goods_wizard"
+                    res_model="borrow.goods"
+                    view_mode="form"
+                    target="new"
+                    view_id="view_borrow_goods_wizard_form"/>
+        <menuitem id="menu_borrow_goods_wizard"  parent="account.menu_finance_reporting"  sequence="10"  action="ebiz_borrow_goods_wizard"></menuitem>
+    </data>
+</openerp>

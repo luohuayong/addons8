@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<openerp>
+    <data>
+        <!--订单form增加"客户签收"按钮, 增加付款方式的tree view-->
+        <record id="view_sale_order_form" model="ir.ui.view">
+            <field name="name">sale.order.form</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="priority" eval="8"/>
+            <field name="arch" type="xml">
+                <!--<xpath expr="//button[@name='action_button_confirm'][2]" position="after">-->
+                    <!--<button string="客户签收" name="prepare_customer_sign" type="object" states="manual,progress"-->
+                            <!--class="oe_highlight"/>-->
+                <!--</xpath>-->
+                <xpath expr="//notebook" position="inside">
+                    <page string="付款方式">
+                        <field name="payment_lines">
+                            <form string="付款方式">
+                                <group>
+                                    <group>
+                                        <field name="journal_id"/>
+                                        <field name="amount"/>
+                                    </group>
+                                    <group>
+                                        <field name="ref"/>
+                                        <field name="pay_time"/>    
+                                    </group>
+                                </group>
+                            </form>
+                            <tree string="付款方式">
+                                <field name="journal_id"/>
+                                <field name="amount"/>
+                                <field name="ref"/>
+                                <field name="pay_time"/>
+                            </tree>
+                        </field>
+                    </page>
+                </xpath>
+            </field>
+        </record>
+    </data>
+</openerp>

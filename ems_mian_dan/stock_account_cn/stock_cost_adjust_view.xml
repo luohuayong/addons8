@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record id="stock_cost_adjust_tree" model="ir.ui.view">
+            <field name="name">成本调整</field>
+            <field name="model">stock.cost.adjust</field>
+            <field name="arch" type="xml">
+                <tree string="Stock Cost Adjust">
+                    <field name="name"/>
+                    <field name="user_id"/>
+                    <field name="ca_date"/>
+                    <field name="product_id"/>
+                    <field name="move_id"/>
+                    <field name="origin_cost"/>
+                    <field name="new_cost"/>
+                    <field name="reason"/>
+                    <field name="state" invisible="1"/>
+                </tree>
+            </field>
+        </record>
+        
+        <record id="view_stock_cost_adjust_search" model="ir.ui.view">
+            <field name="name">成本调整搜索</field>
+            <field name="model">stock.cost.adjust</field>
+            <field name="arch" type="xml">
+                <search string="Stock Cost Adjust">
+                    <field name="name" string="单号" filter_domain="[('name','ilike', self]"/>
+                    <field name="user_id" string="调整人" filter_domain="[('user_id','ilike',self)]"/>
+                    <field name="ca_date" string="调整时间"/>
+                    <field name="product_id" string="存货产品"/>
+                    <field name="move_id" string="入库明细"/>
+                    <field name="origin_cost" string="调整前价格"/>
+                    <field name="new_cost" string="调整后价格"/>
+                    <field name="reason" string="调整原因"/>
+                    <field name="state" string="状态"/>
+                    <group expand="0" string="成本调整搜索分组">
+                        <filter string="单号" domain="[]" context="{'group_by':'name'}"/>
+                        <filter string="调整人" domain="[]" context="{'group_by':'user_id'}"/>
+                        <filter string="调整前价格" domain="[]" context="{'group_by':'origin_cost'}"/>
+                        <filter string="存货产品" domain="[]" context="{'group_by':'product_id'}"/>
+                    </group>
+                </search>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="stock_cost_adjust_view">
+            <field name="name">Stock Cost Adjust</field>
+            <field name="model">stock.cost.adjust</field>
+            <field name="arch" type="xml">
+                <form string="Stock Cost Adjust">
+                    <header>
+                        <button name="confirm_button" states="draft" string="确认" type="object"/>
+                        <field name="state" widget="statusbar" statusbar_visible="draft,done" statusbar_colors='{"draft":"blue","done":"blue"}'/>
+                    </header>
+                    <sheet>
+                        <div class="oe_title">
+                            <label for="name" class="oe_title"/>
+                            <h1><field name="name"/></h1>
+                        </div>
+                        <group>
+                            <group>
+                                <field name="user_id"/>
+                                <field name="ca_date"/>
+                                <field name="product_id"/>
+                                <field name="move_id" domain="[('product_id','=',product_id),('location_id.usage','&lt;&gt;','internal')]" on_change="onchange_origin_cost(move_id)"/>
+                            </group>
+                            <group>
+                                
+                                <field name="origin_cost"/>
+                                <field name="new_cost"/>
+                                <field name="reason"/>
+                                <field name="state" invisible="1"/>
+                            </group>
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+        </record>
+
+        <record model="ir.ui.view" id="stock_picking_type_inherit">
+            <field name="name">操作类型继承</field>
+            <field name="model">stock.picking.type</field>
+            <field name="inherit_id" ref="stock.view_picking_type_form"/>
+            <field name="arch" type="xml">
+                <field name="warehouse_id" position="after">
+                    <field name="is_create_entry"/>
+                </field>
+            </field>
+        </record>
+
+
+        <record id="stock_cost_adjust" model="ir.actions.act_window">
+            <field name="name">成本调整</field>
+            <field name="res_model">stock.cost.adjust</field>
+            <field name="type">ir.actions.act_window</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="domain">[]</field>
+            <field name="context">{}</field>
+            <field name="search_view_id" ref="view_stock_cost_adjust_search" />
+        </record>
+
+        <menuitem id="stock_cost_adjust_menu1" parent="stock.menu_stock_inventory_control" name="成本调整" action="stock_cost_adjust" sequence="40"/>
+    </data>
+</openerp>
+

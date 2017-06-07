@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+
+    <t t-name='PackEditorWidget'>
+
+        <div class="modal fade" id="js_LotChooseModal" tabindex="-1" role="dialog" aria-labelledby="LotChooseModal" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+                        <h4 class="modal-title" id="myModalLabel">批次号扫描/创建</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>扫描/录入批次号，系统自动查找批次号，查找不到则新建批次号。不输入则系统自动生成批次号创建。</p>
+                        <input class='col-xs-6 js_lot_scan' type='text'/>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                        <button type="button" class="btn btn-primary js_validate_lot">查找/新建批次</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="modal fade" id="js_PackConfModal" tabindex="-1" role="dialog" aria-labelledby="PackConfModal" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+                        <h4 class="modal-title" id="myModalLabel">设置包裹类型</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>包裹类型</p>
+                        <select id="js_packconf_select" class="form-control">
+                            <option class="js_packing_option" data-ul-id="false"></option>
+                            <t t-foreach="widget.get_logisticunit()" t-as="ul">
+                                <option class="js_packing_option" t-att-data-ul-id="ul.id" t-att-value="ul.id"><t t-esc="ul.name"/></option>
+                            </t>
+                        </select>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal">关闭</button>
+                        <button type="button" class="btn btn-primary js_validate_pack">确定</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        
+        <div class="row">
+            <div>
+                <div class="col-md-6 col-sm-4 col-xs-6">
+                    <h2 class="oe_pick_app_header" />
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div >
+                <h3>
+                    <table >
+                        <tr>
+                            <td class="text-right">单号：</td>
+                            <td class="text-left" width="300"><form class="js_submit_pick_ref"><input type="text" class='form-control pack_pick_ref' t-att-value="widget.get_header()"> </input></form></td>
+                            <td class="text-right" width="100"></td>
+                            <td class='text-center' width="100"><button type="button" class='btn btn-danger js_pick_pack js_putinpack'> 打包 </button></td>
+                            <td class='text-center' width="100"><button type="button" class='btn btn-danger js_drop_down'> 出库 </button></td>
+                            <td class='text-center' width="150"><button type="button" class='btn btn-default js_pick_print'> 标签打印 </button></td>
+                            <td class="text-right" width="100"></td>
+                            <td class='text-right' ><button type="button" class='btn btn-default js_pick_quit '> 退出 </button></td>
+                        </tr>
+                    </table>
+                </h3>
+            </div><br/>
+        </div>
+        <div>
+            <table class='table table-condensed js_op_table_todo'>
+                <thead>
+                    <tr>
+                        <th class="text-left">商品</th>
+                        <th class='text-center' width="150">扫描数</th>
+                        <th class='text-center'>订单数</th>
+                        <th class='text-center'>出库批次</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <t t-foreach="widget.get_rows()" t-as="row">
+                        <tr t-att-class="row.classes + 'js_pack_op_line'" t-att-data-id="row.cols.id" t-att-data-container-id="row.cols.container_id" t-att-data-package-id="row.cols.package_id" t-att-data-ulid="row.cols.ul_id">
+                            <td t-att-class="'brctbl-col1 text-left' + row.cols.head_container ? ' js_unfold' : ''">
+                                <t t-if="!row.cols.head_container &amp;&amp; row.cols.container"><span class="fa fa-level-up fa-rotate-90" style="margin-left:10px;margin-right:10px;"></span></t>
+                                <t t-esc="row.cols.product" />
+                            </td>
+                            <td class='brctbl-col2 text-center js_row_qty'>
+                                <t t-if="row.cols.processed == 'false' &amp;&amp; !row.cols.container">
+                                    <div class="input-group">
+                                        <span class="input-group-addon js_minus input-sm" t-att-data-product-id='row.cols.product_id'><a href="#"><i class="fa fa-minus"></i></a></span>
+                                        <form class="js_submit_value">
+                                            <input type="text" class="form-control text-center js_qty" t-att-value="row.cols.rem"></input>
+                                            <!-- <input type="submit" class="hidden"></input> -->
+                                        </form>
+                                        <span class="input-group-addon js_plus input-sm" t-att-data-product-id='row.cols.product_id'><a href="#"><i class="fa fa-plus"></i></a></span>
+                                    </div>
+                                </t>
+                                <t t-if="(row.cols.processed == 'true' || row.cols.container)">
+                                    <t t-esc="row.cols.rem" />
+                                </t>
+                            </td>
+                            <td class="brctbl-col3 text-center">
+                                <t t-esc="row.cols.qty"/> <t t-esc="row.cols.uom" />
+                            </td>
+                            <td class="brctbl-col4 js_loc">
+                                <!-- t t-if="row.cols.pack" ><span><t t-esc="row.cols.pack" /></span></t -->
+                                <t t-if="row.cols.lot" ><span><t t-esc="row.cols.lot" /></span></t>
+                            </td>
+                            <td class="brctbl-col5 js_loc">
+                                <div class="pull-right btn-group">
+                                    <button type="button" class="btn btn-default dropdown-toggle fa fa-cog" data-toggle="dropdown">
+                                     <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu" role="menu">
+                                        <t t-if="row.cols.product_id">
+                                            <li><a class="js_create_lot" href="#">批次号</a></li>
+                                        </t>
+                                        <t t-if="row.cols.head_container">
+                                            <li><a class="js_pack_configure" href="#">设置包裹类型</a></li>
+                                            <li><a class="js_delete_pack" href="#">解包</a></li>
+                                            <li><a class="js_print_pack" href="#">包裹标签打印</a></li>
+                                        </t>
+                                    </ul>
+                                </div>
+                            </td>
+                        </tr>
+                    </t>
+                </tbody>
+            </table>
+        </div>
+    </t>
+
+
+    <t t-name="PackMainWidget">
+        <div class="container">
+            <div class='oe_placeholder_picking_editor'/>
+            <div class="text-right small oe_reload_op">
+                The reserved stock changed. You might want to <button class="btn btn-default js_reload_op"> Recompute </button> the operations.
+            </div>
+        </div>
+    </t>
+
+</templates>

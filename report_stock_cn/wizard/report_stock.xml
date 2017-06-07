@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<openerp>
+    <data>
+        <record id="view_stock_report" model="ir.ui.view">
+            <field name="name">stock.quant.report</field>
+            <field name="model">stock.report.quant</field>
+            <field name="arch" type="xml">
+                <form string="Stock">
+                    <group colspan="4" >
+                        <field name="location_id"/>
+                        <field name="start_date"/>
+                        <field name="end_date"/>
+                    </group>
+                    <footer>
+                        <button name="print_report" type="object" string="确定" class="oe_highlight"/>
+                        <button special="cancel" string="取消" class="oe_link" />
+                    </footer>
+               </form>
+            </field>
+        </record>
+        <record id="action_stock_report" model="ir.actions.act_window">
+            <field name="name">库存月报</field>
+            <field name="res_model">stock.report.quant</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">tree,form</field>
+            <field name="view_id" ref="view_stock_report"/>
+            <field name="target">new</field>
+        </record>
+
+        <menuitem id="menu_product_product"
+                  parent="stock.menu_stock_product"
+                  sequence="20"
+                  action="action_stock_report"/>
+
+        <!--<menuitem id="menu_action_stock_report" action="action_stock_report" parent="stock.next_id_61" sequence="3"/>-->
+    </data>
+</openerp>
