@@ -86,8 +86,10 @@ class huojia_jisuan(models.TransientModel):
                 FROM
                 (SELECT picking_id,sum(product_uom_qty) AS sum_qty
                 FROM stock_move
-                WHERE location_dest_id = %s AND state = 'done'
-                GROUP BY picking_id) m LEFT JOIN stock_picking p ON m.picking_id = p.id
+                WHERE location_id = 12 AND location_dest_id = %s AND state = 'done'
+                GROUP BY picking_id) m 
+                LEFT JOIN stock_picking p 
+                ON m.picking_id = p.id
                 ORDER BY p.date_done DESC
                 LIMIT 1
             """
