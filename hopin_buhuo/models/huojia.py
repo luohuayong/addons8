@@ -8,6 +8,8 @@ class huojia_item(models.Model):
 
     warehouse_id = fields.Many2one('stock.warehouse', string=u"货架编号",readonly=True)
     product_id = fields.Many2one('product.product', string=u"商品编号",readonly=True)
+    product_code = fields.Char(related='product_id.product_tmpl_id.t_guid', string=u"商品编码", readonly=True)
+    product_name = fields.Char(related='product_id.name_template', string=u"商品名称", readonly=True)
 
     kucun = fields.Integer(string=u"当前库存",readonly=True)
     shuliang = fields.Integer(string=u"最后补货数量",readonly=True)
@@ -17,11 +19,16 @@ class huojia_item(models.Model):
     @api.depends('kucun', 'shuliang')
     def _zhuangtai(self):
         for r in self:
-            if not r.kucun or not r.shuliang:
+            # if not r.kucun or not r.shuliang:
+            if r.kucun is None or r.shuliang is None:
                 r.zhuangtai = '0'
-            elif r.kucun/r.shuliang > 0.5:
+            elif r.kucun == 0:
+                r.zhuangtai = '3'
+            elif r.shuliang == 0:
+                r.zhuangtai = '0'
+            elif float(r.kucun)/float(r.shuliang) > 0.5:
                 r.zhuangtai = '1'
-            elif r.kucun/r.shuliang > 0.3:
+            elif float(r.kucun)/float(r.shuliang) > 0.3:
                 r.zhuangtai = '2'
             else:
                 r.zhuangtai = '3'

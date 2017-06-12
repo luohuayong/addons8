@@ -27,8 +27,12 @@ class stock_warehouse(models.Model):
     @api.depends('buhuo_kucun', 'buhuo_shuliang')
     def _buhuo_zhuangtai(self):
         for r in self:
-            if not r.buhuo_kucun or not r.buhuo_shuliang:
+            if r.buhuo_kucun is None or r.buhuo_shuliang is None:
                 r.buhuo_zhuangtai = '0'
+            elif r.buhuo_kucun == 0:
+                r.buhuo_zhuangtai = '3'
+            elif r.buhuo_shuliang == 0:
+                r.zhuangtai = '0'
             elif float(r.buhuo_kucun)/float(r.buhuo_shuliang) > 0.5:
                 r.buhuo_zhuangtai = '1'
             elif float(r.buhuo_kucun)/float(r.buhuo_shuliang) > 0.3:

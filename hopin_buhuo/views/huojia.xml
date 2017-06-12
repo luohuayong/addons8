@@ -24,18 +24,18 @@
             <form>
               <sheet>
                 <group name="group_top" string="货架库存预警">
-                  <field name="code" readonly="1"/>
-                  <field name="partner_id" readonly="1"/>
-                  <field name="buhuo_kucun"/>
-                  <field name="buhuo_shuliang"/>
-                  <field name="buhuo_zhuangtai" readonly="1"/>
+                  <field name="code" string="货架编号" readonly="1"/>
+                  <field name="partner_id" string="货架地址" readonly="1"/>
+                  <field name="buhuo_kucun" string="当前库存"/>
+                  <field name="buhuo_shuliang" string="补货总数量"/>
+                  <field name="buhuo_zhuangtai" string="状态提醒" readonly="1"/>
                 </group>
                 <notebook>
                   <page string="产品">
                     <field name="huojia_item_ids">
                       <tree colors="grey:zhuangtai=='0'; blue:zhuangtai=='2'; red:zhuangtai=='3'">
-                        <field name="product_id" string="商品编码"/>
-                        <field name="product_id" string="商品名称"/>
+                        <field name="product_code" string="商品编码"/>
+                        <field name="product_name" string="商品名称"/>
                         <field name="kucun" string="当前库存"/>
                         <field name="shuliang" string="补货数量"/>
                         <field name="zhuangtai" string="状态提醒"/>
