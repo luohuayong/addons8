@@ -73,7 +73,8 @@
         </record>
 
         <!-- 二级菜单 -->
-        <menuitem name="货架库存预警" id="menu_buhuo_huojia" parent="menu_buhuo_yujing" action="action_buhuo_huojia"/>
+        <menuitem name="货架库存预警" id="menu_buhuo_huojia" parent="menu_buhuo_yujing"
+                  action="action_buhuo_huojia" sequence="20"/>
     </data>
 
 

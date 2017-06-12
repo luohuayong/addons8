@@ -80,10 +80,12 @@
         <menuitem name="自动补货" id="menu_buhuo" sequence="90"/>
 
         <!-- 一级菜单 -->
-        <menuitem name="补货预警" id="menu_buhuo_yujing" parent="menu_buhuo"/>
+        <menuitem name="补货预警" id="menu_buhuo_yujing" parent="menu_buhuo" sequence="10"/>
+        <menuitem name="货架销售" id="menu_buhuo_xiaoshou" parent="menu_buhuo" sequence="20"/>
+        <menuitem name="配置" id="menu_buhuo_peizhi" parent="menu_buhuo" sequence="30"/>
 
         <!-- 二级菜单 -->
-        <menuitem name="补货参数" id="menu_buhuo_canshu" parent="menu_buhuo_yujing" action="action_buhuo_canshu"/>
+        <menuitem name="补货参数" id="menu_buhuo_canshu" parent="menu_buhuo_peizhi" action="action_buhuo_canshu" sequence="10"/>
         <!--<menuitem name="补货周期查询" id="menu_buhuo_zhouqi" parent="menu_buhuo_yujing" action="action_buhuo_canshu"/>-->
         <!--<menuitem name="货架库存预警" id="menu_buhuo_yujing" parent="menu_buhuo_yujing" action="action_buhuo_canshu"/>-->
         <!--<menuitem name="货架销量查询" id="menu_buhuo_xiaoliang" parent="menu_buhuo_yujing" action="action_buhuo_canshu"/>-->

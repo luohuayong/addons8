@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <openerp>
     <data>
-        <record id="view_buhuo_jisuan_wizard" model="ir.ui.view">
+        <record id="view_buhuo_jisuan_kucun_wizard" model="ir.ui.view">
             <field name="name">计算库存</field>
-            <field name="model">buhuo.huojia_jisuan</field>
+            <field name="model">buhuo.huojia_item</field>
             <field name="arch" type="xml">
                 <form string="计算库存">
                     <p>
@@ -14,7 +14,6 @@
                     </p>
                     <footer>
                         <button name="kucun_and_buhuo_jisuan" string="开始计算" type="object"  class="oe_highlight"  />
-                        <button name="xiaoshou_jisuan" string="销售统计" type="object"  class="oe_highlight"  />
                         或者
                         <button string="Cancel" class="oe_link" special="cancel" />
                     </footer>
@@ -22,13 +21,61 @@
             </field>
         </record>
 
-         <act_window name="计算库存"
-            res_model="buhuo.huojia_jisuan"
-            view_mode="form"
-            target="new"
-            key2="client_action_multi"
-            id="action_buhuo_jisuan"/>
+        <record id="view_buhuo_jisuan_xiaoshou_wizard" model="ir.ui.view">
+            <field name="name">计算销售</field>
+            <field name="model">buhuo.xiaoshou_item</field>
+            <field name="arch" type="xml">
+                <form string="计算销售">
+                    <p>
+                        - 按日期、货架、商品分组计算销量和销售额 <br/>
+                    </p>
+                    <footer>
+                        <button name="xiaoshou_jisuan" string="开始计算" type="object"  class="oe_highlight"  />
+                        或者
+                        <button string="Cancel" class="oe_link" special="cancel" />
+                    </footer>
+                </form>
+            </field>
+        </record>
 
-        <menuitem name="计算库存" id="menu_buhuo_jisuan" parent="menu_buhuo_yujing" action="action_buhuo_jisuan"/>
+         <!--<act_window name="计算库存"-->
+            <!--res_model="buhuo.huojia_item"-->
+            <!--view_mode="form"-->
+            <!--target="new"-->
+            <!--key2="client_action_multi"-->
+            <!--id="action_buhuo_jisuan_kucun"/>-->
+
+         <!--<act_window name="计算销售"-->
+            <!--res_model="buhuo.xiaoshou_item"-->
+            <!--view_mode="form"-->
+            <!--target="new"-->
+            <!--key2="client_action_multi"-->
+            <!--id="action_buhuo_jisuan_xiaoshou"/>-->
+
+
+
+        <!-- 视图动作 -->
+        <record model="ir.actions.act_window" id="action_buhuo_jisuan_kucun">
+            <field name="name">计算库存</field>
+            <field name="res_model">buhuo.huojia_item</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <field name="key2">client_action_multi</field>
+            <field name="view_id" ref="view_buhuo_jisuan_kucun_wizard"/>
+        </record>
+
+        <record model="ir.actions.act_window" id="action_buhuo_jisuan_xiaoshou">
+            <field name="name">计算销售</field>
+            <field name="res_model">buhuo.xiaoshou_item</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <field name="key2">client_action_multi</field>
+            <field name="view_id" ref="view_buhuo_jisuan_xiaoshou_wizard"/>
+        </record>
+
+        <menuitem name="计算库存" id="menu_buhuo_jisuan_kucun" parent="menu_buhuo_peizhi"
+                  action="action_buhuo_jisuan_kucun" sequence="20"/>
+        <menuitem name="计算销售" id="menu_buhuo_jisuan_xiaoshou" parent="menu_buhuo_peizhi"
+                  action="action_buhuo_jisuan_xiaoshou" sequence="30"/>
     </data>
 </openerp>

@@ -33,41 +33,6 @@ class huojia_item(models.Model):
             else:
                 r.zhuangtai = '3'
 
-    def _kucun_jisuan(self):
-        huojia_item = self.env['buhuo.huojia_item']
-        warehouse = self.env['stock.warehouse']
-
-# class xiaoshou(models.Model):
-#     _name = 'buhuo.xiaoshou'
-#     date = fields.Date(string=u"日期",readonly=True)
-#     warehouse_id = fields.Many2one('stock.warehouse', string=u"货架ID",readonly=True)
-#     warehouse_code = fields.Char(related='warehouse_id.code', string=u"货架编号", readonly=True)
-#     warehouse_address = fields.Many2one(related='warehouse_id.partner_id', string=u"货架地址", readonly=True)
-#     xiaoliang = fields.Integer(string=u"销量",readonly=True)
-#     jine = fields.Float(digits=(6, 2), string=u"金额",readonly=True)
-#     item_ids = fields.One2many('buhuo.xiaoshou_item', 'xiaoshou_id', string=u"销售项")
-
-
-class xiaoshou_item(models.Model):
-    _name = 'buhuo.xiaoshou_item'
-    date = fields.Date(string=u"日期", readonly=True)
-
-    warehouse_id = fields.Many2one('stock.warehouse', string=u"货架ID", readonly=True)
-    warehouse_code = fields.Char(related='warehouse_id.code', string=u"货架编号", readonly=True)
-    warehouse_address = fields.Many2one(related='warehouse_id.partner_id', string=u"货架地址", readonly=True)
-
-    product_id = fields.Many2one('product.product', string=u"商品ID", readonly=True)
-    product_code = fields.Char(related='product_id.product_tmpl_id.t_guid', string=u"商品编码", readonly=True)
-    product_name = fields.Char(related='product_id.name_template', string=u"商品名称", readonly=True)
-
-    xiaoliang = fields.Integer(string=u"销量", readonly=True)
-    jine = fields.Float(digits=(6, 2), string=u"金额", readonly=True)
-    # xiaoshou_id = fields.Many2one('buhuo.xiaoshou',string=u"销售编号")
-
-
-class huojia_jisuan(models.TransientModel):
-    _name = 'buhuo.huojia_jisuan'
-
     @api.multi
     def kucun_and_buhuo_jisuan(self):
 
@@ -138,7 +103,7 @@ class huojia_jisuan(models.TransientModel):
                 # 不存在，插入货架库存商品分组合计
                 for item in buhuo_item_sum:
                     item_temp = huojia_items.search([['warehouse_id', '=', warehouse.id],
-                                                    ['product_id', '=', item[0]]])
+                                                     ['product_id', '=', item[0]]])
                     if len(item_temp) == 0:
                         huojia_items.create({
                             'warehouse_id': warehouse.id,
@@ -149,8 +114,39 @@ class huojia_jisuan(models.TransientModel):
                     else:
                         item_temp[0].shuliang = item[1]
 
+# class xiaoshou(models.Model):
+#     _name = 'buhuo.xiaoshou'
+#     date = fields.Date(string=u"日期",readonly=True)
+#     warehouse_id = fields.Many2one('stock.warehouse', string=u"货架ID",readonly=True)
+#     warehouse_code = fields.Char(related='warehouse_id.code', string=u"货架编号", readonly=True)
+#     warehouse_address = fields.Many2one(related='warehouse_id.partner_id', string=u"货架地址", readonly=True)
+#     xiaoliang = fields.Integer(string=u"销量",readonly=True)
+#     jine = fields.Float(digits=(6, 2), string=u"金额",readonly=True)
+#     item_ids = fields.One2many('buhuo.xiaoshou_item', 'xiaoshou_id', string=u"销售项")
+
+
+class xiaoshou_item(models.Model):
+    _name = 'buhuo.xiaoshou_item'
+    date = fields.Date(string=u"日期", readonly=True)
+
+    warehouse_id = fields.Many2one('stock.warehouse', string=u"货架ID", readonly=True)
+    warehouse_code = fields.Char(related='warehouse_id.code', string=u"货架编号", readonly=True)
+    warehouse_address = fields.Many2one(related='warehouse_id.partner_id', string=u"货架地址", readonly=True)
+
+    product_id = fields.Many2one('product.product', string=u"商品ID", readonly=True)
+    product_code = fields.Char(related='product_id.product_tmpl_id.t_guid', string=u"商品编码", readonly=True)
+    product_name = fields.Char(related='product_id.name_template', string=u"商品名称", readonly=True)
+
+    xiaoliang = fields.Integer(string=u"销量", readonly=True)
+    jine = fields.Float(digits=(6, 2), string=u"金额", readonly=True)
+    # xiaoshou_id = fields.Many2one('buhuo.xiaoshou',string=u"销售编号")
+
     @api.multi
     def xiaoshou_jisuan(self):
+        # 删除向导产生的空数据
+        xiaoshou_items_null = self.env['buhuo.xiaoshou_item'].search([['date', '=', False]])
+        xiaoshou_items_null.unlink()
+
         # 日期-货架-商品分组统计
         sql = """
             SELECT date_order,warehouse_id,product_id,SUM(product_uom_qty) AS qty,SUM(line_total) AS total
@@ -240,6 +236,13 @@ class huojia_jisuan(models.TransientModel):
             # elif xiaoshou_item_temp.xiaoliang != item[3]:
             #     xiaoshou_item_temp.xiaoliang = item[3]
             #     xiaoshou_item_temp.jine = item[4]
+
+# class huojia_jisuan(models.TransientModel):
+#     _name = 'buhuo.huojia_jisuan'
+
+
+
+
 
 
 
