@@ -132,6 +132,7 @@ class xiaoshou_item(models.Model):
     warehouse_id = fields.Many2one('stock.warehouse', string=u"货架ID", readonly=True)
     warehouse_code = fields.Char(related='warehouse_id.code', string=u"货架编号", readonly=True)
     warehouse_address = fields.Many2one(related='warehouse_id.partner_id', string=u"货架地址", readonly=True)
+    warehouse_buhuo_qiyong = fields.Boolean(related='warehouse_id.buhuo_qiyong', string=u"启用", readonly=True)
 
     product_id = fields.Many2one('product.product', string=u"商品ID", readonly=True)
     product_code = fields.Char(related='product_id.product_tmpl_id.t_guid', string=u"商品编码", readonly=True)

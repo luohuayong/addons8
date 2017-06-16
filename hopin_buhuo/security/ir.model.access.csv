@@ -1,2 +1,3 @@
 id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
-access_hopin_buhuo_hopin_buhuo,hopin_buhuo.hopin_buhuo,model_hopin_buhuo_hopin_buhuo,,1,0,0,0
+access_buhuo_huojia_item,buhuo.huojia_item,model_buhuo_huojia_item,,1,0,0,0
+access_buhuo_xiaoshou_item,buhuo.xiaoshou_item,model_buhuo_xiaoshou_item,,1,0,0,0

@@ -44,6 +44,7 @@
             <field name="name">货架销售查询</field>
             <field name="res_model">buhuo.xiaoshou_item</field>
             <field name="view_mode">tree</field>
+            <field name="domain">[["warehouse_buhuo_qiyong","=",True]]</field>
             <!--<field name="context" eval="{'search_default_huojia': 1}"/>-->
             <!--<field name="views">[[view_tree_buhuo_canshu,"tree"],[view_form_buhuo_canshu,"form"]]</field>-->
             <!--<field name="view_id" ref="view_tree_buhuo_canshu"/>-->

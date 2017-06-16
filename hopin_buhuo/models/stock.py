@@ -6,6 +6,7 @@ from datetime import datetime
 class stock_warehouse(models.Model):
     _inherit = 'stock.warehouse'
 
+    buhuo_qiyong = fields.Boolean(string=u"启用", default=False)
     buhuo_zhouqi = fields.Integer(string=u"补货周期")
     buhuo_riqi = fields.Date(string=u"最后一次补货时间")
     buhuo_jiange = fields.Integer(string=u"间隔天数", compute='_buhuo_jiange')

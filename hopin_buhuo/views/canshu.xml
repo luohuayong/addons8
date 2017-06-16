@@ -11,6 +11,7 @@
               <field name="buhuo_zhouqi" string="补货周期"/>
               <field name="buhuo_riqi" string="最后一次补货时间"/>
               <field name="partner_id" string="货架地址"/>
+              <field name="buhuo_qiyong" string="启用"/>
             </tree>
           </field>
         </record>
@@ -46,6 +47,7 @@
                   <field name="buhuo_zhouqi" string="补货周期"/>
                   <field name="buhuo_riqi" string="最后一次补货时间"/>
                   <field name="buhuo_jiange" string="间隔天数" readonly="1"/>
+                  <field name="buhuo_qiyong" string="启用"/>
                 </group>
               </sheet>
             </form>

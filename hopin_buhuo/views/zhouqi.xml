@@ -40,6 +40,7 @@
             <field name="res_model">stock.warehouse</field>
             <field name="view_mode">tree,form</field>
             <field name="context" eval="{'search_default_zhouqi': 1}"/>
+            <field name="domain">[["buhuo_qiyong","=",True]]</field>
             <!--<field name="views">[[view_tree_buhuo_canshu,"tree"],[view_form_buhuo_canshu,"form"]]</field>-->
             <!--<field name="view_id" ref="view_tree_buhuo_canshu"/>-->
         </record>
