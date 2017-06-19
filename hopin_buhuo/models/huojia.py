@@ -144,9 +144,8 @@ class xiaoshou_item(models.Model):
 
     @api.multi
     def xiaoshou_jisuan(self):
-        # 删除向导产生的空数据
-        xiaoshou_items_null = self.env['buhuo.xiaoshou_item'].search([['date', '=', False]])
-        xiaoshou_items_null.unlink()
+        xiaoshou_data_old = self.env['buhuo.xiaoshou_item'].search([])
+        xiaoshou_data_old.unlink()
 
         # 日期-货架-商品分组统计
         sql = """
@@ -158,88 +157,30 @@ class xiaoshou_item(models.Model):
             LEFT JOIN
             (SELECT warehouse_id,id,to_char(date_order,'yyyy-mm-dd') AS date_order
             FROM sale_order
-            WHERE date_order < current_date) o 
+            WHERE date_order < current_date
+            AND date_order > current_date - interval '3 month') o 
             ON w.id = o.warehouse_id
             LEFT JOIN
             (SELECT order_id,product_id,product_uom_qty,(product_uom_qty * price_unit) AS line_total
-            FROM sale_order_line) ol 
+            FROM sale_order_line) ol
             ON o.id = ol.order_id
             WHERE date_order IS NOT NULL AND product_uom_qty IS NOT NULL AND line_total IS NOT NULL
             GROUP BY date_order,warehouse_id,product_id
         """
         self.env.cr.execute(sql)
         xiaoshou_set = self.env.cr.fetchall()
-        # xiaoshou_data_old = self.env['buhuo.xiaoshou'].search([])
+
         for i, xiaoshou_record in enumerate(xiaoshou_set):
-            xiaoshou_record_temp = self.env['buhuo.xiaoshou_item'].\
-                search([['date', '=', xiaoshou_record[0]],
-                        ['warehouse_id', '=', xiaoshou_record[1]],
-                        ['product_id', '=', xiaoshou_record[2]]])
-            if len(xiaoshou_record_temp) == 0:
-                self.env['buhuo.xiaoshou_item'].create({
-                    'date': xiaoshou_record[0],
-                    'warehouse_id': xiaoshou_record[1],
-                    'product_id': xiaoshou_record[2],
-                    'xiaoliang': xiaoshou_record[3],
-                    'jine': xiaoshou_record[4],
-                })
+            self.env['buhuo.xiaoshou_item'].create({
+                'date': xiaoshou_record[0],
+                'warehouse_id': xiaoshou_record[1],
+                'product_id': xiaoshou_record[2],
+                'xiaoliang': xiaoshou_record[3],
+                'jine': xiaoshou_record[4],
+            })
 
-                # # 商品销售分组统计
-                # sql = """
-                #     SELECT product_id,SUM(product_uom_qty) AS qty,
-                #     SUM(line_total)/SUM(product_uom_qty) AS price,
-                #     SUM(line_total) AS total
-                #     FROM
-                #     (SELECT id
-                #     FROM sale_order
-                #     WHERE to_char(date_order,'yyyy-mm-dd') = '2016-10-25'
-                #     AND warehouse_id = 321) o
-                #     LEFT JOIN
-                #     (SELECT order_id,product_id,product_uom_qty,(product_uom_qty * price_unit) AS line_total
-                #     FROM sale_order_line) ol
-                #     ON o.id = ol.order_id
-                #     GROUP BY product_id
-                # """
-                # self.env.cr.execute(sql,([xiaoshou_record[0],xiaoshou_record[1]]))
-                # xiaoshou_item_set = self.env.cr.fetchall()
-                # # xiaoshou_item_old = self.env['buhuo.xiaoshou_item'].search([])
-                # # xiaoshou_old = self.env['buhuo.xiaoshou'].search([])
-                # for xiaoshou_item_record in xiaoshou_item_set:
-                #     self.env['buhuo.xiaoshou_item'].create({
-                #         'product_id': xiaoshou_item_record[0],
-                #         'xiaoliang': xiaoshou_item_record[1],
-                #         'danjia': xiaoshou_item_record[2],
-                #         'jine': xiaoshou_item_record[3],
-                #         'xiaoshou_id': xiaoshou_record_temp.id,
-                #     })
-            # xiaoshou_temp = self.env['buhuo.xiaoshou'].\
-            #     search([['date','=',item[0]],
-            #             ['warehouse_id','=',item[1]]])
-            # if len(xiaoshou_temp) == 0:
-            #     global xiaoshou_temp
-            #     xiaoshou_temp = self.env['buhuo.xiaoshou'].create({
-            #         'date': item[0],
-            #         'warehouse_id': item[1],
-            #         # 'xiaoliang': item[2],
-            #         # 'jine': item[3],
-            # #     })
-            # xiaoshou_item_temp = self.env['buhuo.xiaoshou_item'].\
-            #     search([['xiaoshou_id','=',xiaoshou_temp.id],
-            #             ['product_id','=',item[2]]])
-            # if len(xiaoshou_item_temp) == 0:
-            #     self.env['buhuo.xiaoshou_item'].create({
-            #         'product_id': item[2],
-            #         'xiaoliang': item[3],
-            #         # 'danjia': item[2],
-            #         'jine': item[4],
-            #         'xiaoshou_id': xiaoshou_temp.id,
-            #     })
-            # elif xiaoshou_item_temp.xiaoliang != item[3]:
-            #     xiaoshou_item_temp.xiaoliang = item[3]
-            #     xiaoshou_item_temp.jine = item[4]
 
-# class huojia_jisuan(models.TransientModel):
-#     _name = 'buhuo.huojia_jisuan'
+
 
 
 
