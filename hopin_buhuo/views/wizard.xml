@@ -38,21 +38,22 @@
             </field>
         </record>
 
-         <!--<act_window name="计算库存"-->
-            <!--res_model="buhuo.huojia_item"-->
-            <!--view_mode="form"-->
-            <!--target="new"-->
-            <!--key2="client_action_multi"-->
-            <!--id="action_buhuo_jisuan_kucun"/>-->
-
-         <!--<act_window name="计算销售"-->
-            <!--res_model="buhuo.xiaoshou_item"-->
-            <!--view_mode="form"-->
-            <!--target="new"-->
-            <!--key2="client_action_multi"-->
-            <!--id="action_buhuo_jisuan_xiaoshou"/>-->
-
-
+        <record id="view_buhuo_buhuodan_wizard" model="ir.ui.view">
+            <field name="name">生成补货单</field>
+            <field name="model">buhuo.buhuo_wizard</field>
+            <field name="arch" type="xml">
+                <form string="生成补货单">
+                    <p>
+                        - 按货架生成补货单 <br/>
+                    </p>
+                    <footer>
+                        <button name="create_buhuodan" string="开始计算" type="object"  class="oe_highlight"  />
+                        或者
+                        <button string="Cancel" class="oe_link" special="cancel" />
+                    </footer>
+                </form>
+            </field>
+        </record>
 
         <!-- 视图动作 -->
         <record model="ir.actions.act_window" id="action_buhuo_jisuan_kucun">
@@ -73,9 +74,20 @@
             <field name="view_id" ref="view_buhuo_jisuan_xiaoshou_wizard"/>
         </record>
 
+        <record model="ir.actions.act_window" id="action_buhuo_buhuodan">
+            <field name="name">生成补货单</field>
+            <field name="res_model">buhuo.buhuo_wizard</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+            <field name="key2">client_action_multi</field>
+            <field name="view_id" ref="view_buhuo_buhuodan_wizard"/>
+        </record>
+
         <menuitem name="计算库存" id="menu_buhuo_jisuan_kucun" parent="menu_buhuo_peizhi"
                   action="action_buhuo_jisuan_kucun" sequence="20"/>
         <menuitem name="计算销售" id="menu_buhuo_jisuan_xiaoshou" parent="menu_buhuo_peizhi"
                   action="action_buhuo_jisuan_xiaoshou" sequence="30"/>
+        <menuitem name="生成补货单" id="menu_buhuo_buhuodan" parent="menu_buhuo_peizhi"
+                  action="action_buhuo_buhuodan" sequence="40"/>
     </data>
 </openerp>

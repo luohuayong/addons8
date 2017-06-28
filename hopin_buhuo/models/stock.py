@@ -1,6 +1,7 @@
 # -*- coding:utf-8 -*-
 from openerp import models, fields, api
 from datetime import datetime
+import math
 
 
 class stock_warehouse(models.Model):
@@ -40,3 +41,7 @@ class stock_warehouse(models.Model):
                 r.buhuo_zhuangtai = '2'
             else:
                 r.buhuo_zhuangtai = '3'
+
+
+
+
