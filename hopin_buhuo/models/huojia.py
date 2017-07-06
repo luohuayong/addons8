@@ -251,32 +251,34 @@ class buhuo_wizard(models.Model):
 
             # 货架商品列表
             # sql = """
-            #     SELECT w.product_id,w.qty_kucun,s.qty_xiaoshou_avg30,
-            #     t.name,t.uom_id
+            #     SELECT s.product_id,
+            #     CASE WHEN w.qty_kucun IS NOT NULL THEN w.qty_kucun ELSE 0 END,
+            #     s.qty_xiaoshou_avg30,t.name,t.uom_id
             #     FROM
-            #     (SELECT product_id,SUM(qty) as qty_kucun
-            #     FROM stock_quant
-            #     WHERE location_id = %s
-            #     GROUP BY product_id) w
-            #     INNER JOIN
-            #     (SELECT product_id,SUM(product_uom_qty) / 30 AS qty_xiaoshou_avg30
-            #     FROM
-            #     (SELECT id,warehouse_id
-            #     FROM sale_order
-            #     WHERE date_order < current_date
-            #     AND date_order >= current_date - INTERVAL '30 day'
-            #     AND warehouse_id = %s) o
+            #         (SELECT product_id,SUM(product_uom_qty) / 30 AS qty_xiaoshou_avg30
+            #         FROM
+            #             (SELECT id,warehouse_id
+            #             FROM sale_order
+            #             WHERE date_order < current_date
+            #             AND date_order >= current_date - INTERVAL '30 day'
+            #             AND warehouse_id = %s) o
+            #             LEFT JOIN
+            #             (SELECT order_id,product_id,product_uom_qty
+            #             FROM sale_order_line) ol
+            #             ON o.id = ol.order_id
+            #             GROUP BY product_id) s
             #     LEFT JOIN
-            #     (SELECT order_id,product_id,product_uom_qty
-            #     FROM sale_order_line) ol
-            #     ON o.id = ol.order_id
-            #     GROUP BY product_id) s
-            #     ON w.product_id = s.product_id
+            #         (SELECT product_id,SUM(qty) as qty_kucun
+            #         FROM stock_quant
+            #         WHERE location_id = %s
+            #         GROUP BY product_id) w
+            #     ON s.product_id = w.product_id
             #     LEFT JOIN product_product p
-            #     ON w.product_id = p.id
+            #     ON s.product_id = p.id
             #     LEFT JOIN product_template t
             #     ON p.product_tmpl_id = t.id
             # """
+
             sql = """
                 SELECT s.product_id,
                 CASE WHEN w.qty_kucun IS NOT NULL THEN w.qty_kucun ELSE 0 END,
@@ -286,8 +288,7 @@ class buhuo_wizard(models.Model):
                     FROM
                         (SELECT id,warehouse_id
                         FROM sale_order
-                        WHERE date_order < current_date
-                        AND date_order >= current_date - INTERVAL '30 day'
+                        WHERE date_order >= current_date - INTERVAL '29 day'
                         AND warehouse_id = %s) o
                         LEFT JOIN
                         (SELECT order_id,product_id,product_uom_qty
@@ -303,9 +304,8 @@ class buhuo_wizard(models.Model):
                 LEFT JOIN product_product p
                 ON s.product_id = p.id
                 LEFT JOIN product_template t
-                ON p.product_tmpl_id = t.id            
+                ON p.product_tmpl_id = t.id
             """
-
             # self.env.cr.execute(sql, ([location_id, warehouse_id]))
             self.env.cr.execute(sql, ([warehouse_id, location_id]))
             product_set = self.env.cr.fetchall()
